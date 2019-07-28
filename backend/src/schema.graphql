@@ -1,0 +1,8 @@
+type Query{
+    name : String!
+    place : String!
+}
+
+type Mutation{
+    changename(name:String!):String!
+}
