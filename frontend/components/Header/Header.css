@@ -1,0 +1,13 @@
+.linkitems{
+    list-style:none;
+}
+
+.linkitems li{
+    padding:20px;
+    border-left:5px solid #039be5;
+    margin-top:15px;
+}
+
+.linkitems a{
+    text-decoration:none;
+}

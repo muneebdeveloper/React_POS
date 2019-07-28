@@ -1,0 +1,40 @@
+*,
+*::before,
+*::after{
+    margin:0;
+    padding:0;
+    box-sizing:inherit;
+}
+
+html{
+    box-sizing:border-box;
+}
+
+body{
+    font-family: 'Nunito', sans-serif;
+}
+
+.container{
+    display:grid;
+    grid-template-columns:1fr repeat(8,minmax(min-content,8.9062rem)) 1fr;
+}
+
+.header{
+    grid-column:1/-1;
+    height:70px;
+    background-color:#292828;
+}
+
+.toolbar{
+    max-width:1140px;
+    margin:0 auto;
+    height:70px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    color:white;
+}
+
+.mainshop{
+    grid-column:1/-1;
+}
