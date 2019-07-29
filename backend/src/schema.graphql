@@ -1,8 +1,9 @@
+# import * from './generated/prisma.graphql'
+
 type Query{
-    name : String!
-    place : String!
+   user:User
 }
 
 type Mutation{
-    changename(name:String!):String!
+     user(id:ID!):User!
 }

@@ -1,6 +1,6 @@
 const Mutation = {
-    changename(parent,args,ctx,info){
-        return `Name ${args.name} was changed`;
+    user(parent, {id}, ctx, info){
+        return ctx.db.query.user({where:{id}},info);
     }
 }
 

@@ -73,8 +73,8 @@ class Header extends Component{
    render(){
         return(
             <>
-            <div class="header">
-                <div class="toolbar">
+            <div className="header">
+                <div className="toolbar">
 
 
                     <div>
