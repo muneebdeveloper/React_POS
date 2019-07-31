@@ -1,11 +1,11 @@
 import React,{Component} from 'react';
 import Details from '../components/Details';
 import styles from './index.css';
-import {Mutation} from 'react-apollo';
+import {ApolloConsumer} from 'react-apollo';
 import gql from 'graphql-tag';
 
 const USER_QUERY = gql`
-    mutation USER_QUERY($id:ID!){
+    query USER_QUERY($id:ID!){
         user(id:$id){
             username
             first_name
@@ -24,8 +24,8 @@ class Home extends Component{
 
     state={
         id:'',
-        firsttime:true,
-        receipt:[]
+        receipt:[],
+        loading:false
     }
 
     inputHandler=(e)=>{
@@ -34,43 +34,58 @@ class Home extends Component{
         });
     }
 
-    render(){
-        const {id,receipt}=this.state;
-        return(
-            <Mutation mutation={USER_QUERY} variables={this.state}>
-            {
-                (user,{data,error,loading})=>{
+    receiptHandler=async (e,client)=>{
+        
+        this.setState({
+            loading:true
+        })
+       try{
+            const res = await client.query({
+            query:USER_QUERY,
+            variables:{id:this.state.id}
+            });
+            console.log(res);
+            const {data:{user}} = res;
+            const receiptor = [...this.state.receipt,user];
+            this.setState({
+                receipt:receiptor,
+                id:'',
+                loading:false
+            });
+    }
+    catch(err){
+            this.setState({
+                error:true,
+                loading:false
+            })
+    }
 
-                    if(error){
-                        return(
-                            <h1>Wrong id</h1>
-                        );
-                    }
+       
+    }
+    
+
+    render(){
+        const {id,loading,error,receipt}=this.state;
+        return(
+            <ApolloConsumer>
+            {
+                (client)=>{
 
                     if(loading){
-                        return(
-                            <h1>Loading</h1>
-                        );
+                        return <h2>Loading</h2>
                     }
 
-                    if(data && this.state.firsttime){
-                        
-                        console.log(data);
-                        const receiptor = [...this.state.receipt,data.user];
-                        this.setState({
-                            id:'',
-                            firsttime:false,
-                            receipt:receiptor
-                        })
+                    if(error){
+                        return <h2>Error</h2>
                     }
-
+                   
                     return(
                     <>
                         <section className="mainshop">
                             <div className={styles.toolbar}>
-                                <form onSubmit={ e=>{
+                                <form onSubmit={  e=>{
                                     e.preventDefault();
-                                    return user();
+                                    return this.receiptHandler(e,client);
                                 }}>
                                     <label>
                                         Product Code : 
@@ -86,7 +101,7 @@ class Home extends Component{
                         </section>
 
                         <section className={styles.maininfo}>
-                            { data &&
+                            { receipt.length>0 &&
                                 receipt.map((users,index)=>{
                                     return(
                                     <Details {...users} key={index} serial={index} />
@@ -98,7 +113,7 @@ class Home extends Component{
                 }
 
             }
-            </Mutation>
+            </ApolloConsumer>
         );
     }
 }

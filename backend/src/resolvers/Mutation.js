@@ -1,7 +1,9 @@
+const {forwardTo} = require('prisma-binding');
+
+
 const Mutation = {
-    user(parent, {id}, ctx, info){
-        return ctx.db.query.user({where:{id}},info);
-    }
+    createLineItem:forwardTo('db'),
+    createCategory:forwardTo('db')
 }
 
 module.exports = Mutation;

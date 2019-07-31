@@ -1,0 +1,14 @@
+.block{
+    display:flex;
+    flex-flow:column;
+    justify-content: center;
+    align-items: center;
+    width:200px;
+    height:150px;
+    background-color:#dcd3d3;
+    color:black;
+}
+
+.blockahref{
+    text-decoration:none;  
+}

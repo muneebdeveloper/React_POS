@@ -40,4 +40,8 @@ body{
     grid-column:1/-1;
 }
 
+.mainstock,.mainlineitem{
+    grid-column:2/10;
+}
+
 /* rgb(21, 189, 118) */

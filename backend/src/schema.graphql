@@ -1,9 +1,14 @@
 # import * from './generated/prisma.graphql'
 
 type Query{
-   user:User
+    lineItems:[LineItem]!
 }
 
 type Mutation{
-     user(id:ID!):User!
+     createLineItem(data: LineItemCreateInput!): LineItem!
+     updateLineItem(data: LineItemUpdateInput!, where: LineItemWhereUniqueInput!): LineItem
+     deleteLineItem(where: LineItemWhereUniqueInput!): LineItem
+     createCategory(data: CategoryCreateInput!): Category!
+     updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
+     deleteCategory(where: CategoryWhereUniqueInput!): Category
 }
