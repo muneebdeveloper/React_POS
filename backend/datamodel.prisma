@@ -14,3 +14,24 @@ type Category{
   name: String!
   lineitem:LineItem!
 }
+
+type Product{
+  id: ID! @id
+  barcode: String! @unique
+  name: String!
+  sellPrice: Int!
+  wholesalePrice: Int!
+  category:Category!
+  stock:[StockItem!]!
+}
+
+type StockItem{
+  id: ID! @id
+  badgeNumber: String
+  noofpieces: Int!
+  buyPrice: Int!
+  sellPrice: Int!
+  wholesalePrice: Int!
+  expiry: String
+  product: Product!
+}

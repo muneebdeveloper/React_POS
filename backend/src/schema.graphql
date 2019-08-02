@@ -1,5 +1,6 @@
 # import * from './generated/prisma.graphql'
 
+
 type Query{
     lineItems:[LineItem]!
 }
