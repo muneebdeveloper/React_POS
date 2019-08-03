@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/muhammad-muneeb-akhlaq/backend/dev
-# timestamp: Sat Aug 03 2019 00:23:13 GMT+0500 (Pakistan Standard Time)
+# timestamp: Sat Aug 03 2019 10:44:04 GMT+0500 (Pakistan Standard Time)
 
 type AggregateCategory {
   count: Int!
@@ -232,6 +232,8 @@ input CategoryWhereInput {
 input CategoryWhereUniqueInput {
   id: ID
 }
+
+scalar DateTime
 
 type LineItem implements Node {
   id: ID!
@@ -505,8 +507,8 @@ type Product implements Node {
   id: ID!
   barcode: String!
   name: String!
-  sellPrice: Int!
-  wholesalePrice: Int!
+  sellPrice: Int
+  wholesalePrice: Int
   category: Category!
   stock(where: StockItemWhereInput, orderBy: StockItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [StockItem!]
 }
@@ -525,8 +527,8 @@ input ProductCreateInput {
   id: ID
   barcode: String!
   name: String!
-  sellPrice: Int!
-  wholesalePrice: Int!
+  sellPrice: Int
+  wholesalePrice: Int
   category: CategoryCreateOneInput!
   stock: StockItemCreateManyWithoutProductInput
 }
@@ -540,8 +542,8 @@ input ProductCreateWithoutStockInput {
   id: ID
   barcode: String!
   name: String!
-  sellPrice: Int!
-  wholesalePrice: Int!
+  sellPrice: Int
+  wholesalePrice: Int
   category: CategoryCreateOneInput!
 }
 
@@ -571,8 +573,8 @@ type ProductPreviousValues {
   id: ID!
   barcode: String!
   name: String!
-  sellPrice: Int!
-  wholesalePrice: Int!
+  sellPrice: Int
+  wholesalePrice: Int
 }
 
 type ProductSubscriptionPayload {
@@ -863,7 +865,7 @@ type StockItem implements Node {
   buyPrice: Int!
   sellPrice: Int!
   wholesalePrice: Int!
-  expiry: String
+  expiry: DateTime
   product: Product!
 }
 
@@ -884,7 +886,7 @@ input StockItemCreateInput {
   buyPrice: Int!
   sellPrice: Int!
   wholesalePrice: Int!
-  expiry: String
+  expiry: DateTime
   product: ProductCreateOneWithoutStockInput!
 }
 
@@ -900,7 +902,7 @@ input StockItemCreateWithoutProductInput {
   buyPrice: Int!
   sellPrice: Int!
   wholesalePrice: Int!
-  expiry: String
+  expiry: DateTime
 }
 
 """An edge in a connection."""
@@ -936,7 +938,7 @@ type StockItemPreviousValues {
   buyPrice: Int!
   sellPrice: Int!
   wholesalePrice: Int!
-  expiry: String
+  expiry: DateTime
 }
 
 input StockItemScalarWhereInput {
@@ -1116,46 +1118,28 @@ input StockItemScalarWhereInput {
 
   """All values greater than or equal the given value."""
   wholesalePrice_gte: Int
-  expiry: String
+  expiry: DateTime
 
   """All values that are not equal to given value."""
-  expiry_not: String
+  expiry_not: DateTime
 
   """All values that are contained in given list."""
-  expiry_in: [String!]
+  expiry_in: [DateTime!]
 
   """All values that are not contained in given list."""
-  expiry_not_in: [String!]
+  expiry_not_in: [DateTime!]
 
   """All values less than the given value."""
-  expiry_lt: String
+  expiry_lt: DateTime
 
   """All values less than or equal the given value."""
-  expiry_lte: String
+  expiry_lte: DateTime
 
   """All values greater than the given value."""
-  expiry_gt: String
+  expiry_gt: DateTime
 
   """All values greater than or equal the given value."""
-  expiry_gte: String
-
-  """All values containing the given string."""
-  expiry_contains: String
-
-  """All values not containing the given string."""
-  expiry_not_contains: String
-
-  """All values starting with the given string."""
-  expiry_starts_with: String
-
-  """All values not starting with the given string."""
-  expiry_not_starts_with: String
-
-  """All values ending with the given string."""
-  expiry_ends_with: String
-
-  """All values not ending with the given string."""
-  expiry_not_ends_with: String
+  expiry_gte: DateTime
 }
 
 type StockItemSubscriptionPayload {
@@ -1201,7 +1185,7 @@ input StockItemUpdateInput {
   buyPrice: Int
   sellPrice: Int
   wholesalePrice: Int
-  expiry: String
+  expiry: DateTime
   product: ProductUpdateOneRequiredWithoutStockInput
 }
 
@@ -1211,7 +1195,7 @@ input StockItemUpdateManyDataInput {
   buyPrice: Int
   sellPrice: Int
   wholesalePrice: Int
-  expiry: String
+  expiry: DateTime
 }
 
 input StockItemUpdateManyMutationInput {
@@ -1220,7 +1204,7 @@ input StockItemUpdateManyMutationInput {
   buyPrice: Int
   sellPrice: Int
   wholesalePrice: Int
-  expiry: String
+  expiry: DateTime
 }
 
 input StockItemUpdateManyWithoutProductInput {
@@ -1246,7 +1230,7 @@ input StockItemUpdateWithoutProductDataInput {
   buyPrice: Int
   sellPrice: Int
   wholesalePrice: Int
-  expiry: String
+  expiry: DateTime
 }
 
 input StockItemUpdateWithWhereUniqueWithoutProductInput {
@@ -1437,46 +1421,28 @@ input StockItemWhereInput {
 
   """All values greater than or equal the given value."""
   wholesalePrice_gte: Int
-  expiry: String
+  expiry: DateTime
 
   """All values that are not equal to given value."""
-  expiry_not: String
+  expiry_not: DateTime
 
   """All values that are contained in given list."""
-  expiry_in: [String!]
+  expiry_in: [DateTime!]
 
   """All values that are not contained in given list."""
-  expiry_not_in: [String!]
+  expiry_not_in: [DateTime!]
 
   """All values less than the given value."""
-  expiry_lt: String
+  expiry_lt: DateTime
 
   """All values less than or equal the given value."""
-  expiry_lte: String
+  expiry_lte: DateTime
 
   """All values greater than the given value."""
-  expiry_gt: String
+  expiry_gt: DateTime
 
   """All values greater than or equal the given value."""
-  expiry_gte: String
-
-  """All values containing the given string."""
-  expiry_contains: String
-
-  """All values not containing the given string."""
-  expiry_not_contains: String
-
-  """All values starting with the given string."""
-  expiry_starts_with: String
-
-  """All values not starting with the given string."""
-  expiry_not_starts_with: String
-
-  """All values ending with the given string."""
-  expiry_ends_with: String
-
-  """All values not ending with the given string."""
-  expiry_not_ends_with: String
+  expiry_gte: DateTime
   product: ProductWhereInput
 }
 

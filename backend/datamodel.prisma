@@ -19,8 +19,8 @@ type Product{
   id: ID! @id
   barcode: String! @unique
   name: String!
-  sellPrice: Int!
-  wholesalePrice: Int!
+  sellPrice: Int
+  wholesalePrice: Int
   category:Category!
   stock:[StockItem!]!
 }
@@ -32,6 +32,6 @@ type StockItem{
   buyPrice: Int!
   sellPrice: Int!
   wholesalePrice: Int!
-  expiry: String
+  expiry: DateTime
   product: Product!
 }

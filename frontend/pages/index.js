@@ -44,7 +44,6 @@ class Home extends Component{
             query:USER_QUERY,
             variables:{id:this.state.id}
             });
-            console.log(res);
             const {data:{user}} = res;
             const receiptor = [...this.state.receipt,user];
             this.setState({

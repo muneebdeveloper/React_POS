@@ -2,7 +2,8 @@
 
 
 type Query{
-    lineItems:[LineItem]!
+    categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
+    lineItems(where: LineItemWhereInput, orderBy: LineItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [LineItem]!
 }
 
 type Mutation{
@@ -12,4 +13,7 @@ type Mutation{
      createCategory(data: CategoryCreateInput!): Category!
      updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
      deleteCategory(where: CategoryWhereUniqueInput!): Category
+     createProduct(data: ProductCreateInput!): Product!
+     updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
+     deleteProduct(where: ProductWhereUniqueInput!): Product
 }

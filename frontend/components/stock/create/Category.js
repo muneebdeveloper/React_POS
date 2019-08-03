@@ -108,3 +108,4 @@ class Category extends Component{
 
 
 export default Category;
+export {FETCH_LINEITEMS_QUERY};
