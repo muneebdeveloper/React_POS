@@ -48,4 +48,8 @@ body{
     margin-bottom:50px;
 }
 
+th,td{
+    padding:20px;
+}
+
 /* rgb(21, 189, 118) */

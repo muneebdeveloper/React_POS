@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {ApolloConsumer,Mutation} from 'react-apollo';
 
 import ProductAdd from './ProductAdd';
+import ProductAddDetail from './ProductAddDetail';
 
 import gql from 'graphql-tag';
 
@@ -51,7 +52,8 @@ class ProductAddMain extends Component{
         wholesaleprice:'',
         noofpieces:'',
         expiry:'',
-        loadingBar:false
+        loadingBar:false,
+        productDetail:[]
     }
 
     changeHandler = (name,e)=>{
@@ -82,14 +84,36 @@ class ProductAddMain extends Component{
         });
     }
 
-    stockSubmitHandler=createStockItem=>async e=>{
+    stockSubmitHandler=createStockItem=> async e=>{
         e.preventDefault();
         await createStockItem();
-        console.log("query is done");
+        const {productname,badge,buyprice,sellprice,wholesaleprice,noofpieces,expiry,productDetail} = this.state;
+        const stockItem = {
+            productname,
+            badge,
+            buyprice,
+            sellprice,
+            wholesaleprice,
+            noofpieces,
+            expiry 
+        }
+        const stockArray = [...productDetail,stockItem];
+        this.setState({
+            productDetail:[...stockArray],
+            productID:'',
+            productname:'',
+            barcode:'',
+            badge:'',
+            buyprice:'',
+            sellprice:'',
+            wholesaleprice:'',
+            noofpieces:'',
+            expiry:''
+        });
     }
 
     render(){
-        const {productname,productID,badge,buyprice,sellprice,wholesaleprice,noofpieces,expiry,loadingBar} = this.state;
+        const {productname,productID,badge,buyprice,sellprice,wholesaleprice,noofpieces,expiry,loadingBar,productDetail} = this.state;
    
         return(
             <ApolloConsumer>
@@ -115,7 +139,8 @@ class ProductAddMain extends Component{
                              buyPrice:Number(buyprice),
                              sellPrice:Number(sellprice),
                              wholesalePrice:Number(wholesaleprice),
-                             expiry:`${expiry}T00:00`,
+                             expiry:expiry,
+                            //  expiry:`${expiry}T00:00`,
                              id:productID,
                          }}>
                              {
@@ -139,6 +164,36 @@ class ProductAddMain extends Component{
 
                              }
                          </Mutation>
+
+                         <table>
+                            <thead>
+                                <th>Name</th>
+                                <th>Badge Number</th>
+                                <th>Buy Price</th>
+                                <th>Sell Price</th>
+                                <th>WholeSale Price</th>
+                                <th>No of Pieces</th>
+                                <th>Expiry</th>
+                            </thead>
+                            <tbody>
+                                { productDetail.map((product)=>{
+                                    const {productname,badge,buyprice,sellprice,wholesaleprice,noofpieces,expiry} = product;
+                                    return(
+                                        <ProductAddDetail
+                                            productname={productname}
+                                            badge={badge} 
+                                            buyprice={buyprice}
+                                            sellprice={sellprice}
+                                            wholesaleprice={wholesaleprice}
+                                            noofpieces={noofpieces}
+                                            expiry={expiry}
+                                        />
+                                    )
+                                })
+                                   
+                                }
+                            </tbody>
+                         </table>
                                         
                                            
                          

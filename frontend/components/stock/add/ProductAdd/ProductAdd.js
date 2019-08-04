@@ -34,7 +34,7 @@ class ProductAdd extends Component{
                 <label>expiry:
                     <input type="date" value={expiry} onChange={prochangeHandler.bind(this,"expiry")} />
                 </label>
-                <button type="submit">Submit</button>
+                <button type="submit" disabled={expiry?false:true}>Submit</button>
             </form>
         );
     }
