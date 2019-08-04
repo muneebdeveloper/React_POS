@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/muhammad-muneeb-akhlaq/backend/dev
-# timestamp: Sat Aug 03 2019 10:44:04 GMT+0500 (Pakistan Standard Time)
+# timestamp: Sun Aug 04 2019 17:01:09 GMT+0500 (Pakistan Standard Time)
 
 type AggregateCategory {
   count: Int!
@@ -860,11 +860,11 @@ type Query {
 
 type StockItem implements Node {
   id: ID!
-  badgeNumber: String
+  badgeNumber: String!
   noofpieces: Int!
-  buyPrice: Int!
-  sellPrice: Int!
-  wholesalePrice: Int!
+  buyPrice: Float!
+  sellPrice: Float!
+  wholesalePrice: Float!
   expiry: DateTime
   product: Product!
 }
@@ -881,11 +881,11 @@ type StockItemConnection {
 
 input StockItemCreateInput {
   id: ID
-  badgeNumber: String
+  badgeNumber: String!
   noofpieces: Int!
-  buyPrice: Int!
-  sellPrice: Int!
-  wholesalePrice: Int!
+  buyPrice: Float!
+  sellPrice: Float!
+  wholesalePrice: Float!
   expiry: DateTime
   product: ProductCreateOneWithoutStockInput!
 }
@@ -897,11 +897,11 @@ input StockItemCreateManyWithoutProductInput {
 
 input StockItemCreateWithoutProductInput {
   id: ID
-  badgeNumber: String
+  badgeNumber: String!
   noofpieces: Int!
-  buyPrice: Int!
-  sellPrice: Int!
-  wholesalePrice: Int!
+  buyPrice: Float!
+  sellPrice: Float!
+  wholesalePrice: Float!
   expiry: DateTime
 }
 
@@ -933,11 +933,11 @@ enum StockItemOrderByInput {
 
 type StockItemPreviousValues {
   id: ID!
-  badgeNumber: String
+  badgeNumber: String!
   noofpieces: Int!
-  buyPrice: Int!
-  sellPrice: Int!
-  wholesalePrice: Int!
+  buyPrice: Float!
+  sellPrice: Float!
+  wholesalePrice: Float!
   expiry: DateTime
 }
 
@@ -1052,72 +1052,72 @@ input StockItemScalarWhereInput {
 
   """All values greater than or equal the given value."""
   noofpieces_gte: Int
-  buyPrice: Int
+  buyPrice: Float
 
   """All values that are not equal to given value."""
-  buyPrice_not: Int
+  buyPrice_not: Float
 
   """All values that are contained in given list."""
-  buyPrice_in: [Int!]
+  buyPrice_in: [Float!]
 
   """All values that are not contained in given list."""
-  buyPrice_not_in: [Int!]
+  buyPrice_not_in: [Float!]
 
   """All values less than the given value."""
-  buyPrice_lt: Int
+  buyPrice_lt: Float
 
   """All values less than or equal the given value."""
-  buyPrice_lte: Int
+  buyPrice_lte: Float
 
   """All values greater than the given value."""
-  buyPrice_gt: Int
+  buyPrice_gt: Float
 
   """All values greater than or equal the given value."""
-  buyPrice_gte: Int
-  sellPrice: Int
+  buyPrice_gte: Float
+  sellPrice: Float
 
   """All values that are not equal to given value."""
-  sellPrice_not: Int
+  sellPrice_not: Float
 
   """All values that are contained in given list."""
-  sellPrice_in: [Int!]
+  sellPrice_in: [Float!]
 
   """All values that are not contained in given list."""
-  sellPrice_not_in: [Int!]
+  sellPrice_not_in: [Float!]
 
   """All values less than the given value."""
-  sellPrice_lt: Int
+  sellPrice_lt: Float
 
   """All values less than or equal the given value."""
-  sellPrice_lte: Int
+  sellPrice_lte: Float
 
   """All values greater than the given value."""
-  sellPrice_gt: Int
+  sellPrice_gt: Float
 
   """All values greater than or equal the given value."""
-  sellPrice_gte: Int
-  wholesalePrice: Int
+  sellPrice_gte: Float
+  wholesalePrice: Float
 
   """All values that are not equal to given value."""
-  wholesalePrice_not: Int
+  wholesalePrice_not: Float
 
   """All values that are contained in given list."""
-  wholesalePrice_in: [Int!]
+  wholesalePrice_in: [Float!]
 
   """All values that are not contained in given list."""
-  wholesalePrice_not_in: [Int!]
+  wholesalePrice_not_in: [Float!]
 
   """All values less than the given value."""
-  wholesalePrice_lt: Int
+  wholesalePrice_lt: Float
 
   """All values less than or equal the given value."""
-  wholesalePrice_lte: Int
+  wholesalePrice_lte: Float
 
   """All values greater than the given value."""
-  wholesalePrice_gt: Int
+  wholesalePrice_gt: Float
 
   """All values greater than or equal the given value."""
-  wholesalePrice_gte: Int
+  wholesalePrice_gte: Float
   expiry: DateTime
 
   """All values that are not equal to given value."""
@@ -1182,9 +1182,9 @@ input StockItemSubscriptionWhereInput {
 input StockItemUpdateInput {
   badgeNumber: String
   noofpieces: Int
-  buyPrice: Int
-  sellPrice: Int
-  wholesalePrice: Int
+  buyPrice: Float
+  sellPrice: Float
+  wholesalePrice: Float
   expiry: DateTime
   product: ProductUpdateOneRequiredWithoutStockInput
 }
@@ -1192,18 +1192,18 @@ input StockItemUpdateInput {
 input StockItemUpdateManyDataInput {
   badgeNumber: String
   noofpieces: Int
-  buyPrice: Int
-  sellPrice: Int
-  wholesalePrice: Int
+  buyPrice: Float
+  sellPrice: Float
+  wholesalePrice: Float
   expiry: DateTime
 }
 
 input StockItemUpdateManyMutationInput {
   badgeNumber: String
   noofpieces: Int
-  buyPrice: Int
-  sellPrice: Int
-  wholesalePrice: Int
+  buyPrice: Float
+  sellPrice: Float
+  wholesalePrice: Float
   expiry: DateTime
 }
 
@@ -1227,9 +1227,9 @@ input StockItemUpdateManyWithWhereNestedInput {
 input StockItemUpdateWithoutProductDataInput {
   badgeNumber: String
   noofpieces: Int
-  buyPrice: Int
-  sellPrice: Int
-  wholesalePrice: Int
+  buyPrice: Float
+  sellPrice: Float
+  wholesalePrice: Float
   expiry: DateTime
 }
 
@@ -1355,72 +1355,72 @@ input StockItemWhereInput {
 
   """All values greater than or equal the given value."""
   noofpieces_gte: Int
-  buyPrice: Int
+  buyPrice: Float
 
   """All values that are not equal to given value."""
-  buyPrice_not: Int
+  buyPrice_not: Float
 
   """All values that are contained in given list."""
-  buyPrice_in: [Int!]
+  buyPrice_in: [Float!]
 
   """All values that are not contained in given list."""
-  buyPrice_not_in: [Int!]
+  buyPrice_not_in: [Float!]
 
   """All values less than the given value."""
-  buyPrice_lt: Int
+  buyPrice_lt: Float
 
   """All values less than or equal the given value."""
-  buyPrice_lte: Int
+  buyPrice_lte: Float
 
   """All values greater than the given value."""
-  buyPrice_gt: Int
+  buyPrice_gt: Float
 
   """All values greater than or equal the given value."""
-  buyPrice_gte: Int
-  sellPrice: Int
+  buyPrice_gte: Float
+  sellPrice: Float
 
   """All values that are not equal to given value."""
-  sellPrice_not: Int
+  sellPrice_not: Float
 
   """All values that are contained in given list."""
-  sellPrice_in: [Int!]
+  sellPrice_in: [Float!]
 
   """All values that are not contained in given list."""
-  sellPrice_not_in: [Int!]
+  sellPrice_not_in: [Float!]
 
   """All values less than the given value."""
-  sellPrice_lt: Int
+  sellPrice_lt: Float
 
   """All values less than or equal the given value."""
-  sellPrice_lte: Int
+  sellPrice_lte: Float
 
   """All values greater than the given value."""
-  sellPrice_gt: Int
+  sellPrice_gt: Float
 
   """All values greater than or equal the given value."""
-  sellPrice_gte: Int
-  wholesalePrice: Int
+  sellPrice_gte: Float
+  wholesalePrice: Float
 
   """All values that are not equal to given value."""
-  wholesalePrice_not: Int
+  wholesalePrice_not: Float
 
   """All values that are contained in given list."""
-  wholesalePrice_in: [Int!]
+  wholesalePrice_in: [Float!]
 
   """All values that are not contained in given list."""
-  wholesalePrice_not_in: [Int!]
+  wholesalePrice_not_in: [Float!]
 
   """All values less than the given value."""
-  wholesalePrice_lt: Int
+  wholesalePrice_lt: Float
 
   """All values less than or equal the given value."""
-  wholesalePrice_lte: Int
+  wholesalePrice_lte: Float
 
   """All values greater than the given value."""
-  wholesalePrice_gt: Int
+  wholesalePrice_gt: Float
 
   """All values greater than or equal the given value."""
-  wholesalePrice_gte: Int
+  wholesalePrice_gte: Float
   expiry: DateTime
 
   """All values that are not equal to given value."""

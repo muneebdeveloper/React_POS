@@ -4,7 +4,7 @@ import LineItem from '../components/stock/create/LineItem';
 
 const LineItemPage = ()=>{
     return(
-        <div className="mainlineitem">
+        <div className="mainpage">
             <LineItem />
         </div>
     );

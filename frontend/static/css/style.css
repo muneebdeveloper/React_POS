@@ -40,8 +40,12 @@ body{
     grid-column:1/-1;
 }
 
-.mainstock,.mainlineitem{
+.mainpage{
     grid-column:2/10;
+}
+
+.gutterbottom{
+    margin-bottom:50px;
 }
 
 /* rgb(21, 189, 118) */

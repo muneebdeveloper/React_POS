@@ -27,11 +27,11 @@ type Product{
 
 type StockItem{
   id: ID! @id
-  badgeNumber: String
+  badgeNumber: String!
   noofpieces: Int!
-  buyPrice: Int!
-  sellPrice: Int!
-  wholesalePrice: Int!
+  buyPrice: Float!
+  sellPrice: Float!
+  wholesalePrice: Float!
   expiry: DateTime
   product: Product!
 }

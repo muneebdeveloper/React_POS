@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 
-import styles from './CreateStock.css';
+import styles from '../stock.css';
 
 import Intro from '../../misc/Intro';
 import Block from '../../misc/Block';
@@ -11,11 +11,11 @@ class CreateStock extends Component{
     render(){
 
         return(
-            <div>
+            <div className="gutterbottom">
 
-                <Intro>Create</Intro>
+                <Intro>Define</Intro>
 
-                <div className={styles.createboxFlex}>
+                <div className={styles.boxFlex}>
        
                     <Block LinkTo="/lineitem">
                         <span>icon</span>

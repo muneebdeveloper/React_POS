@@ -2,6 +2,7 @@
 
 
 type Query{
+    product(where: ProductWhereUniqueInput!): Product
     categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
     lineItems(where: LineItemWhereInput, orderBy: LineItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [LineItem]!
 }
@@ -16,4 +17,7 @@ type Mutation{
      createProduct(data: ProductCreateInput!): Product!
      updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
      deleteProduct(where: ProductWhereUniqueInput!): Product
+     createStockItem(data: StockItemCreateInput!): StockItem!
+     updateStockItem(data: StockItemUpdateInput!, where: StockItemWhereUniqueInput!): StockItem
+     deleteStockItem(where: StockItemWhereUniqueInput!): StockItem
 }

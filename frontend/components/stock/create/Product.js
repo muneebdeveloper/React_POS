@@ -75,7 +75,7 @@ class Product extends Component{
         await createProduct();
         this.setState({
             name:'',
-            barode:'',
+            barcode:'',
             lineitemID:'',
             loadingID:false,
             categoryList:[],

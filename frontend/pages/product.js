@@ -7,7 +7,7 @@ import Product from '../components/stock/create/Product';
 const productPage = ()=>{
 
     return(
-        <div className="mainlineitem">
+        <div className="mainpage">
             <Intro>Define a product</Intro>
             <Product />
         </div>

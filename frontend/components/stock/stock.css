@@ -1,4 +1,4 @@
-.createboxFlex{
+.boxFlex{
     display:flex;
     justify-content:space-evenly;
 }
