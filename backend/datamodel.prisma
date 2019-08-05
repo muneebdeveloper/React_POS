@@ -27,6 +27,7 @@ type Product{
 
 type StockItem{
   id: ID! @id
+  createdAt: DateTime! @createdAt
   badgeNumber: String
   noofpieces: Int!
   buyPrice: Float!
