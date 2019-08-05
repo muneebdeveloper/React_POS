@@ -27,7 +27,7 @@ type Product{
 
 type StockItem{
   id: ID! @id
-  badgeNumber: String!
+  badgeNumber: String
   noofpieces: Int!
   buyPrice: Float!
   sellPrice: Float!
