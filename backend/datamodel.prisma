@@ -4,6 +4,24 @@ type User {
   password: String!
 }
 
+type Supplier{
+  id: ID! @id
+  name: String!
+  phone: String!
+  address: String!
+  debtleft: Int!
+  paid: [PaidDetail!]!
+}
+
+type PaidDetail{
+  id: ID! @id
+  createdAt : DateTime @createdAt
+  description : String!
+  amounttopay: Int
+  amountpaid : Int!
+  supplier:Supplier!
+}
+
 type LineItem{
   id: ID! @id
   name: String!
