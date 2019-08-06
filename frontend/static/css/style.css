@@ -52,4 +52,19 @@ th,td{
     padding:20px;
 }
 
+.MuiDrawer-paper{
+    background-color:#292828;
+}
+
+.MuiFormLabel-root.Mui-focused{
+    color:black !important;
+}
+
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
+    border-color:black !important;
+}
 /* rgb(21, 189, 118) */
+.MuiButton-contained{
+    color:white !important;
+    background-color:green !important;
+}

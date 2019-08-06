@@ -4,6 +4,9 @@ import styles from './index.css';
 import {ApolloConsumer} from 'react-apollo';
 import gql from 'graphql-tag';
 
+import TextField from '@material-ui/core/TextField';
+import {StylesProvider} from '@material-ui/styles';
+
 const USER_QUERY = gql`
     query USER_QUERY($id:ID!){
         user(id:$id){
@@ -79,7 +82,7 @@ class Home extends Component{
                     }
                    
                     return(
-                    <>
+                        <>
                         <section className="mainshop">
                             <div className={styles.toolbar}>
                                 <form onSubmit={  e=>{
@@ -88,8 +91,16 @@ class Home extends Component{
                                 }}>
                                     <label>
                                         Product Code : 
-                                        <input type="text" name="id" value={id} onChange={this.inputHandler} autoFocus />
+                                        <input type="text" name="id" value={id} onChange={this.inputHandler}  />
                                     </label>
+                                    
+                                    <StylesProvider injectFirst>
+                                        <TextField 
+                                            label="Email"
+                                            variant="outlined"
+                                        />
+                                    </StylesProvider>
+                                 
                                     <button type="submit" >
                                         Submit
                                     </button>
@@ -108,7 +119,7 @@ class Home extends Component{
                                 })
                             }
                         </section>
-                    </>);
+                        </>);
                 }
 
             }

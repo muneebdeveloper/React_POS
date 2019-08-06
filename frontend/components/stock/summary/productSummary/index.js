@@ -3,7 +3,17 @@ import React,{Component} from 'react';
 import {ApolloConsumer,Query,Mutation} from 'react-apollo';
 import gql from 'graphql-tag';
 
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+
+
 import ProductSummaryTable from './ProductSummaryTable';
+import styles from './index.css';
+
+
+
+
+  
 
 const PRODUCT_DETAILS_FETCH_QUERY = gql`
     query PRODUCT_DETAILS_FETCH_QUERY($barcode:String!){
@@ -42,6 +52,8 @@ class ProductSummaryMain extends Component{
         loadingBar:false
     }
 
+    
+
     changeHandler = e=>{
         this.setState({
             [e.target.name]:e.target.value
@@ -72,6 +84,8 @@ class ProductSummaryMain extends Component{
         });
     }
 
+    
+
     render(){
         const {loadingBar,productname,lineitem,category,stockList,disabler} = this.state;
         console.log(stockList);
@@ -84,12 +98,36 @@ class ProductSummaryMain extends Component{
                     (client)=>{
                         return(
                             <>
-                <form onSubmit={this.barcodeSubmitHandler(client)}>
-                    <label>
+                <form onSubmit={this.barcodeSubmitHandler(client)} style={{display:"flex",alignItems:"center"}}>
+                    {/* <label>
                         Product Code
                         <input type="text" autoFocus name="barcode" onChange={this.changeHandler} />
-                        <button type="submit">Submit</button>
-                    </label>
+                        </label> */}
+                        
+                   
+                    <TextField 
+                        label="Product Code"
+                        variant="outlined"
+                        type="text" 
+                        name="barcode"
+                        onChange={this.changeHandler}
+                        className={styles.check}
+                        // helperText="Email Required"
+                        // error
+                        // autoFocus={true}
+                        // error={false}
+                        
+                    />
+                    
+                     <Button 
+                        variant="contained"
+                        size="large"
+                        
+                       
+                    >Submit</Button>
+                    
+                    
+                    {/* <button type="submit">Submit</button> */}
                 </form>
 
                 <h1 style={{textAlign:"center",color:"#736464",marginTop:"30px"}}>Details</h1>
@@ -137,13 +175,13 @@ class ProductSummaryMain extends Component{
                                         key = {id}
                                         id = {id}
                                         sr = {index+1}
-                                        createdAt = {createdAt.split("T").shift()}
+                                        createdAt = {createdAt.split("T").shift().split("-").reverse().join("-")}
                                         badgeNumber = {badgeNumber}
                                         noofpieces = {noofpieces}
                                         buyPrice = {buyPrice}
                                         sellPrice = {sellPrice}
                                         wholeSalePrice = {wholesalePrice}
-                                        expiry = {expiry.split("T").shift()}
+                                        expiry = {expiry.split("T").shift().split("-").reverse().join("-")}
                                     />
                                 )
                             })

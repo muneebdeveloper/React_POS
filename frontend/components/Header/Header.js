@@ -15,6 +15,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 
+import {StylesProvider} from '@material-ui/styles';
 
 class Header extends Component{
 
@@ -72,7 +73,8 @@ class Header extends Component{
 
    render(){
         return(
-            <>
+            
+              <>
             <div className="header">
                 <div className="toolbar">
 
@@ -98,11 +100,13 @@ class Header extends Component{
 
                 </div>
             </div>
-
-            <Drawer anchor="left"  open={this.state.left} onClose={this.toggleDrawer('left',false)} >
-                {this.sideList('left')}
-            </Drawer>
+            <StylesProvider injectFirst>
+              <Drawer anchor="left"  open={this.state.left} onClose={this.toggleDrawer('left',false)} >
+                  {this.sideList('left')}
+              </Drawer>
+            </StylesProvider>
             </>
+          
         );
    }
    
