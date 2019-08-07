@@ -53,18 +53,30 @@ table
     border-collapse: collapse;
     width:100%;
 }
+
 thead{
     background-color:black;
     color:white;
 }
+
 th,td{
     padding:10px;
 }
+
 th{
     text-align: left;
 }
+
 td{
     border:1px solid black;
+}
+
+tr{
+    transition:all 0.5s;
+}
+
+tbody tr:hover{
+    background-color: #ddd;
 }
 
 .MuiDrawer-paper{
