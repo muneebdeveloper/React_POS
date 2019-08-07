@@ -7,18 +7,19 @@ type User {
 type Supplier{
   id: ID! @id
   name: String!
-  phone: String!
-  address: String!
-  debtleft: Int!
+  phone: String
+  address: String
+  debtleft: Int
   paid: [PaidDetail!]!
 }
 
 type PaidDetail{
   id: ID! @id
   createdAt : DateTime @createdAt
-  description : String!
+  description : String
   amounttopay: Int
   amountpaid : Int!
+  debtleftatpoint: Int
   supplier:Supplier!
 }
 

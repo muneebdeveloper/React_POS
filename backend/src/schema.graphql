@@ -20,4 +20,7 @@ type Mutation{
      createStockItem(data: StockItemCreateInput!): StockItem!
      updateStockItem(data: StockItemUpdateInput!, where: StockItemWhereUniqueInput!): StockItem
      deleteStockItem(where: StockItemWhereUniqueInput!): StockItem
+     createSupplier(data: SupplierCreateInput!): Supplier!
+     updateSupplier(data: SupplierUpdateInput!, where: SupplierWhereUniqueInput!): Supplier
+     deleteSupplier(where: SupplierWhereUniqueInput!): Supplier
 }

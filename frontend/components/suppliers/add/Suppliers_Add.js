@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Mutation} from 'react-apollo';
+
 import gql from 'graphql-tag';
 
 import styles from './Suppliers_Add.css';
@@ -7,11 +8,18 @@ import styles from './Suppliers_Add.css';
 import Intro from '../../misc/Intro';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const CREATE_SUPPLIER_MUTATION = gql`
-    mutation CREATE_SUPPLIER_MUTATION($name:String!,$phone:String!,$address:String!){
-
+    mutation CREATE_SUPPLIER_MUTATION($name:String!,$phone:String,$address:String){
+        createSupplier(data:{
+            name:$name,
+            phone:$phone,
+            address:$address,
+        }){
+            name
+        }
     }
 `;
 
@@ -25,10 +33,23 @@ class Suppliers_Add extends Component{
         address:'',
     }
 
+
     changeHandler=(e)=>{
 
         this.setState({
             [e.target.name]:e.target.value
+        });
+
+    }
+
+    supplierSubmitHandler = createSupplier => async  e =>{
+
+        e.preventDefault();
+        const res = await createSupplier();
+        this.setState({
+            supplier_name:'',
+            phone:'',
+            address:''
         });
 
     }
@@ -39,10 +60,27 @@ class Suppliers_Add extends Component{
             <>
 
                 <Intro>Add Supplier</Intro>
+                
+                <Mutation mutation={CREATE_SUPPLIER_MUTATION} variables={{
+                    name:supplier_name,
+                    phone,
+                    address
+                }}>
+                    {
+                        (createSupplier,{loading})=>{
 
-                <form onSubmit={(e)=>e.preventDefault()}> 
+                            if(loading){
+                                return(
+                                <div className={styles.maindiv}>
+                                     <CircularProgress size={70}  />
+                                </div>
+                               )
+                            }
+
+                            return(
+                <form onSubmit={this.supplierSubmitHandler(createSupplier)}> 
                         <div className={styles.maindiv}>
-
+                            
 
                             <TextField
                                 name="supplier_name"
@@ -77,7 +115,6 @@ class Suppliers_Add extends Component{
                                     size="large"
                                     fullWidth
                                     type="submit"
-                                    disabled
                                 >
                                     Add
                                 </Button>
@@ -86,6 +123,13 @@ class Suppliers_Add extends Component{
                         
                         </div>
                 </form>
+                            )
+
+
+                        }
+                    }
+                </Mutation>
+                
 
             </>
 

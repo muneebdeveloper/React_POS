@@ -48,8 +48,23 @@ body{
     margin-bottom:50px;
 }
 
+table
+{
+    border-collapse: collapse;
+    width:100%;
+}
+thead{
+    background-color:black;
+    color:white;
+}
 th,td{
-    padding:20px;
+    padding:10px;
+}
+th{
+    text-align: left;
+}
+td{
+    border:1px solid black;
 }
 
 .MuiDrawer-paper{
@@ -67,4 +82,8 @@ th,td{
 .MuiButton-contained{
     color:white !important;
     background-color:green !important;
+}
+
+.MuiCircularProgress-colorPrimary{
+    color:green !important;
 }

@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/muhammad-muneeb-akhlaq/backend/dev
-# timestamp: Tue Aug 06 2019 16:01:07 GMT+0500 (Pakistan Standard Time)
+# timestamp: Tue Aug 06 2019 16:09:41 GMT+0500 (Pakistan Standard Time)
 
 type AggregateCategory {
   count: Int!
@@ -526,9 +526,10 @@ type PageInfo {
 type PaidDetail implements Node {
   id: ID!
   createdAt: DateTime
-  description: String!
+  description: String
   amounttopay: Int
   amountpaid: Int!
+  debtleftatpoint: Int
   supplier: Supplier!
 }
 
@@ -544,9 +545,10 @@ type PaidDetailConnection {
 
 input PaidDetailCreateInput {
   id: ID
-  description: String!
+  description: String
   amounttopay: Int
   amountpaid: Int!
+  debtleftatpoint: Int
   supplier: SupplierCreateOneWithoutPaidInput!
 }
 
@@ -557,9 +559,10 @@ input PaidDetailCreateManyWithoutSupplierInput {
 
 input PaidDetailCreateWithoutSupplierInput {
   id: ID
-  description: String!
+  description: String
   amounttopay: Int
   amountpaid: Int!
+  debtleftatpoint: Int
 }
 
 """An edge in a connection."""
@@ -582,14 +585,17 @@ enum PaidDetailOrderByInput {
   amounttopay_DESC
   amountpaid_ASC
   amountpaid_DESC
+  debtleftatpoint_ASC
+  debtleftatpoint_DESC
 }
 
 type PaidDetailPreviousValues {
   id: ID!
   createdAt: DateTime
-  description: String!
+  description: String
   amounttopay: Int
   amountpaid: Int!
+  debtleftatpoint: Int
 }
 
 input PaidDetailScalarWhereInput {
@@ -747,6 +753,28 @@ input PaidDetailScalarWhereInput {
 
   """All values greater than or equal the given value."""
   amountpaid_gte: Int
+  debtleftatpoint: Int
+
+  """All values that are not equal to given value."""
+  debtleftatpoint_not: Int
+
+  """All values that are contained in given list."""
+  debtleftatpoint_in: [Int!]
+
+  """All values that are not contained in given list."""
+  debtleftatpoint_not_in: [Int!]
+
+  """All values less than the given value."""
+  debtleftatpoint_lt: Int
+
+  """All values less than or equal the given value."""
+  debtleftatpoint_lte: Int
+
+  """All values greater than the given value."""
+  debtleftatpoint_gt: Int
+
+  """All values greater than or equal the given value."""
+  debtleftatpoint_gte: Int
 }
 
 type PaidDetailSubscriptionPayload {
@@ -790,6 +818,7 @@ input PaidDetailUpdateInput {
   description: String
   amounttopay: Int
   amountpaid: Int
+  debtleftatpoint: Int
   supplier: SupplierUpdateOneRequiredWithoutPaidInput
 }
 
@@ -797,12 +826,14 @@ input PaidDetailUpdateManyDataInput {
   description: String
   amounttopay: Int
   amountpaid: Int
+  debtleftatpoint: Int
 }
 
 input PaidDetailUpdateManyMutationInput {
   description: String
   amounttopay: Int
   amountpaid: Int
+  debtleftatpoint: Int
 }
 
 input PaidDetailUpdateManyWithoutSupplierInput {
@@ -826,6 +857,7 @@ input PaidDetailUpdateWithoutSupplierDataInput {
   description: String
   amounttopay: Int
   amountpaid: Int
+  debtleftatpoint: Int
 }
 
 input PaidDetailUpdateWithWhereUniqueWithoutSupplierInput {
@@ -994,6 +1026,28 @@ input PaidDetailWhereInput {
 
   """All values greater than or equal the given value."""
   amountpaid_gte: Int
+  debtleftatpoint: Int
+
+  """All values that are not equal to given value."""
+  debtleftatpoint_not: Int
+
+  """All values that are contained in given list."""
+  debtleftatpoint_in: [Int!]
+
+  """All values that are not contained in given list."""
+  debtleftatpoint_not_in: [Int!]
+
+  """All values less than the given value."""
+  debtleftatpoint_lt: Int
+
+  """All values less than or equal the given value."""
+  debtleftatpoint_lte: Int
+
+  """All values greater than the given value."""
+  debtleftatpoint_gt: Int
+
+  """All values greater than or equal the given value."""
+  debtleftatpoint_gte: Int
   supplier: SupplierWhereInput
 }
 
@@ -2015,9 +2069,9 @@ type Subscription {
 type Supplier implements Node {
   id: ID!
   name: String!
-  phone: String!
-  address: String!
-  debtleft: Int!
+  phone: String
+  address: String
+  debtleft: Int
   paid(where: PaidDetailWhereInput, orderBy: PaidDetailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PaidDetail!]
 }
 
@@ -2034,9 +2088,9 @@ type SupplierConnection {
 input SupplierCreateInput {
   id: ID
   name: String!
-  phone: String!
-  address: String!
-  debtleft: Int!
+  phone: String
+  address: String
+  debtleft: Int
   paid: PaidDetailCreateManyWithoutSupplierInput
 }
 
@@ -2048,9 +2102,9 @@ input SupplierCreateOneWithoutPaidInput {
 input SupplierCreateWithoutPaidInput {
   id: ID
   name: String!
-  phone: String!
-  address: String!
-  debtleft: Int!
+  phone: String
+  address: String
+  debtleft: Int
 }
 
 """An edge in a connection."""
@@ -2078,9 +2132,9 @@ enum SupplierOrderByInput {
 type SupplierPreviousValues {
   id: ID!
   name: String!
-  phone: String!
-  address: String!
-  debtleft: Int!
+  phone: String
+  address: String
+  debtleft: Int
 }
 
 type SupplierSubscriptionPayload {
