@@ -1,4 +1,8 @@
-import react, {Component} from 'react';
+import React, {Component} from 'react';
+import IconButton from '@material-ui/core/IconButton';
+import Delete from '@material-ui/icons/Delete';
+import Edit from '@material-ui/icons/Edit';
+import styles from './index.css';
 
 import Intro from '../../misc/Intro';
 
@@ -15,7 +19,7 @@ class Suppliers_ed extends Component{
                             <th>Name</th>
                             <th>Phone</th>
                             <th>Address</th>
-                            <th>Actions</th>
+                            <th style={{width:"81px"}}>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -24,6 +28,15 @@ class Suppliers_ed extends Component{
                             <td>Muhammad Muneeb Akhlaq</td>
                             <td>03361707388</td>
                             <td>House#C:66 KAPCO Colony Kot Addu Pakistan</td>
+                            <td>
+                            <IconButton size="small">
+                                    <Edit className={styles.edit} />
+                                </IconButton>
+                                <IconButton size="small"  >
+                                    <Delete className={styles.delete} />
+                                </IconButton>
+                              
+                            </td>
                         </tr>
                         <tr>
                             <td>2</td>
