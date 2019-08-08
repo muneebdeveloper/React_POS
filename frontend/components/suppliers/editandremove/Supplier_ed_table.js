@@ -8,7 +8,7 @@ import styles from './Supplier_ed_table.css';
 
 
 const Supplier_ed_table = (props)=>{
-    const {id,sr,name,phone,address} = props;
+    const {id,sr,name,phone,address,dialogHandlerEdit,dialogHandlerRemove} = props;
     return(
         <tr>
             <td>{sr}</td>
@@ -16,11 +16,11 @@ const Supplier_ed_table = (props)=>{
             <td>{phone}</td>
             <td>{address}</td>
             <td>
-                <IconButton size="small" onClick={()=>alert(id)}>
+                <IconButton size="small" onClick={dialogHandlerEdit.bind(this,id)}>
                     <Edit className={styles.edit} />
                 </IconButton>
 
-                <IconButton size="small"  >
+                <IconButton size="small" onClick={dialogHandlerRemove}>
                     <Delete className={styles.delete} />
                 </IconButton>
                               

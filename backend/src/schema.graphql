@@ -3,6 +3,7 @@
 
 type Query{
     product(where: ProductWhereUniqueInput!): Product
+    supplier(where: SupplierWhereUniqueInput!): Supplier
     categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
     lineItems(where: LineItemWhereInput, orderBy: LineItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [LineItem]!
     suppliers(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Supplier]!

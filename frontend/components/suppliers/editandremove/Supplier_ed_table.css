@@ -5,3 +5,7 @@
 .delete{
     color:#e21e1e;
 }
+
+.checkred{
+    background-color: #e21e1e !important;
+}

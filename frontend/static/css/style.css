@@ -48,6 +48,10 @@ body{
     margin-bottom:50px;
 }
 
+.gutterbottomsmall{
+    margin-bottom:20px !important;
+}
+
 table
 {
     border-collapse: collapse;
