@@ -31,6 +31,7 @@ class Suppliers_Add extends Component{
         supplier_name:'',
         phone:'',
         address:'',
+        checkShow:false
     }
 
 
@@ -53,9 +54,15 @@ class Suppliers_Add extends Component{
         });
 
     }
+    componentDidMount(){
+        this.setState({
+            checkShow:true
+        });
+    }
+
 
     render(){
-        const {supplier_name,phone,address} = this.state;
+        const {supplier_name,phone,address,checkShow} = this.state;
         return(
             <>
 
@@ -81,7 +88,7 @@ class Suppliers_Add extends Component{
                 <form onSubmit={this.supplierSubmitHandler(createSupplier)}> 
                         <div className={styles.maindiv}>
                             
-
+                            {checkShow &&
                             <TextField
                                 name="supplier_name"
                                 value={supplier_name}
@@ -89,7 +96,9 @@ class Suppliers_Add extends Component{
                                 variant="outlined"
                                 onChange={this.changeHandler}
                                 className={styles.width50}
+                                autoFocus
                             />
+                            }
 
                             <TextField
                                 name="phone"

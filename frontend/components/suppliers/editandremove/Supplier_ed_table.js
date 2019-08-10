@@ -15,7 +15,7 @@ const Supplier_ed_table = (props)=>{
             <td>{name}</td>
             <td>{phone}</td>
             <td>{address}</td>
-            <td>
+            <td style={{textAlign:"center"}}>
                 <IconButton size="small" onClick={dialogHandlerEdit.bind(this,id)}>
                     <Edit className={styles.edit} />
                 </IconButton>
