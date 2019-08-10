@@ -59,8 +59,8 @@ table
 }
 
 thead{
-    background-color:black;
-    color:white;
+    /* background-color:black;
+    color:white; */
 }
 
 th,td{
@@ -79,8 +79,12 @@ tr{
     transition:all 0.5s;
 }
 
+tbody tr{
+    cursor: pointer;
+}
+
 tbody tr:hover{
-    background-color: #ddd;
+    background-color: #a29e9e;
 }
 
 .MuiDrawer-paper{
@@ -93,6 +97,10 @@ tbody tr:hover{
 
 .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
     border-color:black !important;
+}
+
+.MuiInput-underline:after{
+    border-bottom: 2px solid black !important;
 }
 /* rgb(21, 189, 118) */
 .MuiButton-contained{

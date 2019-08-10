@@ -360,3 +360,4 @@ class Suppliers_ed extends Component{
 }
 
 export default Suppliers_ed;
+export {ALL_SUPPLIERS_LIST_QUERY};
