@@ -7,7 +7,8 @@ const Mutation = {
     createProduct:forwardTo('db'),
     createStockItem:forwardTo('db'),
     createSupplier:forwardTo('db'),
-    updateSupplier:forwardTo('db')
+    updateSupplier:forwardTo('db'),
+    deleteSupplier:forwardTo('db')
 }
 
 module.exports = Mutation;

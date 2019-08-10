@@ -67,7 +67,7 @@ class Home extends Component{
     
 
     render(){
-        const {id,loading,error,receipt}=this.state;
+        const {id,loading,error,receipt,focusValue}=this.state;
         return(
             <ApolloConsumer>
             {

@@ -57,16 +57,25 @@ const UPDATE_SUPPLIER_MUTATION = gql`\
     }
 `;
 
+const SUPPLIER_REMOVE_MUTATION = gql`
+    mutation SUPPLIER_BY_ID_QUERY($id:ID!){
+        deleteSupplier(where:{id:$id}){
+            name
+        }
+    }
+`;
+
 class Suppliers_ed extends Component{
 
     state={
         dialogOpenEdit:false,
         dialogLoadingEdit:false,
         dialogOpenRemove:false,
-        dialogLoadingRemove:false,
+        editId:'',
         editName:'',
         editPhone:'',
         editAddress:'',
+        supplierId:''
     }
 
     changeHandler = (e)=>{
@@ -105,9 +114,10 @@ class Suppliers_ed extends Component{
     }
     }
 
-    toggleDialogRemove = value => e =>{
+    toggleDialogRemove = value => id =>{
         this.setState({
-            dialogOpenRemove:value
+            dialogOpenRemove:value,
+            supplierId:id
         })
     }
     
@@ -126,8 +136,15 @@ class Suppliers_ed extends Component{
 
     }
 
+    supplierRemoveHandler = deleteSupplier =>async e =>{
+        await deleteSupplier();
+        this.setState({
+            dialogOpenRemove:false
+        });
+    }
+
     render(){
-        const {dialogOpenEdit,editName,editId,editAddress,editPhone,dialogLoadingEdit,dialogOpenRemove,dialogLoadingRemove} = this.state;
+        const {dialogOpenEdit,editName,editId,editAddress,editPhone,dialogLoadingEdit,dialogOpenRemove,supplierId} = this.state;
         return(
             <>
                 <Intro>Edit / Remove Suppliers</Intro>
@@ -198,6 +215,7 @@ class Suppliers_ed extends Component{
                                 </div>
 
                                 <Mutation
+                                    awaitRefetchQueries
                                     mutation={UPDATE_SUPPLIER_MUTATION}
                                     variables={{
                                         name:editName,
@@ -281,29 +299,60 @@ class Suppliers_ed extends Component{
                     }
                 }
                 </Query>
+
                 <Dialog open={dialogOpenRemove} onclose={this.toggleDialogRemove(false)} >
 
                     <div style={{padding:"16px 24px"}}>
                         <h2>Are you sure, you want to remove this supplier?</h2>
                     </div>
-                    <DialogActions>
-                        <Button 
-                            variant="contained"
-                            size="large"
-                            onClick={this.toggleDialogRemove(false)}
-                            className={styles.checkred}
-                        >
-                            Cancel
-                        </Button>
 
-                        <Button 
-                            variant="contained"
-                            size="large"
-                        >
-                            yes
-                        </Button>
+                <Mutation
+                    awaitRefetchQueries
+                    mutation={SUPPLIER_REMOVE_MUTATION} 
+                    variables={{id:supplierId}} 
+                    refetchQueries={
+                        [
+                            {query:ALL_SUPPLIERS_LIST_QUERY}
+                        ]
+                    }    
+                >
+                    {
+                        (deleteSupplier,{loading})=>{
 
-                    </DialogActions>
+                            if( loading ){
+                                return(
+                                    <div style={{padding:"8px 24px 20px",display:"flex",justifyContent:'center'}}>
+                                            <CircularProgress size={70} />
+                                        </div>
+                                )
+                            }
+
+                            return(
+                              
+                                    <DialogActions>
+                                        <Button 
+                                            variant="contained"
+                                            size="large"
+                                            onClick={this.toggleDialogRemove(false)}
+                                            className={styles.checkred}
+                                        >
+                                            Cancel
+                                        </Button>
+                
+                                        <Button 
+                                            variant="contained"
+                                            size="large"
+                                            onClick={this.supplierRemoveHandler(deleteSupplier)}
+                                        >
+                                            yes
+                                        </Button>
+                
+                                    </DialogActions>
+                               
+                            )
+                        }
+                    }
+                </Mutation>
                 </Dialog>
             </>
         );

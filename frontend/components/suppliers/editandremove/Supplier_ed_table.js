@@ -20,7 +20,7 @@ const Supplier_ed_table = (props)=>{
                     <Edit className={styles.edit} />
                 </IconButton>
 
-                <IconButton size="small" onClick={dialogHandlerRemove}>
+                <IconButton size="small" onClick={dialogHandlerRemove.bind(this,id)}>
                     <Delete className={styles.delete} />
                 </IconButton>
                               

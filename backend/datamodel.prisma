@@ -55,3 +55,20 @@ type StockItem{
   expiry: DateTime
   product: Product!
 }
+
+type Sales{
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  product:Product!
+  noofpieces:Int!
+  buyPrice:Float!
+  sellPrice:Float!
+  profit:Float!
+}
+
+type Expense{
+  id: ID! @id
+  createdAt: DateTime! @createdAt
+  price: Float!
+  expenseType:String!
+}
