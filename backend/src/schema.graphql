@@ -27,4 +27,5 @@ type Mutation{
      updateSupplier(data: SupplierUpdateInput!, where: SupplierWhereUniqueInput!): Supplier
      deleteSupplier(where: SupplierWhereUniqueInput!): Supplier
      createPaidDetail(data: PaidDetailCreateInput!): PaidDetail!
+     createExpense(data: ExpenseCreateInput!): Expense!
 }

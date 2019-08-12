@@ -9,7 +9,8 @@ const Mutation = {
     createSupplier:forwardTo('db'),
     updateSupplier:forwardTo('db'),
     deleteSupplier:forwardTo('db'),
-    createPaidDetail:forwardTo('db')
+    createPaidDetail:forwardTo('db'),
+    createExpense:forwardTo('db')
 }
 
 module.exports = Mutation;
