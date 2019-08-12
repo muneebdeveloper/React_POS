@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/muhammad-muneeb-akhlaq/backend/dev
-# timestamp: Sun Aug 11 2019 18:18:03 GMT+0500 (Pakistan Standard Time)
+# timestamp: Mon Aug 12 2019 21:12:23 GMT+0500 (Pakistan Standard Time)
 
 type AggregateCategory {
   count: Int!
@@ -254,8 +254,8 @@ scalar DateTime
 type Expense implements Node {
   id: ID!
   createdAt: DateTime!
+  description: String!
   price: Float!
-  expenseType: String!
 }
 
 """A connection to a list of items."""
@@ -270,8 +270,8 @@ type ExpenseConnection {
 
 input ExpenseCreateInput {
   id: ID
+  description: String!
   price: Float!
-  expenseType: String!
 }
 
 """An edge in a connection."""
@@ -288,17 +288,17 @@ enum ExpenseOrderByInput {
   id_DESC
   createdAt_ASC
   createdAt_DESC
+  description_ASC
+  description_DESC
   price_ASC
   price_DESC
-  expenseType_ASC
-  expenseType_DESC
 }
 
 type ExpensePreviousValues {
   id: ID!
   createdAt: DateTime!
+  description: String!
   price: Float!
-  expenseType: String!
 }
 
 type ExpenseSubscriptionPayload {
@@ -339,13 +339,13 @@ input ExpenseSubscriptionWhereInput {
 }
 
 input ExpenseUpdateInput {
+  description: String
   price: Float
-  expenseType: String
 }
 
 input ExpenseUpdateManyMutationInput {
+  description: String
   price: Float
-  expenseType: String
 }
 
 input ExpenseWhereInput {
@@ -419,6 +419,46 @@ input ExpenseWhereInput {
 
   """All values greater than or equal the given value."""
   createdAt_gte: DateTime
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
   price: Float
 
   """All values that are not equal to given value."""
@@ -441,46 +481,6 @@ input ExpenseWhereInput {
 
   """All values greater than or equal the given value."""
   price_gte: Float
-  expenseType: String
-
-  """All values that are not equal to given value."""
-  expenseType_not: String
-
-  """All values that are contained in given list."""
-  expenseType_in: [String!]
-
-  """All values that are not contained in given list."""
-  expenseType_not_in: [String!]
-
-  """All values less than the given value."""
-  expenseType_lt: String
-
-  """All values less than or equal the given value."""
-  expenseType_lte: String
-
-  """All values greater than the given value."""
-  expenseType_gt: String
-
-  """All values greater than or equal the given value."""
-  expenseType_gte: String
-
-  """All values containing the given string."""
-  expenseType_contains: String
-
-  """All values not containing the given string."""
-  expenseType_not_contains: String
-
-  """All values starting with the given string."""
-  expenseType_starts_with: String
-
-  """All values not starting with the given string."""
-  expenseType_not_starts_with: String
-
-  """All values ending with the given string."""
-  expenseType_ends_with: String
-
-  """All values not ending with the given string."""
-  expenseType_not_ends_with: String
 }
 
 input ExpenseWhereUniqueInput {

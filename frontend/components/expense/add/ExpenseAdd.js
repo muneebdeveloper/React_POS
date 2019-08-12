@@ -2,22 +2,26 @@ import React from 'react';
 
 import styles from '../../main.css';
 
+
 import Intro from '../../misc/Intro';
 import Block from '../../misc/Block';
 
 
-const ExpiryDefine = ()=>{
+const ExpenseAdd = ()=>{
+
     return(
         <div className="gutterbottom">
-            <Intro>Define</Intro>
+            <Intro>
+                Add
+            </Intro>
             <div className={styles.boxFlex}>
-                <Block LinkTo="/define_expiry">
+                <Block LinkTo="/add_expense">
                     <span>Icon</span>
-                    Define expiry
+                    Add Expense
                 </Block>
             </div>
         </div>
-    );
+    )
 }
 
-export default ExpiryDefine;
+export default ExpenseAdd;

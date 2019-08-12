@@ -1,5 +1,4 @@
 import React,{Component} from 'react';
-import Details from '../components/Details';
 import styles from './index.css';
 import {ApolloConsumer} from 'react-apollo';
 import gql from 'graphql-tag';
@@ -111,7 +110,7 @@ class Home extends Component{
 
                         </section>
 
-                        <section className={styles.maininfo}>
+                        {/* <section className={styles.maininfo}>
                             { receipt.length>0 &&
                                 receipt.map((users,index)=>{
                                     return(
@@ -119,7 +118,7 @@ class Home extends Component{
                                     );
                                 })
                             }
-                        </section>
+                        </section> */}
                         </>);
                 }
 

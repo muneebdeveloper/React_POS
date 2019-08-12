@@ -73,6 +73,6 @@ type Sales{
 type Expense{
   id: ID! @id
   createdAt: DateTime! @createdAt
+  description: String!
   price: Float!
-  expenseType:String!
 }
