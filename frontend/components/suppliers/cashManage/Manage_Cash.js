@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 
 import {Query} from 'react-apollo';
+import Router from 'next/router';
 
 import Intro from '../../misc/Intro';
 import TextField from '@material-ui/core/TextField';
@@ -12,8 +13,9 @@ import Manage_Cash_Table from './Manage_Cash_Table';
 
 class Manage_Cash extends Component{
 
-    state={
 
+    summaryClickHandler = (id,name)=>{
+        Router.push(`/supplier_cash_manage_summary?id=${id}`);    
     }
 
     render(){
@@ -42,6 +44,7 @@ class Manage_Cash extends Component{
                                         <TextField 
                                             label="Name"
                                             fullWidth
+                                            placeholder="Search by name"
                                             autoFocus
                                         />
                                     </th>
@@ -71,7 +74,8 @@ class Manage_Cash extends Component{
                                         const {id,name,phone,address} = supplier;
                                         return(
                                         <Manage_Cash_Table 
-                                            key={index} 
+                                            key={index}
+                                            rowClickHandler={this.summaryClickHandler}
                                             id={id}
                                             sr={index+1} 
                                             name={name} 

@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/muhammad-muneeb-akhlaq/backend/dev
-# timestamp: Sat Aug 10 2019 11:26:59 GMT+0500 (Pakistan Standard Time)
+# timestamp: Sun Aug 11 2019 18:18:03 GMT+0500 (Pakistan Standard Time)
 
 type AggregateCategory {
   count: Int!
@@ -783,9 +783,12 @@ type PaidDetail implements Node {
   id: ID!
   createdAt: DateTime
   description: String
-  amounttopay: Int
-  amountpaid: Int!
-  debtleftatpoint: Int
+  amounttopay: Float
+  amountpaid: Float!
+  amountlefttopay: Float
+  amounttotake: Float
+  amounttaken: Float
+  amountlefttotake: Float
   supplier: Supplier!
 }
 
@@ -802,9 +805,12 @@ type PaidDetailConnection {
 input PaidDetailCreateInput {
   id: ID
   description: String
-  amounttopay: Int
-  amountpaid: Int!
-  debtleftatpoint: Int
+  amounttopay: Float
+  amountpaid: Float!
+  amountlefttopay: Float
+  amounttotake: Float
+  amounttaken: Float
+  amountlefttotake: Float
   supplier: SupplierCreateOneWithoutPaidInput!
 }
 
@@ -816,9 +822,12 @@ input PaidDetailCreateManyWithoutSupplierInput {
 input PaidDetailCreateWithoutSupplierInput {
   id: ID
   description: String
-  amounttopay: Int
-  amountpaid: Int!
-  debtleftatpoint: Int
+  amounttopay: Float
+  amountpaid: Float!
+  amountlefttopay: Float
+  amounttotake: Float
+  amounttaken: Float
+  amountlefttotake: Float
 }
 
 """An edge in a connection."""
@@ -841,17 +850,26 @@ enum PaidDetailOrderByInput {
   amounttopay_DESC
   amountpaid_ASC
   amountpaid_DESC
-  debtleftatpoint_ASC
-  debtleftatpoint_DESC
+  amountlefttopay_ASC
+  amountlefttopay_DESC
+  amounttotake_ASC
+  amounttotake_DESC
+  amounttaken_ASC
+  amounttaken_DESC
+  amountlefttotake_ASC
+  amountlefttotake_DESC
 }
 
 type PaidDetailPreviousValues {
   id: ID!
   createdAt: DateTime
   description: String
-  amounttopay: Int
-  amountpaid: Int!
-  debtleftatpoint: Int
+  amounttopay: Float
+  amountpaid: Float!
+  amountlefttopay: Float
+  amounttotake: Float
+  amounttaken: Float
+  amountlefttotake: Float
 }
 
 input PaidDetailScalarWhereInput {
@@ -965,72 +983,138 @@ input PaidDetailScalarWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
-  amounttopay: Int
+  amounttopay: Float
 
   """All values that are not equal to given value."""
-  amounttopay_not: Int
+  amounttopay_not: Float
 
   """All values that are contained in given list."""
-  amounttopay_in: [Int!]
+  amounttopay_in: [Float!]
 
   """All values that are not contained in given list."""
-  amounttopay_not_in: [Int!]
+  amounttopay_not_in: [Float!]
 
   """All values less than the given value."""
-  amounttopay_lt: Int
+  amounttopay_lt: Float
 
   """All values less than or equal the given value."""
-  amounttopay_lte: Int
+  amounttopay_lte: Float
 
   """All values greater than the given value."""
-  amounttopay_gt: Int
+  amounttopay_gt: Float
 
   """All values greater than or equal the given value."""
-  amounttopay_gte: Int
-  amountpaid: Int
+  amounttopay_gte: Float
+  amountpaid: Float
 
   """All values that are not equal to given value."""
-  amountpaid_not: Int
+  amountpaid_not: Float
 
   """All values that are contained in given list."""
-  amountpaid_in: [Int!]
+  amountpaid_in: [Float!]
 
   """All values that are not contained in given list."""
-  amountpaid_not_in: [Int!]
+  amountpaid_not_in: [Float!]
 
   """All values less than the given value."""
-  amountpaid_lt: Int
+  amountpaid_lt: Float
 
   """All values less than or equal the given value."""
-  amountpaid_lte: Int
+  amountpaid_lte: Float
 
   """All values greater than the given value."""
-  amountpaid_gt: Int
+  amountpaid_gt: Float
 
   """All values greater than or equal the given value."""
-  amountpaid_gte: Int
-  debtleftatpoint: Int
+  amountpaid_gte: Float
+  amountlefttopay: Float
 
   """All values that are not equal to given value."""
-  debtleftatpoint_not: Int
+  amountlefttopay_not: Float
 
   """All values that are contained in given list."""
-  debtleftatpoint_in: [Int!]
+  amountlefttopay_in: [Float!]
 
   """All values that are not contained in given list."""
-  debtleftatpoint_not_in: [Int!]
+  amountlefttopay_not_in: [Float!]
 
   """All values less than the given value."""
-  debtleftatpoint_lt: Int
+  amountlefttopay_lt: Float
 
   """All values less than or equal the given value."""
-  debtleftatpoint_lte: Int
+  amountlefttopay_lte: Float
 
   """All values greater than the given value."""
-  debtleftatpoint_gt: Int
+  amountlefttopay_gt: Float
 
   """All values greater than or equal the given value."""
-  debtleftatpoint_gte: Int
+  amountlefttopay_gte: Float
+  amounttotake: Float
+
+  """All values that are not equal to given value."""
+  amounttotake_not: Float
+
+  """All values that are contained in given list."""
+  amounttotake_in: [Float!]
+
+  """All values that are not contained in given list."""
+  amounttotake_not_in: [Float!]
+
+  """All values less than the given value."""
+  amounttotake_lt: Float
+
+  """All values less than or equal the given value."""
+  amounttotake_lte: Float
+
+  """All values greater than the given value."""
+  amounttotake_gt: Float
+
+  """All values greater than or equal the given value."""
+  amounttotake_gte: Float
+  amounttaken: Float
+
+  """All values that are not equal to given value."""
+  amounttaken_not: Float
+
+  """All values that are contained in given list."""
+  amounttaken_in: [Float!]
+
+  """All values that are not contained in given list."""
+  amounttaken_not_in: [Float!]
+
+  """All values less than the given value."""
+  amounttaken_lt: Float
+
+  """All values less than or equal the given value."""
+  amounttaken_lte: Float
+
+  """All values greater than the given value."""
+  amounttaken_gt: Float
+
+  """All values greater than or equal the given value."""
+  amounttaken_gte: Float
+  amountlefttotake: Float
+
+  """All values that are not equal to given value."""
+  amountlefttotake_not: Float
+
+  """All values that are contained in given list."""
+  amountlefttotake_in: [Float!]
+
+  """All values that are not contained in given list."""
+  amountlefttotake_not_in: [Float!]
+
+  """All values less than the given value."""
+  amountlefttotake_lt: Float
+
+  """All values less than or equal the given value."""
+  amountlefttotake_lte: Float
+
+  """All values greater than the given value."""
+  amountlefttotake_gt: Float
+
+  """All values greater than or equal the given value."""
+  amountlefttotake_gte: Float
 }
 
 type PaidDetailSubscriptionPayload {
@@ -1072,24 +1156,33 @@ input PaidDetailSubscriptionWhereInput {
 
 input PaidDetailUpdateInput {
   description: String
-  amounttopay: Int
-  amountpaid: Int
-  debtleftatpoint: Int
+  amounttopay: Float
+  amountpaid: Float
+  amountlefttopay: Float
+  amounttotake: Float
+  amounttaken: Float
+  amountlefttotake: Float
   supplier: SupplierUpdateOneRequiredWithoutPaidInput
 }
 
 input PaidDetailUpdateManyDataInput {
   description: String
-  amounttopay: Int
-  amountpaid: Int
-  debtleftatpoint: Int
+  amounttopay: Float
+  amountpaid: Float
+  amountlefttopay: Float
+  amounttotake: Float
+  amounttaken: Float
+  amountlefttotake: Float
 }
 
 input PaidDetailUpdateManyMutationInput {
   description: String
-  amounttopay: Int
-  amountpaid: Int
-  debtleftatpoint: Int
+  amounttopay: Float
+  amountpaid: Float
+  amountlefttopay: Float
+  amounttotake: Float
+  amounttaken: Float
+  amountlefttotake: Float
 }
 
 input PaidDetailUpdateManyWithoutSupplierInput {
@@ -1111,9 +1204,12 @@ input PaidDetailUpdateManyWithWhereNestedInput {
 
 input PaidDetailUpdateWithoutSupplierDataInput {
   description: String
-  amounttopay: Int
-  amountpaid: Int
-  debtleftatpoint: Int
+  amounttopay: Float
+  amountpaid: Float
+  amountlefttopay: Float
+  amounttotake: Float
+  amounttaken: Float
+  amountlefttotake: Float
 }
 
 input PaidDetailUpdateWithWhereUniqueWithoutSupplierInput {
@@ -1238,72 +1334,138 @@ input PaidDetailWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
-  amounttopay: Int
+  amounttopay: Float
 
   """All values that are not equal to given value."""
-  amounttopay_not: Int
+  amounttopay_not: Float
 
   """All values that are contained in given list."""
-  amounttopay_in: [Int!]
+  amounttopay_in: [Float!]
 
   """All values that are not contained in given list."""
-  amounttopay_not_in: [Int!]
+  amounttopay_not_in: [Float!]
 
   """All values less than the given value."""
-  amounttopay_lt: Int
+  amounttopay_lt: Float
 
   """All values less than or equal the given value."""
-  amounttopay_lte: Int
+  amounttopay_lte: Float
 
   """All values greater than the given value."""
-  amounttopay_gt: Int
+  amounttopay_gt: Float
 
   """All values greater than or equal the given value."""
-  amounttopay_gte: Int
-  amountpaid: Int
+  amounttopay_gte: Float
+  amountpaid: Float
 
   """All values that are not equal to given value."""
-  amountpaid_not: Int
+  amountpaid_not: Float
 
   """All values that are contained in given list."""
-  amountpaid_in: [Int!]
+  amountpaid_in: [Float!]
 
   """All values that are not contained in given list."""
-  amountpaid_not_in: [Int!]
+  amountpaid_not_in: [Float!]
 
   """All values less than the given value."""
-  amountpaid_lt: Int
+  amountpaid_lt: Float
 
   """All values less than or equal the given value."""
-  amountpaid_lte: Int
+  amountpaid_lte: Float
 
   """All values greater than the given value."""
-  amountpaid_gt: Int
+  amountpaid_gt: Float
 
   """All values greater than or equal the given value."""
-  amountpaid_gte: Int
-  debtleftatpoint: Int
+  amountpaid_gte: Float
+  amountlefttopay: Float
 
   """All values that are not equal to given value."""
-  debtleftatpoint_not: Int
+  amountlefttopay_not: Float
 
   """All values that are contained in given list."""
-  debtleftatpoint_in: [Int!]
+  amountlefttopay_in: [Float!]
 
   """All values that are not contained in given list."""
-  debtleftatpoint_not_in: [Int!]
+  amountlefttopay_not_in: [Float!]
 
   """All values less than the given value."""
-  debtleftatpoint_lt: Int
+  amountlefttopay_lt: Float
 
   """All values less than or equal the given value."""
-  debtleftatpoint_lte: Int
+  amountlefttopay_lte: Float
 
   """All values greater than the given value."""
-  debtleftatpoint_gt: Int
+  amountlefttopay_gt: Float
 
   """All values greater than or equal the given value."""
-  debtleftatpoint_gte: Int
+  amountlefttopay_gte: Float
+  amounttotake: Float
+
+  """All values that are not equal to given value."""
+  amounttotake_not: Float
+
+  """All values that are contained in given list."""
+  amounttotake_in: [Float!]
+
+  """All values that are not contained in given list."""
+  amounttotake_not_in: [Float!]
+
+  """All values less than the given value."""
+  amounttotake_lt: Float
+
+  """All values less than or equal the given value."""
+  amounttotake_lte: Float
+
+  """All values greater than the given value."""
+  amounttotake_gt: Float
+
+  """All values greater than or equal the given value."""
+  amounttotake_gte: Float
+  amounttaken: Float
+
+  """All values that are not equal to given value."""
+  amounttaken_not: Float
+
+  """All values that are contained in given list."""
+  amounttaken_in: [Float!]
+
+  """All values that are not contained in given list."""
+  amounttaken_not_in: [Float!]
+
+  """All values less than the given value."""
+  amounttaken_lt: Float
+
+  """All values less than or equal the given value."""
+  amounttaken_lte: Float
+
+  """All values greater than the given value."""
+  amounttaken_gt: Float
+
+  """All values greater than or equal the given value."""
+  amounttaken_gte: Float
+  amountlefttotake: Float
+
+  """All values that are not equal to given value."""
+  amountlefttotake_not: Float
+
+  """All values that are contained in given list."""
+  amountlefttotake_in: [Float!]
+
+  """All values that are not contained in given list."""
+  amountlefttotake_not_in: [Float!]
+
+  """All values less than the given value."""
+  amountlefttotake_lt: Float
+
+  """All values less than or equal the given value."""
+  amountlefttotake_lte: Float
+
+  """All values greater than the given value."""
+  amountlefttotake_gt: Float
+
+  """All values greater than or equal the given value."""
+  amountlefttotake_gte: Float
   supplier: SupplierWhereInput
 }
 
@@ -2641,7 +2803,8 @@ type Supplier implements Node {
   name: String!
   phone: String
   address: String
-  debtleft: Int
+  amounttotake: Float
+  amounttopay: Float
   paid(where: PaidDetailWhereInput, orderBy: PaidDetailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PaidDetail!]
 }
 
@@ -2660,7 +2823,8 @@ input SupplierCreateInput {
   name: String!
   phone: String
   address: String
-  debtleft: Int
+  amounttotake: Float
+  amounttopay: Float
   paid: PaidDetailCreateManyWithoutSupplierInput
 }
 
@@ -2674,7 +2838,8 @@ input SupplierCreateWithoutPaidInput {
   name: String!
   phone: String
   address: String
-  debtleft: Int
+  amounttotake: Float
+  amounttopay: Float
 }
 
 """An edge in a connection."""
@@ -2695,8 +2860,10 @@ enum SupplierOrderByInput {
   phone_DESC
   address_ASC
   address_DESC
-  debtleft_ASC
-  debtleft_DESC
+  amounttotake_ASC
+  amounttotake_DESC
+  amounttopay_ASC
+  amounttopay_DESC
 }
 
 type SupplierPreviousValues {
@@ -2704,7 +2871,8 @@ type SupplierPreviousValues {
   name: String!
   phone: String
   address: String
-  debtleft: Int
+  amounttotake: Float
+  amounttopay: Float
 }
 
 type SupplierSubscriptionPayload {
@@ -2748,7 +2916,8 @@ input SupplierUpdateInput {
   name: String
   phone: String
   address: String
-  debtleft: Int
+  amounttotake: Float
+  amounttopay: Float
   paid: PaidDetailUpdateManyWithoutSupplierInput
 }
 
@@ -2756,7 +2925,8 @@ input SupplierUpdateManyMutationInput {
   name: String
   phone: String
   address: String
-  debtleft: Int
+  amounttotake: Float
+  amounttopay: Float
 }
 
 input SupplierUpdateOneRequiredWithoutPaidInput {
@@ -2770,7 +2940,8 @@ input SupplierUpdateWithoutPaidDataInput {
   name: String
   phone: String
   address: String
-  debtleft: Int
+  amounttotake: Float
+  amounttopay: Float
 }
 
 input SupplierUpsertWithoutPaidInput {
@@ -2947,28 +3118,50 @@ input SupplierWhereInput {
 
   """All values not ending with the given string."""
   address_not_ends_with: String
-  debtleft: Int
+  amounttotake: Float
 
   """All values that are not equal to given value."""
-  debtleft_not: Int
+  amounttotake_not: Float
 
   """All values that are contained in given list."""
-  debtleft_in: [Int!]
+  amounttotake_in: [Float!]
 
   """All values that are not contained in given list."""
-  debtleft_not_in: [Int!]
+  amounttotake_not_in: [Float!]
 
   """All values less than the given value."""
-  debtleft_lt: Int
+  amounttotake_lt: Float
 
   """All values less than or equal the given value."""
-  debtleft_lte: Int
+  amounttotake_lte: Float
 
   """All values greater than the given value."""
-  debtleft_gt: Int
+  amounttotake_gt: Float
 
   """All values greater than or equal the given value."""
-  debtleft_gte: Int
+  amounttotake_gte: Float
+  amounttopay: Float
+
+  """All values that are not equal to given value."""
+  amounttopay_not: Float
+
+  """All values that are contained in given list."""
+  amounttopay_in: [Float!]
+
+  """All values that are not contained in given list."""
+  amounttopay_not_in: [Float!]
+
+  """All values less than the given value."""
+  amounttopay_lt: Float
+
+  """All values less than or equal the given value."""
+  amounttopay_lte: Float
+
+  """All values greater than the given value."""
+  amounttopay_gt: Float
+
+  """All values greater than or equal the given value."""
+  amounttopay_gte: Float
   paid_every: PaidDetailWhereInput
   paid_some: PaidDetailWhereInput
   paid_none: PaidDetailWhereInput

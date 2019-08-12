@@ -5,7 +5,8 @@ const Query = {
     supplier:forwardTo('db'),
     lineItems:forwardTo('db'),
     categories:forwardTo('db'),
-    suppliers:forwardTo('db')
+    suppliers:forwardTo('db'),
+    paidDetails:forwardTo('db')
 }
 
 module.exports = Query;

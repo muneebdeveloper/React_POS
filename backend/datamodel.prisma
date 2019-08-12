@@ -9,7 +9,8 @@ type Supplier{
   name: String!
   phone: String
   address: String
-  debtleft: Int
+  amounttotake: Float
+  amounttopay: Float
   paid: [PaidDetail!]!
 }
 
@@ -17,9 +18,12 @@ type PaidDetail{
   id: ID! @id
   createdAt : DateTime @createdAt
   description : String
-  amounttopay: Int
-  amountpaid : Int!
-  debtleftatpoint: Int
+  amounttopay: Float
+  amountpaid : Float!
+  amountlefttopay: Float
+  amounttotake:Float
+  amounttaken:Float
+  amountlefttotake:Float
   supplier:Supplier!
 }
 

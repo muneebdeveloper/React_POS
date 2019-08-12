@@ -7,6 +7,7 @@ type Query{
     categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
     lineItems(where: LineItemWhereInput, orderBy: LineItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [LineItem]!
     suppliers(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Supplier]!
+    paidDetails(where: PaidDetailWhereInput, orderBy: PaidDetailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PaidDetail]!
 }
 
 type Mutation{
@@ -25,4 +26,5 @@ type Mutation{
      createSupplier(data: SupplierCreateInput!): Supplier!
      updateSupplier(data: SupplierUpdateInput!, where: SupplierWhereUniqueInput!): Supplier
      deleteSupplier(where: SupplierWhereUniqueInput!): Supplier
+     createPaidDetail(data: PaidDetailCreateInput!): PaidDetail!
 }

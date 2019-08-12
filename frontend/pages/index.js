@@ -98,6 +98,7 @@ class Home extends Component{
                                         <TextField 
                                             label="Email"
                                             variant="outlined"
+                                            autoFocus
                                         />
                                     </StylesProvider>
                                  
