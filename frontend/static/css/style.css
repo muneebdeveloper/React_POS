@@ -108,3 +108,7 @@ tbody tr:hover{
 .MuiCircularProgress-colorPrimary{
     color:green !important;
 }
+
+.MuiBadge-colorSecondary{
+    background-color:black !important;
+}

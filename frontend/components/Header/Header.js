@@ -15,6 +15,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 
+
 import {StylesProvider} from '@material-ui/styles';
 
 class Header extends Component{
@@ -91,10 +92,11 @@ class Header extends Component{
 
                     <div>
                     <IconButton  color="inherit" aria-label="menu">
-                        <Badge badgeContent={11} color="secondary">
+                        <Badge badgeContent={11} color="primary">
                             <NotificationsIcon />
                         </Badge>
                     </IconButton>
+                    
                     </div>
 
 

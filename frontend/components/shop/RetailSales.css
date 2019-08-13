@@ -1,0 +1,37 @@
+.maintoolbar{
+    display:grid;
+    grid-template-columns: 0.5fr 1fr;
+    grid-column-gap:30px;
+    align-items: center;
+}
+
+.mainfirst{
+    display: flex;
+    align-items: center;
+}
+
+.mainfirstgrow{
+    flex-grow:1;
+    margin-right:15px !important;
+}
+
+.mainsecond{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.buttonsetting{
+    position:absolute !important;
+    right:30px;
+    top:50%;
+    transform:translateY(-50%);
+}
+
+.red{
+    background-color: red !important;
+}
+
+.aligncenter{
+    text-align:center;
+}
+
