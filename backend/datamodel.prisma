@@ -29,7 +29,7 @@ type PaidDetail{
 
 type LineItem{
   id: ID! @id
-  name: String!
+  name: String! @unique
 }
 
 type Category{
@@ -58,6 +58,7 @@ type StockItem{
   wholesalePrice: Float!
   expiry: DateTime
   product: Product!
+  supplier:Supplier!
 }
 
 type Sales{

@@ -111,4 +111,17 @@ tbody tr:hover{
 
 .MuiBadge-colorSecondary{
     background-color:black !important;
+    top:-3px !important;
+    right:8px !important;
+}
+
+.mainFormStyle,.mainLoadingStyle{
+    display:flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+.mainFormStyle > *{
+    width:50% !important;
+    margin-bottom: 30px !important;
 }

@@ -14,11 +14,24 @@ import styles from './RetailSales.css';
 
 class RetailSales extends Component{
 
+    constructor(props){
+        super(props);
+
+        this.inputFieldRef = React.createRef();
+    }
+
+    componentDidMount(){
+        this.inputFieldRef.current.focus();
+        
+    }
+
+    
+
     render(){
         return(
             <>
             <Intro>
-                Retail Sale
+                Retail Sales
             </Intro>
             <div className={`gutterbottom ${styles.maintoolbar}`}>
 
@@ -28,6 +41,7 @@ class RetailSales extends Component{
                 <TextField 
                     label="Product Code"
                     variant="outlined"
+                    inputRef={this.inputFieldRef}
                     className={styles.mainfirstgrow}
                 />
                 <Button
@@ -41,13 +55,13 @@ class RetailSales extends Component{
                 <Button
                     variant="contained"
                     >
-                        <Search />
+                        <Search className={styles.marginRight} />
                         Search Product
                     </Button>
                     <Button
                     variant="contained"
                     >
-                        <PanTool />
+                        <PanTool className={styles.marginRight} />
                         Hold Receipt
                     </Button>
 
@@ -56,7 +70,7 @@ class RetailSales extends Component{
                     >
                         
                         <Badge badgeContent={2} color="secondary">
-                            <ShoppingCart />
+                            <ShoppingCart className={styles.marginRight} />
                         </Badge> 
                         
                        
@@ -117,7 +131,7 @@ class RetailSales extends Component{
                     className={styles.buttonsetting}
                     size="large"
                     >
-                        Print Ticket
+                        Print receipt
                     </Button>
             </div>
             

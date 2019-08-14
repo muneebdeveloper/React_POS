@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Category from '../components/stock/create/Category';
+import Category from '../components/stock/define/Category';
 
 const CategoryPage = ()=>{
     return(

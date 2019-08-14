@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Intro from '../components/misc/Intro';
-import Product from '../components/stock/create/Product';
+import Product from '../components/stock/define/Product';
 
 
 const productPage = ()=>{

@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/muhammad-muneeb-akhlaq/backend/dev
-# timestamp: Mon Aug 12 2019 21:12:23 GMT+0500 (Pakistan Standard Time)
+# timestamp: Wed Aug 14 2019 14:50:56 GMT+0500 (Pakistan Standard Time)
 
 type AggregateCategory {
   count: Int!
@@ -687,6 +687,7 @@ input LineItemWhereInput {
 
 input LineItemWhereUniqueInput {
   id: ID
+  name: String
 }
 
 """
@@ -697,58 +698,58 @@ scalar Long
 
 type Mutation {
   createUser(data: UserCreateInput!): User!
-  createSupplier(data: SupplierCreateInput!): Supplier!
   createPaidDetail(data: PaidDetailCreateInput!): PaidDetail!
   createStockItem(data: StockItemCreateInput!): StockItem!
   createSales(data: SalesCreateInput!): Sales!
   createExpense(data: ExpenseCreateInput!): Expense!
   createCategory(data: CategoryCreateInput!): Category!
   createLineItem(data: LineItemCreateInput!): LineItem!
+  createSupplier(data: SupplierCreateInput!): Supplier!
   createProduct(data: ProductCreateInput!): Product!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  updateSupplier(data: SupplierUpdateInput!, where: SupplierWhereUniqueInput!): Supplier
   updatePaidDetail(data: PaidDetailUpdateInput!, where: PaidDetailWhereUniqueInput!): PaidDetail
   updateStockItem(data: StockItemUpdateInput!, where: StockItemWhereUniqueInput!): StockItem
   updateSales(data: SalesUpdateInput!, where: SalesWhereUniqueInput!): Sales
   updateExpense(data: ExpenseUpdateInput!, where: ExpenseWhereUniqueInput!): Expense
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
   updateLineItem(data: LineItemUpdateInput!, where: LineItemWhereUniqueInput!): LineItem
+  updateSupplier(data: SupplierUpdateInput!, where: SupplierWhereUniqueInput!): Supplier
   updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
   deleteUser(where: UserWhereUniqueInput!): User
-  deleteSupplier(where: SupplierWhereUniqueInput!): Supplier
   deletePaidDetail(where: PaidDetailWhereUniqueInput!): PaidDetail
   deleteStockItem(where: StockItemWhereUniqueInput!): StockItem
   deleteSales(where: SalesWhereUniqueInput!): Sales
   deleteExpense(where: ExpenseWhereUniqueInput!): Expense
   deleteCategory(where: CategoryWhereUniqueInput!): Category
   deleteLineItem(where: LineItemWhereUniqueInput!): LineItem
+  deleteSupplier(where: SupplierWhereUniqueInput!): Supplier
   deleteProduct(where: ProductWhereUniqueInput!): Product
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
-  upsertSupplier(where: SupplierWhereUniqueInput!, create: SupplierCreateInput!, update: SupplierUpdateInput!): Supplier!
   upsertPaidDetail(where: PaidDetailWhereUniqueInput!, create: PaidDetailCreateInput!, update: PaidDetailUpdateInput!): PaidDetail!
   upsertStockItem(where: StockItemWhereUniqueInput!, create: StockItemCreateInput!, update: StockItemUpdateInput!): StockItem!
   upsertSales(where: SalesWhereUniqueInput!, create: SalesCreateInput!, update: SalesUpdateInput!): Sales!
   upsertExpense(where: ExpenseWhereUniqueInput!, create: ExpenseCreateInput!, update: ExpenseUpdateInput!): Expense!
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
   upsertLineItem(where: LineItemWhereUniqueInput!, create: LineItemCreateInput!, update: LineItemUpdateInput!): LineItem!
+  upsertSupplier(where: SupplierWhereUniqueInput!, create: SupplierCreateInput!, update: SupplierUpdateInput!): Supplier!
   upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
-  updateManySuppliers(data: SupplierUpdateManyMutationInput!, where: SupplierWhereInput): BatchPayload!
   updateManyPaidDetails(data: PaidDetailUpdateManyMutationInput!, where: PaidDetailWhereInput): BatchPayload!
   updateManyStockItems(data: StockItemUpdateManyMutationInput!, where: StockItemWhereInput): BatchPayload!
   updateManySaleses(data: SalesUpdateManyMutationInput!, where: SalesWhereInput): BatchPayload!
   updateManyExpenses(data: ExpenseUpdateManyMutationInput!, where: ExpenseWhereInput): BatchPayload!
   updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
   updateManyLineItems(data: LineItemUpdateManyMutationInput!, where: LineItemWhereInput): BatchPayload!
+  updateManySuppliers(data: SupplierUpdateManyMutationInput!, where: SupplierWhereInput): BatchPayload!
   updateManyProducts(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
-  deleteManySuppliers(where: SupplierWhereInput): BatchPayload!
   deleteManyPaidDetails(where: PaidDetailWhereInput): BatchPayload!
   deleteManyStockItems(where: StockItemWhereInput): BatchPayload!
   deleteManySaleses(where: SalesWhereInput): BatchPayload!
   deleteManyExpenses(where: ExpenseWhereInput): BatchPayload!
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
   deleteManyLineItems(where: LineItemWhereInput): BatchPayload!
+  deleteManySuppliers(where: SupplierWhereInput): BatchPayload!
   deleteManyProducts(where: ProductWhereInput): BatchPayload!
 }
 
@@ -1832,31 +1833,31 @@ input ProductWhereUniqueInput {
 
 type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  suppliers(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Supplier]!
   paidDetails(where: PaidDetailWhereInput, orderBy: PaidDetailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PaidDetail]!
   stockItems(where: StockItemWhereInput, orderBy: StockItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [StockItem]!
   saleses(where: SalesWhereInput, orderBy: SalesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Sales]!
   expenses(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expense]!
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
   lineItems(where: LineItemWhereInput, orderBy: LineItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [LineItem]!
+  suppliers(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Supplier]!
   products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
   user(where: UserWhereUniqueInput!): User
-  supplier(where: SupplierWhereUniqueInput!): Supplier
   paidDetail(where: PaidDetailWhereUniqueInput!): PaidDetail
   stockItem(where: StockItemWhereUniqueInput!): StockItem
   sales(where: SalesWhereUniqueInput!): Sales
   expense(where: ExpenseWhereUniqueInput!): Expense
   category(where: CategoryWhereUniqueInput!): Category
   lineItem(where: LineItemWhereUniqueInput!): LineItem
+  supplier(where: SupplierWhereUniqueInput!): Supplier
   product(where: ProductWhereUniqueInput!): Product
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-  suppliersConnection(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SupplierConnection!
   paidDetailsConnection(where: PaidDetailWhereInput, orderBy: PaidDetailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PaidDetailConnection!
   stockItemsConnection(where: StockItemWhereInput, orderBy: StockItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StockItemConnection!
   salesesConnection(where: SalesWhereInput, orderBy: SalesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SalesConnection!
   expensesConnection(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExpenseConnection!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
   lineItemsConnection(where: LineItemWhereInput, orderBy: LineItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LineItemConnection!
+  suppliersConnection(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SupplierConnection!
   productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
 
   """Fetches an object given its ID"""
@@ -2156,6 +2157,7 @@ type StockItem implements Node {
   wholesalePrice: Float!
   expiry: DateTime
   product: Product!
+  supplier: Supplier!
 }
 
 """A connection to a list of items."""
@@ -2177,6 +2179,7 @@ input StockItemCreateInput {
   wholesalePrice: Float!
   expiry: DateTime
   product: ProductCreateOneWithoutStockInput!
+  supplier: SupplierCreateOneInput!
 }
 
 input StockItemCreateManyWithoutProductInput {
@@ -2192,6 +2195,7 @@ input StockItemCreateWithoutProductInput {
   sellPrice: Float!
   wholesalePrice: Float!
   expiry: DateTime
+  supplier: SupplierCreateOneInput!
 }
 
 """An edge in a connection."""
@@ -2501,6 +2505,7 @@ input StockItemUpdateInput {
   wholesalePrice: Float
   expiry: DateTime
   product: ProductUpdateOneRequiredWithoutStockInput
+  supplier: SupplierUpdateOneRequiredInput
 }
 
 input StockItemUpdateManyDataInput {
@@ -2545,6 +2550,7 @@ input StockItemUpdateWithoutProductDataInput {
   sellPrice: Float
   wholesalePrice: Float
   expiry: DateTime
+  supplier: SupplierUpdateOneRequiredInput
 }
 
 input StockItemUpdateWithWhereUniqueWithoutProductInput {
@@ -2780,6 +2786,7 @@ input StockItemWhereInput {
   """All values greater than or equal the given value."""
   expiry_gte: DateTime
   product: ProductWhereInput
+  supplier: SupplierWhereInput
 }
 
 input StockItemWhereUniqueInput {
@@ -2788,13 +2795,13 @@ input StockItemWhereUniqueInput {
 
 type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
-  supplier(where: SupplierSubscriptionWhereInput): SupplierSubscriptionPayload
   paidDetail(where: PaidDetailSubscriptionWhereInput): PaidDetailSubscriptionPayload
   stockItem(where: StockItemSubscriptionWhereInput): StockItemSubscriptionPayload
   sales(where: SalesSubscriptionWhereInput): SalesSubscriptionPayload
   expense(where: ExpenseSubscriptionWhereInput): ExpenseSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
   lineItem(where: LineItemSubscriptionWhereInput): LineItemSubscriptionPayload
+  supplier(where: SupplierSubscriptionWhereInput): SupplierSubscriptionPayload
   product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
 }
 
@@ -2826,6 +2833,11 @@ input SupplierCreateInput {
   amounttotake: Float
   amounttopay: Float
   paid: PaidDetailCreateManyWithoutSupplierInput
+}
+
+input SupplierCreateOneInput {
+  create: SupplierCreateInput
+  connect: SupplierWhereUniqueInput
 }
 
 input SupplierCreateOneWithoutPaidInput {
@@ -2912,6 +2924,15 @@ input SupplierSubscriptionWhereInput {
   node: SupplierWhereInput
 }
 
+input SupplierUpdateDataInput {
+  name: String
+  phone: String
+  address: String
+  amounttotake: Float
+  amounttopay: Float
+  paid: PaidDetailUpdateManyWithoutSupplierInput
+}
+
 input SupplierUpdateInput {
   name: String
   phone: String
@@ -2929,6 +2950,13 @@ input SupplierUpdateManyMutationInput {
   amounttopay: Float
 }
 
+input SupplierUpdateOneRequiredInput {
+  create: SupplierCreateInput
+  connect: SupplierWhereUniqueInput
+  update: SupplierUpdateDataInput
+  upsert: SupplierUpsertNestedInput
+}
+
 input SupplierUpdateOneRequiredWithoutPaidInput {
   create: SupplierCreateWithoutPaidInput
   connect: SupplierWhereUniqueInput
@@ -2942,6 +2970,11 @@ input SupplierUpdateWithoutPaidDataInput {
   address: String
   amounttotake: Float
   amounttopay: Float
+}
+
+input SupplierUpsertNestedInput {
+  update: SupplierUpdateDataInput!
+  create: SupplierCreateInput!
 }
 
 input SupplierUpsertWithoutPaidInput {

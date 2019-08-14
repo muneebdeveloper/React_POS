@@ -6,7 +6,7 @@ import styles from '../stock.css';
 import Intro from '../../misc/Intro';
 import Block from '../../misc/Block';
 
-class CreateStock extends Component{
+class DefineStock extends Component{
 
     render(){
 
@@ -40,4 +40,4 @@ class CreateStock extends Component{
 
 }
 
-export default CreateStock;
+export default DefineStock;
