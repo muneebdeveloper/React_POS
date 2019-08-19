@@ -66,6 +66,10 @@ th,td{
 
 th{
     text-align: left;
+    background-color:black;
+    color:white;
+    position:sticky;
+    top:0;
 }
 
 td{
@@ -119,9 +123,27 @@ tbody tr:hover{
     display:flex;
     flex-flow: column;
     align-items: center;
+    margin-bottom:20px;
+    position: relative;
 }
 
-.mainFormStyle > *{
+.mainFormStyle > *:not(.MuiCircularProgress-root):not(span){
     width:50% !important;
-    margin-bottom: 30px !important;
+}
+
+.mainFormStyle>*:not(.MuiCircularProgress-root):not(:last-child){
+    margin-bottom:15px !important;
+}
+
+.dialogLoadingStyle{
+    padding: 8px 24px 20px;
+    display:flex;
+    justify-content:center;
+}
+
+.dialogTitleStyle{
+    padding:16px 24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
 }

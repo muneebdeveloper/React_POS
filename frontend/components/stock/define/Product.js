@@ -1,9 +1,19 @@
 import React, {Component} from 'react';
-
-import gql from 'graphql-tag';
 import {Query, Mutation,ApolloConsumer} from 'react-apollo';
+import gql from 'graphql-tag';
 import {FETCH_LINEITEMS_QUERY} from './Category';
 
+import ErrorDialog from '../../misc/ErrorDialog';
+import SnackBar from '../../misc/SnackBar';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+
+import styles from './Product.css';
 
 const CATEGORY_ITEMS_QUERY = gql`
     query CATEGORY_ITEMS_QUERY($id:ID!){
@@ -21,7 +31,15 @@ const CATEGORY_ITEMS_QUERY = gql`
             id
         }
     }
- `
+ `;
+
+ const PRODUCT_BARCODE_QUERY = gql`
+    query PRODUCT_BARCODE_QUERY($barcode:String!){
+        product(where:{barcode:$barcode}){
+            name
+        }
+    }
+ `;
 
 
 class Product extends Component{
@@ -31,9 +49,12 @@ class Product extends Component{
         barcode:'',
         lineitemID:'',
         loadingID:false,
+        errorDialogOpen:false,
+        errorMessage:'',
+        snackbarOpen:false,
         categoryList:[],
         categoryID:'',
-        errorID:''
+        loadingGenBarcode:false
     }
 
     lineitemSelectChangeHandler = client =>async e=>{
@@ -59,12 +80,14 @@ class Product extends Component{
             });
         }catch(err){
             this.setState({
-                errorID:"Error"
+                errorDialogOpen:true,
+                errorMessage:"Something went wrong"
             });
         }
     }
 
-   ChangeHandler = e =>{
+   changeHandler = e =>{
+       
         this.setState({
             [e.target.name]:e.target.value
         });
@@ -80,74 +103,232 @@ class Product extends Component{
             loadingID:false,
             categoryList:[],
             categoryID:'',
-            errorID:''
         });
     }
 
-    render(){
-        const {lineitemID,loadingID,errorID,categoryList,categoryID,barcode,name} = this.state;
-        return(
-            <Query query={FETCH_LINEITEMS_QUERY}>
-                {({data,error,loading})=>{
+    barcodeGeneratorHandler =(client)=>async()=>{
+        let generated_barcode = Math.floor((Math.random() * 9000000000000) + 1000000000000);
+        let run = true;
+        this.setState({
+            loadingGenBarcode:true
+        })
+        while(run){
 
-                    if(error){
-                        return <h1>Error</h1>;
+            const res = await client.query({
+                query:PRODUCT_BARCODE_QUERY,
+                variables:{
+                    barcode:String(generated_barcode),
+                }
+            }
+            );
+            console.log(res);
+            
+            if(!res.data.product){
+                run=false;
+            }else{
+            generated_barcode = Math.floor((Math.random() * 9000000000000) + 1000000000000);
+            }
+            
+        }
+        this.setState({
+            barcode:generated_barcode,
+            loadingGenBarcode:false
+        })
+       
+    }
+
+    render(){
+        const { barcode,
+                name,
+                errorDialogOpen,
+                errorMessage,
+                lineitemID,
+                loadingID,
+                categoryList,
+                categoryID,
+                snackbarOpen,
+                loadingGenBarcode
+               } = this.state;
+        const { isMain } = this.props;
+
+        return(
+           
+            <Query 
+                query={FETCH_LINEITEMS_QUERY}
+                onError={
+                    ()=>{
+                        this.setState({
+                            errorDialogOpen:true,
+                            errorMessage:"something Went wrong"
+                        })
                     }
+                }
+            >
+                {({data,loading})=>{
 
                     if(loading){
-                        return <h1>loading</h1>;
+                        return (
+                            <div className="mainLoadingStyle">
+                                <CircularProgress size={70} />
+                            </div>
+                        );
+                    }
+
+                    if(errorDialogOpen){
+                        return(
+                            <ErrorDialog dialogValue={errorDialogOpen} dialogClose={()=>this.setState({errorDialogOpen:false})}>
+                                {errorMessage}
+                            </ErrorDialog>
+                        )
                     }
 
                     return(
+                    
                     <ApolloConsumer>
                         {(client)=>{
-                            return(<Mutation mutation={PRODUCT_CREATE_MUTATION} variables={{name,barcode,id:categoryID}}>
+                            return(
+                            <Mutation 
+                                mutation={PRODUCT_CREATE_MUTATION} 
+                                variables={{name,barcode:String(barcode),id:categoryID}}
+                                onCompleted={()=>this.setState({snackbarOpen:true})}
+                                onError={()=>{this.setState({
+                                        errorDialogOpen:true,
+                                        errorMessage:"The barcode already exists"
+                                    })}}
+                            >
                                 {
-                                    (createProduct,{loading,error})=>{
+                                    (createProduct,{loading})=>{
+
                                         if(loading){
-                                            return(<h2>Loading</h2>);
+                                            return (
+                                                <div className="mainLoadingStyle">
+                                                    <CircularProgress size={70} />
+                                                </div>
+                                            );
                                         }
-                                        if(error){
-                                            return(<h2>error</h2>);
+                    
+                                        if(errorDialogOpen){
+                                            return(
+                                                <ErrorDialog dialogValue={errorDialogOpen} dialogClose={()=>this.setState({errorDialogOpen:false})}>
+                                                    {errorMessage}
+                                                </ErrorDialog>
+                                            )
                                         }
+
                                         return(
-                                            <form onSubmit={this.formSubmitHandler(createProduct)}>  
-                                                <label>Name
-                                                <input name="name" type="text" value={name} required onChange={this.ChangeHandler}/>
-                                                </label>
-                    
-                                                <label>Barcode
-                                                <input name="barcode" type="text" value={barcode} required onChange={this.ChangeHandler}/>
-                                                </label>
-                    
-                                                <select name="lineitemID" name2="loadingID" onChange={this.lineitemSelectChangeHandler(client)} >
-                                                    <option value="select">Select a lineitem</option>
+                                            <>
+                                            
+                                            <form onSubmit={this.formSubmitHandler(createProduct)}>
+                                                <div className={isMain ? "mainFormStyle":styles.componentDialogMargin}>
+
+                                                    <ApolloConsumer>
+                                                        {
+                                                            (client)=>{
+                                                                return(
+                                                                    <span 
+                                                                        className={`${styles.spanBarcode} ${isMain?styles.spanBarcodeMain:styles.spanBarcodeDialog}`}
+                                                                        onClick={this.barcodeGeneratorHandler(client)}
+                                                                    >
+                                                                        {
+                                                                            loadingGenBarcode ? (
+                                                                                <CircularProgress />
+                                                                            ):<>Generate Barcode</>
+                                                                        }
+                                                                       
+                                                                    </span>
+                                                                )
+                                                            }
+                                                        }
+                                                    </ApolloConsumer>
+                                                    
+
+                                                    <TextField 
+                                                        label="Barcode"
+                                                        name="barcode"
+                                                        variant="outlined"
+                                                        type="text"
+                                                        value={barcode}
+                                                        onChange={this.changeHandler}
+                                                        autoFocus
+                                                        required
+                                                        fullWidth={!isMain}
+                                                    />
+
+                                                    <TextField 
+                                                        label="Name"
+                                                        name="name"
+                                                        variant="outlined"
+                                                        type="text"
+                                                        value={name}
+                                                        onChange={this.changeHandler}
+                                                        required
+                                                        fullWidth={!isMain}
+                                                    />
+
+                                                    <FormControl 
+                                                        required 
+                                                        fullWidth={!isMain}
+                                                    >
+                                                        <InputLabel>Select LineItem</InputLabel>
+                                                        <Select
+                                                            name="lineitemID"
+                                                            value={lineitemID}
+                                                            onChange={this.lineitemSelectChangeHandler(client)}
+                                                        >
+                                                            {
+                                                                Object.keys(data).length > 0 && 
+                                                                data.lineItems.map((lineitem)=>{
+                                                                    return(
+                                                                        <MenuItem value={lineitem.id} key={lineitem.id}>{lineitem.name}</MenuItem>
+                                                                    );
+                                                                })
+                                                            }
+                                                        </Select>
+                                                    </FormControl>
+
                                                     {
-                                                        data.lineItems.map((lineitem)=>{
-                                                            return(
-                                                                <option value={lineitem.id} key={lineitem.id}>{lineitem.name}</option>
-                                                            );
-                                                        })
+                                                        loadingID ?
+                                                        (
+                                                            <CircularProgress size={45} />
+                                                        ):
+                                                        (
+                                                            <FormControl 
+                                                                required 
+                                                                fullWidth={!isMain}
+                                                            > 
+                                                                <InputLabel>Select Category</InputLabel>
+                                                                <Select
+                                                                    name="categoryID"
+                                                                    value={categoryID}
+                                                                    onChange={this.changeHandler}
+                                                                >
+                                                                    {
+                                                                        categoryList.map((category)=>{
+                                                                            return(
+                                                                            <MenuItem value={category.id} key={category.id}>{category.name}</MenuItem>
+                                                                            )
+                                                                        })
+                                                                    }
+                                                                </Select>
+                                                            </FormControl>
+                                                        )
                                                     }
-                                                </select>
-                    
-                                                {loadingID?(<h2>loading</h2>):
-                                                <select name="categoryID" disabled={lineitemID ? false :true} onChange={this.ChangeHandler}>
-                                                    <option value="select">Select a Category</option>
-                                                    {
-                                                        categoryList.map((category)=>{
-                                                            return(
-                                                            <option value={category.id} key={category.id}>{category.name}</option>
-                                                            )
-                                                        })
-                                                    }
-                                                </select>
-                                            }
-                    
-                                            {errorID && <h1>errorID</h1>}
-                                                
-                                            <button type="submit" disabled={categoryID?false:true}>Submit</button>
+                                                    <Button
+                                                        size="large"
+                                                        type="submit"
+                                                        variant="contained"
+                                                        fullWidth={!isMain}
+                                                    >
+                                                        Create
+                                                    </Button>
+
+                                                </div>
                                             </form>
+                                            <SnackBar snackbarValue={snackbarOpen} snackbarClose={()=>this.setState({snackbarOpen:false})}>
+                                                The product is successfully created
+                                            </SnackBar>
+                                            </>
+
                                                 );       
                                     }
                                 }
@@ -155,10 +336,13 @@ class Product extends Component{
                         }
                         }
                     </ApolloConsumer>
+                    
+                 
                     )
                 }
                 }
             </Query>
+            
         );
     }
 }

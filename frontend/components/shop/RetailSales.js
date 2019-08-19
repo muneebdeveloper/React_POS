@@ -91,7 +91,7 @@ class RetailSales extends Component{
             <div style={{height:"301px",overflowY:"auto",border:"2px solid black"}} className="gutterbottom">
             <table >
                 <thead>
-                    <tr style={{backgroundColor:"black",color:"white"}}>
+                    <tr>
                         <th>Sr#</th>
                         <th>Product</th>
                         <th>Price</th>
@@ -100,10 +100,12 @@ class RetailSales extends Component{
                         <th>Actions</th>
                     </tr>
                 </thead>
+                
             
                 <tbody>
                     
-                   
+                
+         
                     
                     
                 </tbody>

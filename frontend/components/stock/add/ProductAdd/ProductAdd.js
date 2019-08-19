@@ -1,44 +1,119 @@
-import React, {Component} from 'react';
+import React from 'react';
+
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import DialogActions from '@material-ui/core/DialogActions';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+
+import styles from './ProductAdd.css';
 
 
 
+const ProductAdd = (props)=>{
 
-class ProductAdd extends Component{
-
-
-    render(){
-        const {prochangeHandler,stockChangeHandler,productname,badge,buyprice,sellprice,wholesaleprice,noofpieces,expiry} = this.props;
+        const { prochangeHandler,
+                stockChangeHandler,
+                productname,
+                badge,
+                buyprice,
+                sellprice,
+                wholesaleprice,
+                noofpieces,
+                expiry
+              } = props;
 
         return(
-            <form onSubmit={stockChangeHandler}>
-                <label>Product Name:
-                    <input type="text" value={productname} disabled />
-                </label>
-                <label>Badge Number:
-                    <input type="text" value={badge} autoFocus={productname?true:false} onChange={prochangeHandler.bind(this,"badge")} />
-                </label>
-                <label>Buy Price:
-                    <input type="number" value={buyprice} onChange={prochangeHandler.bind(this,"buyprice")} />
-                </label>
-                <label>Sell Price:
-                <input type="number"  value={sellprice} onChange={prochangeHandler.bind(this,"sellprice")} />
-                </label>
-                <br />
-                <br />
-                <label>wholesale Price:
-                <input type="number" value={wholesaleprice} onChange={prochangeHandler.bind(this,"wholesaleprice")} />
-                </label>
-                <label>Number of Pieces:
-                <input type="number"  value={noofpieces} onChange={prochangeHandler.bind(this,"noofpieces")} />
-                </label>
-                <label>expiry:
-                    <input type="date" value={expiry} onChange={prochangeHandler.bind(this,"expiry")} />
-                </label>
-                <button type="submit" disabled={expiry?false:true}>Submit</button>
-            </form>
-        );
+            
+                        <form onSubmit={stockChangeHandler}>
+                        <div className={styles.maingrid}>
+                        <TextField 
+                            label="Product Name"
+                            variant="outlined"
+                            type="text"
+                            value={productname}
+                            disabled
+                        />
+        
+                        <TextField
+                            label="Badge Number"
+                            variant="outlined"
+                            type="text"
+                            name="badge"
+                            value={badge}
+                            autoFocus={productname?true:false}
+                            onChange={prochangeHandler}
+                        />
+        
+                        <TextField
+                            label="Buy Price"
+                            variant="outlined"
+                            type="number"
+                            name="buyprice"
+                            value={buyprice}
+                            onChange={prochangeHandler}
+                            required
+                        />
+        
+                        <TextField
+                            label="Sell Price"
+                            variant="outlined"
+                            type="number"
+                            name="sellprice"
+                            value={sellprice}
+                            onChange={prochangeHandler}
+                            required
+                        />
+        
+                        <TextField
+                            label="wholesale Price"
+                            variant="outlined"
+                            type="number"
+                            name="wholesaleprice"
+                            value={wholesaleprice}
+                            onChange={prochangeHandler}
+                            required
+                        />
+        
+                        <TextField
+                            label="Number of Pieces"
+                            variant="outlined"
+                            type="number"
+                            name="noofpieces"
+                            value={noofpieces}
+                            onChange={prochangeHandler}
+                            required
+                        />
+
+                        <TextField 
+                            label="expiry"
+                            name="expiry"
+                            value={expiry}
+                            type="date"
+                            InputLabelProps={{
+                                shrink:true
+                            }}
+                            onChange={prochangeHandler}
+                        />
+
+                        
+                    </div>
+        
+                    <DialogActions>
+                        <Button 
+                                type="submit"
+                                variant="contained"
+                                size="large"
+                            >
+                                Create Stock
+                            </Button>
+                    </DialogActions>
+                        
+                    </form>
+                    );
+
     }
 
-}
+
 
 export default ProductAdd;

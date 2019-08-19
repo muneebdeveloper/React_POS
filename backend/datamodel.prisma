@@ -6,7 +6,8 @@ type User {
 
 type Supplier{
   id: ID! @id
-  name: String!
+  name: String! @unique
+  email:String
   phone: String
   address: String
   amounttotake: Float
@@ -19,7 +20,7 @@ type PaidDetail{
   createdAt : DateTime @createdAt
   description : String
   amounttopay: Float
-  amountpaid : Float!
+  amountpaid : Float
   amountlefttopay: Float
   amounttotake:Float
   amounttaken:Float

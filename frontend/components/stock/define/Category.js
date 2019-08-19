@@ -51,9 +51,13 @@ class Category extends Component{
         });
     }
 
+    submitHandler = (createCategory)=>async (e)=>{
+        e.preventDefault();
+        createCategory();
+    }
 
     render(){
-        const {category,lineitemid,errorMessage,snackbarOpen,errorDialogOpen,errorDialogOpen1} = this.state;
+        const {category,lineitemid,errorMessage,snackbarOpen,errorDialogOpen} = this.state;
         
         return(
             <>
@@ -98,7 +102,9 @@ class Category extends Component{
                         onCompleted={
                             ()=>{
                                 this.setState({
-                                    snackbarOpen:true
+                                    snackbarOpen:true,
+                                    lineitemid:'',
+                                    category:''
                                 });
                             }
                         }
@@ -106,7 +112,7 @@ class Category extends Component{
                             (error)=>{
                         
                                 this.setState({
-                                    errorMessage:"The category is already added",
+                                    errorMessage:"Something went wrong",
                                     errorDialogOpen:true
                                 })
                             }
@@ -133,21 +139,7 @@ class Category extends Component{
 
                             return(
                                 <>
-                                <form onSubmit={async e=>{
-                                    e.preventDefault();
-                                   
-                                    if(category && (lineitemid!=='select' && lineitemid!=='')){
-                                        await createCategory();
-                                    }else{
-                                        this.setState({
-                                         
-                                        })
-                                    }
-                                    this.setState({
-                                        lineitemid:'',
-                                        category:''
-                                    });
-                                }}>
+                                <form onSubmit={this.submitHandler(createCategory)}>
                                     <div className="mainFormStyle">
                                         <TextField 
                                             label="Category"

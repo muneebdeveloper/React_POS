@@ -1,0 +1,24 @@
+.spanBarcode{
+    position:absolute;
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+    z-index:50;
+}
+
+.spanBarcodeMain{
+    transform: translateX(100%);
+    right:24%;
+}
+
+.spanBarcodeDialog{
+    right:0;
+}
+
+.componentDialogMargin{
+    position:relative;
+}
+
+.componentDialogMargin>*{
+    margin-bottom:20px !important;
+}

@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/muhammad-muneeb-akhlaq/backend/dev
-# timestamp: Wed Aug 14 2019 14:50:56 GMT+0500 (Pakistan Standard Time)
+# timestamp: Sat Aug 17 2019 12:44:14 GMT+0500 (Pakistan Standard Time)
 
 type AggregateCategory {
   count: Int!
@@ -785,7 +785,7 @@ type PaidDetail implements Node {
   createdAt: DateTime
   description: String
   amounttopay: Float
-  amountpaid: Float!
+  amountpaid: Float
   amountlefttopay: Float
   amounttotake: Float
   amounttaken: Float
@@ -807,7 +807,7 @@ input PaidDetailCreateInput {
   id: ID
   description: String
   amounttopay: Float
-  amountpaid: Float!
+  amountpaid: Float
   amountlefttopay: Float
   amounttotake: Float
   amounttaken: Float
@@ -824,7 +824,7 @@ input PaidDetailCreateWithoutSupplierInput {
   id: ID
   description: String
   amounttopay: Float
-  amountpaid: Float!
+  amountpaid: Float
   amountlefttopay: Float
   amounttotake: Float
   amounttaken: Float
@@ -866,7 +866,7 @@ type PaidDetailPreviousValues {
   createdAt: DateTime
   description: String
   amounttopay: Float
-  amountpaid: Float!
+  amountpaid: Float
   amountlefttopay: Float
   amounttotake: Float
   amounttaken: Float
@@ -2808,6 +2808,7 @@ type Subscription {
 type Supplier implements Node {
   id: ID!
   name: String!
+  email: String
   phone: String
   address: String
   amounttotake: Float
@@ -2828,6 +2829,7 @@ type SupplierConnection {
 input SupplierCreateInput {
   id: ID
   name: String!
+  email: String
   phone: String
   address: String
   amounttotake: Float
@@ -2848,6 +2850,7 @@ input SupplierCreateOneWithoutPaidInput {
 input SupplierCreateWithoutPaidInput {
   id: ID
   name: String!
+  email: String
   phone: String
   address: String
   amounttotake: Float
@@ -2868,6 +2871,8 @@ enum SupplierOrderByInput {
   id_DESC
   name_ASC
   name_DESC
+  email_ASC
+  email_DESC
   phone_ASC
   phone_DESC
   address_ASC
@@ -2881,6 +2886,7 @@ enum SupplierOrderByInput {
 type SupplierPreviousValues {
   id: ID!
   name: String!
+  email: String
   phone: String
   address: String
   amounttotake: Float
@@ -2926,6 +2932,7 @@ input SupplierSubscriptionWhereInput {
 
 input SupplierUpdateDataInput {
   name: String
+  email: String
   phone: String
   address: String
   amounttotake: Float
@@ -2935,6 +2942,7 @@ input SupplierUpdateDataInput {
 
 input SupplierUpdateInput {
   name: String
+  email: String
   phone: String
   address: String
   amounttotake: Float
@@ -2944,6 +2952,7 @@ input SupplierUpdateInput {
 
 input SupplierUpdateManyMutationInput {
   name: String
+  email: String
   phone: String
   address: String
   amounttotake: Float
@@ -2966,6 +2975,7 @@ input SupplierUpdateOneRequiredWithoutPaidInput {
 
 input SupplierUpdateWithoutPaidDataInput {
   name: String
+  email: String
   phone: String
   address: String
   amounttotake: Float
@@ -3071,6 +3081,46 @@ input SupplierWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
+  email: String
+
+  """All values that are not equal to given value."""
+  email_not: String
+
+  """All values that are contained in given list."""
+  email_in: [String!]
+
+  """All values that are not contained in given list."""
+  email_not_in: [String!]
+
+  """All values less than the given value."""
+  email_lt: String
+
+  """All values less than or equal the given value."""
+  email_lte: String
+
+  """All values greater than the given value."""
+  email_gt: String
+
+  """All values greater than or equal the given value."""
+  email_gte: String
+
+  """All values containing the given string."""
+  email_contains: String
+
+  """All values not containing the given string."""
+  email_not_contains: String
+
+  """All values starting with the given string."""
+  email_starts_with: String
+
+  """All values not starting with the given string."""
+  email_not_starts_with: String
+
+  """All values ending with the given string."""
+  email_ends_with: String
+
+  """All values not ending with the given string."""
+  email_not_ends_with: String
   phone: String
 
   """All values that are not equal to given value."""
@@ -3202,6 +3252,7 @@ input SupplierWhereInput {
 
 input SupplierWhereUniqueInput {
   id: ID
+  name: String
 }
 
 type User implements Node {

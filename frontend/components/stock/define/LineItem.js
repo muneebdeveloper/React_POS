@@ -7,7 +7,6 @@ import ErrorDialog from '../../misc/ErrorDialog';
 import SnackBar from '../../misc/SnackBar';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 
@@ -135,7 +134,7 @@ class LineItem extends Component{
                                 </div>
                             </form>
                             <SnackBar snackbarValue={snackbarOpen} snackbarClose={()=>this.setState({snackbarOpen:false})}>
-                                "The lineitem has been successfully created"
+                                The lineitem has been successfully created
                             </SnackBar>
                             </>
                         );
