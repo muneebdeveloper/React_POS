@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/muhammad-muneeb-akhlaq/backend/dev
-# timestamp: Sat Aug 17 2019 12:44:14 GMT+0500 (Pakistan Standard Time)
+# timestamp: Mon Aug 19 2019 16:50:48 GMT+0500 (Pakistan Standard Time)
 
 type AggregateCategory {
   count: Int!
@@ -784,12 +784,8 @@ type PaidDetail implements Node {
   id: ID!
   createdAt: DateTime
   description: String
-  amounttopay: Float
   amountpaid: Float
-  amountlefttopay: Float
-  amounttotake: Float
   amounttaken: Float
-  amountlefttotake: Float
   supplier: Supplier!
 }
 
@@ -806,12 +802,8 @@ type PaidDetailConnection {
 input PaidDetailCreateInput {
   id: ID
   description: String
-  amounttopay: Float
   amountpaid: Float
-  amountlefttopay: Float
-  amounttotake: Float
   amounttaken: Float
-  amountlefttotake: Float
   supplier: SupplierCreateOneWithoutPaidInput!
 }
 
@@ -823,12 +815,8 @@ input PaidDetailCreateManyWithoutSupplierInput {
 input PaidDetailCreateWithoutSupplierInput {
   id: ID
   description: String
-  amounttopay: Float
   amountpaid: Float
-  amountlefttopay: Float
-  amounttotake: Float
   amounttaken: Float
-  amountlefttotake: Float
 }
 
 """An edge in a connection."""
@@ -847,30 +835,18 @@ enum PaidDetailOrderByInput {
   createdAt_DESC
   description_ASC
   description_DESC
-  amounttopay_ASC
-  amounttopay_DESC
   amountpaid_ASC
   amountpaid_DESC
-  amountlefttopay_ASC
-  amountlefttopay_DESC
-  amounttotake_ASC
-  amounttotake_DESC
   amounttaken_ASC
   amounttaken_DESC
-  amountlefttotake_ASC
-  amountlefttotake_DESC
 }
 
 type PaidDetailPreviousValues {
   id: ID!
   createdAt: DateTime
   description: String
-  amounttopay: Float
   amountpaid: Float
-  amountlefttopay: Float
-  amounttotake: Float
   amounttaken: Float
-  amountlefttotake: Float
 }
 
 input PaidDetailScalarWhereInput {
@@ -984,28 +960,6 @@ input PaidDetailScalarWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
-  amounttopay: Float
-
-  """All values that are not equal to given value."""
-  amounttopay_not: Float
-
-  """All values that are contained in given list."""
-  amounttopay_in: [Float!]
-
-  """All values that are not contained in given list."""
-  amounttopay_not_in: [Float!]
-
-  """All values less than the given value."""
-  amounttopay_lt: Float
-
-  """All values less than or equal the given value."""
-  amounttopay_lte: Float
-
-  """All values greater than the given value."""
-  amounttopay_gt: Float
-
-  """All values greater than or equal the given value."""
-  amounttopay_gte: Float
   amountpaid: Float
 
   """All values that are not equal to given value."""
@@ -1028,50 +982,6 @@ input PaidDetailScalarWhereInput {
 
   """All values greater than or equal the given value."""
   amountpaid_gte: Float
-  amountlefttopay: Float
-
-  """All values that are not equal to given value."""
-  amountlefttopay_not: Float
-
-  """All values that are contained in given list."""
-  amountlefttopay_in: [Float!]
-
-  """All values that are not contained in given list."""
-  amountlefttopay_not_in: [Float!]
-
-  """All values less than the given value."""
-  amountlefttopay_lt: Float
-
-  """All values less than or equal the given value."""
-  amountlefttopay_lte: Float
-
-  """All values greater than the given value."""
-  amountlefttopay_gt: Float
-
-  """All values greater than or equal the given value."""
-  amountlefttopay_gte: Float
-  amounttotake: Float
-
-  """All values that are not equal to given value."""
-  amounttotake_not: Float
-
-  """All values that are contained in given list."""
-  amounttotake_in: [Float!]
-
-  """All values that are not contained in given list."""
-  amounttotake_not_in: [Float!]
-
-  """All values less than the given value."""
-  amounttotake_lt: Float
-
-  """All values less than or equal the given value."""
-  amounttotake_lte: Float
-
-  """All values greater than the given value."""
-  amounttotake_gt: Float
-
-  """All values greater than or equal the given value."""
-  amounttotake_gte: Float
   amounttaken: Float
 
   """All values that are not equal to given value."""
@@ -1094,28 +1004,6 @@ input PaidDetailScalarWhereInput {
 
   """All values greater than or equal the given value."""
   amounttaken_gte: Float
-  amountlefttotake: Float
-
-  """All values that are not equal to given value."""
-  amountlefttotake_not: Float
-
-  """All values that are contained in given list."""
-  amountlefttotake_in: [Float!]
-
-  """All values that are not contained in given list."""
-  amountlefttotake_not_in: [Float!]
-
-  """All values less than the given value."""
-  amountlefttotake_lt: Float
-
-  """All values less than or equal the given value."""
-  amountlefttotake_lte: Float
-
-  """All values greater than the given value."""
-  amountlefttotake_gt: Float
-
-  """All values greater than or equal the given value."""
-  amountlefttotake_gte: Float
 }
 
 type PaidDetailSubscriptionPayload {
@@ -1157,33 +1045,21 @@ input PaidDetailSubscriptionWhereInput {
 
 input PaidDetailUpdateInput {
   description: String
-  amounttopay: Float
   amountpaid: Float
-  amountlefttopay: Float
-  amounttotake: Float
   amounttaken: Float
-  amountlefttotake: Float
   supplier: SupplierUpdateOneRequiredWithoutPaidInput
 }
 
 input PaidDetailUpdateManyDataInput {
   description: String
-  amounttopay: Float
   amountpaid: Float
-  amountlefttopay: Float
-  amounttotake: Float
   amounttaken: Float
-  amountlefttotake: Float
 }
 
 input PaidDetailUpdateManyMutationInput {
   description: String
-  amounttopay: Float
   amountpaid: Float
-  amountlefttopay: Float
-  amounttotake: Float
   amounttaken: Float
-  amountlefttotake: Float
 }
 
 input PaidDetailUpdateManyWithoutSupplierInput {
@@ -1205,12 +1081,8 @@ input PaidDetailUpdateManyWithWhereNestedInput {
 
 input PaidDetailUpdateWithoutSupplierDataInput {
   description: String
-  amounttopay: Float
   amountpaid: Float
-  amountlefttopay: Float
-  amounttotake: Float
   amounttaken: Float
-  amountlefttotake: Float
 }
 
 input PaidDetailUpdateWithWhereUniqueWithoutSupplierInput {
@@ -1335,28 +1207,6 @@ input PaidDetailWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
-  amounttopay: Float
-
-  """All values that are not equal to given value."""
-  amounttopay_not: Float
-
-  """All values that are contained in given list."""
-  amounttopay_in: [Float!]
-
-  """All values that are not contained in given list."""
-  amounttopay_not_in: [Float!]
-
-  """All values less than the given value."""
-  amounttopay_lt: Float
-
-  """All values less than or equal the given value."""
-  amounttopay_lte: Float
-
-  """All values greater than the given value."""
-  amounttopay_gt: Float
-
-  """All values greater than or equal the given value."""
-  amounttopay_gte: Float
   amountpaid: Float
 
   """All values that are not equal to given value."""
@@ -1379,50 +1229,6 @@ input PaidDetailWhereInput {
 
   """All values greater than or equal the given value."""
   amountpaid_gte: Float
-  amountlefttopay: Float
-
-  """All values that are not equal to given value."""
-  amountlefttopay_not: Float
-
-  """All values that are contained in given list."""
-  amountlefttopay_in: [Float!]
-
-  """All values that are not contained in given list."""
-  amountlefttopay_not_in: [Float!]
-
-  """All values less than the given value."""
-  amountlefttopay_lt: Float
-
-  """All values less than or equal the given value."""
-  amountlefttopay_lte: Float
-
-  """All values greater than the given value."""
-  amountlefttopay_gt: Float
-
-  """All values greater than or equal the given value."""
-  amountlefttopay_gte: Float
-  amounttotake: Float
-
-  """All values that are not equal to given value."""
-  amounttotake_not: Float
-
-  """All values that are contained in given list."""
-  amounttotake_in: [Float!]
-
-  """All values that are not contained in given list."""
-  amounttotake_not_in: [Float!]
-
-  """All values less than the given value."""
-  amounttotake_lt: Float
-
-  """All values less than or equal the given value."""
-  amounttotake_lte: Float
-
-  """All values greater than the given value."""
-  amounttotake_gt: Float
-
-  """All values greater than or equal the given value."""
-  amounttotake_gte: Float
   amounttaken: Float
 
   """All values that are not equal to given value."""
@@ -1445,28 +1251,6 @@ input PaidDetailWhereInput {
 
   """All values greater than or equal the given value."""
   amounttaken_gte: Float
-  amountlefttotake: Float
-
-  """All values that are not equal to given value."""
-  amountlefttotake_not: Float
-
-  """All values that are contained in given list."""
-  amountlefttotake_in: [Float!]
-
-  """All values that are not contained in given list."""
-  amountlefttotake_not_in: [Float!]
-
-  """All values less than the given value."""
-  amountlefttotake_lt: Float
-
-  """All values less than or equal the given value."""
-  amountlefttotake_lte: Float
-
-  """All values greater than the given value."""
-  amountlefttotake_gt: Float
-
-  """All values greater than or equal the given value."""
-  amountlefttotake_gte: Float
   supplier: SupplierWhereInput
 }
 

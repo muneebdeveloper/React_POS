@@ -22,6 +22,7 @@ import ProductAdd from './ProductAdd';
 import ProductAddDetail from './ProductAddDetail';
 import EditDialog from './EditDialog';
 import ProductDefine from '../../define/Product';
+import SubmitStock from './SubmitStock';
 
 import styles from './ProductAdd.css';
 import styles2 from './index.css';
@@ -106,9 +107,52 @@ const STOCKITEM_REMOVE_MUTATION = gql`
     }
 `;
 
+const SUPPLIER_UPDATE_MUTATION = gql`
+    mutation SUPPLIER_UPDATE_MUTATION($amounttopay:Float,$id:ID!){
+        updateSupplier(data:{
+            amounttopay:$amounttopay
+        },where:{
+            id:$id
+        }){
+            name
+        }
+    }
+`;
+
+const PAIDDETAIL_CREATE_MUTATION = gql`
+    mutation PAIDDETAIL_CREATE_MUTATION($description:String,$amountpaid:Float,$id:ID!){
+        createPaidDetail(data:{
+            description:$description,
+            amountpaid:$amountpaid,
+            supplier:{
+                connect:{
+                    id:$id
+                }
+            }
+        }){
+            createdAt
+        }
+    }
+`;
+
 
 class ProductAddMain extends Component{
 
+    constructor(props){
+        super(props);
+        this.inputFieldFocusRef = React.createRef();
+    }
+
+    componentDidUpdate(){
+        // console.log(document.elementFromPoint(1,1).className);
+        // if(document.elementFromPoint(0,0).className=='container'){
+        //     console.log("done")
+        // }
+        if(!this.state.barcode && this.state.submitDisabled && document.elementFromPoint(0,0).className=='container'){
+            this.inputFieldFocusRef.current.focus();
+        }
+
+    }
    
 
     state={
@@ -145,7 +189,11 @@ class ProductAddMain extends Component{
         totalBuyPrice:0,
         totalSellPrice:0,
         totalWholeSalePrice:0,
-        totalNoOfPieces:0
+        totalNoOfPieces:0,
+        supplier_description:'',
+        supplier_amountpaid:'',
+        submitStockDialogOpen:false,
+        submitDisabled:true
     }
 
    
@@ -166,7 +214,7 @@ class ProductAddMain extends Component{
 
     barcodeSubmitHandler=client=>async e =>{
         this.setState({
-            loadingBar:true
+            loadingBar:true,
         });
         e.preventDefault();
         try{
@@ -183,7 +231,8 @@ class ProductAddMain extends Component{
         this.setState({
             productID:product.id,
             productname:product.name,
-            loadingBar:false
+            loadingBar:false,
+            submitDisabled:false
         });
         }else{
             this.setState({
@@ -204,8 +253,11 @@ class ProductAddMain extends Component{
 
     stockSubmitHandler=createStockItem=> async e=>{
         e.preventDefault();
-        const res =  await createStockItem();
         const {productname,badge,buyprice,sellprice,wholesaleprice,noofpieces,expiry,productDetail} = this.state;
+        this.setState({
+            productname:'',
+        })
+        const res =  await createStockItem();
         const stockItem = {
             id:res.data.createStockItem.id,
             productname,
@@ -214,7 +266,7 @@ class ProductAddMain extends Component{
             sellprice,
             wholesaleprice,
             noofpieces,
-            expiry 
+            expiry
         }
         const stockArray = [...productDetail,stockItem];
         let calcTotalBuyPrice=0,calcTotalSellPrice=0,calcTotalWholeSalePrice=0,calcTotalNoOfPieces=0;
@@ -237,10 +289,11 @@ class ProductAddMain extends Component{
             wholesaleprice:'',
             noofpieces:'',
             expiry:'',
+            submitDisabled:true,
             totalBuyPrice:calcTotalBuyPrice,
             totalSellPrice:calcTotalSellPrice,
             totalWholeSalePrice:calcTotalWholeSalePrice,
-            totalNoOfPieces:calcTotalNoOfPieces
+            totalNoOfPieces:calcTotalNoOfPieces,
         });
     }
 
@@ -280,6 +333,50 @@ class ProductAddMain extends Component{
         await updateStockItem();
     }
 
+    submitStockHandler = (updateSupplier,createPaidDetail)=>async (e)=>{
+        e.preventDefault();
+        const {
+            totalBuyPrice,
+            supplier_amountpaid,
+            supplier_id,
+        } = this.state;
+        let amountVar = totalBuyPrice - Number(supplier_amountpaid);
+        try{
+        if(supplier_amountpaid>0){
+            await createPaidDetail();
+            await updateSupplier({
+                variables:{
+                    amounttopay:amountVar,
+                    id:supplier_id
+                }
+            });
+        }
+        else{
+            await updateSupplier({
+                variables:{
+                    amounttopay:amountVar,
+                    id:supplier_id
+                }
+            });
+        }
+        this.setState({
+            snackbarOpen:true,
+            snackbarMessage:"Amount has been successfully paid",
+            submitDisabled:true,
+            submitStockDialogOpen:false
+        })
+        }
+        catch(err){
+            this.setState({
+                submitStockDialogOpen:false,
+                errorDialogOpen:true,
+                errorMessage:"Something went wrong"
+            })
+           
+        }
+    }
+
+
     render(){
         const { barcode,
                 productname,
@@ -314,7 +411,11 @@ class ProductAddMain extends Component{
                 totalBuyPrice,
                 totalSellPrice,
                 totalWholeSalePrice,
-                totalNoOfPieces
+                totalNoOfPieces,
+                supplier_description,
+                supplier_amountpaid,
+                submitStockDialogOpen,
+                submitDisabled
               } = this.state;
    
         return(
@@ -427,6 +528,7 @@ class ProductAddMain extends Component{
                                         value={barcode}
                                         required
                                         onChange={this.changeHandler}
+                                        inputRef={this.inputFieldFocusRef}
                                     />
 
                                     <Button
@@ -502,6 +604,7 @@ class ProductAddMain extends Component{
                                         wholesaleprice={wholesaleprice}
                                         noofpieces={noofpieces}
                                         expiry={expiry}
+                                        submitDisabled={submitDisabled}
                                      />
                                      <SnackBar 
                                         snackbarValue={snackbarOpen} 
@@ -547,7 +650,7 @@ class ProductAddMain extends Component{
                                                         sellprice={sellprice}
                                                         wholesaleprice={wholesaleprice}
                                                         noofpieces={noofpieces}
-                                                        expiry={expiry}
+                                                        expiry={expiry.split("T").shift().split("-").reverse().join("-")}
                                                         dialogHandlerEdit={this.editDialogQueryHandler(client)}
                                                         dialogHandlerRemove={(id,index)=>this.setState({dialogRemoveOpen:true,stockitem_edit_id:id,stockitem_edit_index:index})}
                                                     />
@@ -577,7 +680,8 @@ class ProductAddMain extends Component{
                              <Button
                                 variant="contained"
                                 size="large"
-                                // disabled
+                                disabled={productDetail.length<=0}
+                                onClick={()=>this.setState({submitStockDialogOpen:true})}
                              >
                                  Submit Stock
                              </Button>
@@ -593,6 +697,61 @@ class ProductAddMain extends Component{
                                 <DialogContent>
                                     <ProductDefine />
                                 </DialogContent>
+                         </Dialog>
+
+                         <Dialog open={submitStockDialogOpen} onClose={()=>this.setState({submitStockDialogOpen:false})}>
+
+                                <div className="dialogTitleStyle">
+                                    <h2>Submit Stock</h2>
+                                    <IconButton onClick={()=>this.setState({submitStockDialogOpen:false})}>
+                                            <Cancel className={styles2.delete} />
+                                    </IconButton>
+                                </div>
+                            
+                            <Mutation 
+                                mutation={SUPPLIER_UPDATE_MUTATION}
+                            >
+                                {
+                                    (updateSupplier,{loading:loading1})=>{
+                                        return(
+                                            <Mutation 
+                                                mutation={PAIDDETAIL_CREATE_MUTATION}
+                                                variables={{
+                                                    description:supplier_description,
+                                                    amountpaid:Number(supplier_amountpaid),
+                                                    id:supplier_id
+                                                }}
+                                            >
+                                            {
+                                                (createPaidDetail,{loading:loading2})=>{
+                                                    if(loading1 || loading2){
+                                                        return(
+                                                            <div className="dialogLoadingStyle">
+                                                                <CircularProgress size={70} />
+                                                            </div>
+                                                        )
+                                                    }
+
+                                                    return(
+                                                            <DialogContent>
+                                                                <SubmitStock
+                                                                    totalBuyPrice={totalBuyPrice}
+                                                                    supplier_name={supplier_name}
+                                                                    supplier_description={supplier_description}
+                                                                    supplier_amountpaid={supplier_amountpaid}
+                                                                    submitStockHandler={this.submitStockHandler(updateSupplier,createPaidDetail)}
+                                                                    prochangeHandler={this.changeHandler}
+                                                                />
+                                                            </DialogContent>
+                                                    )
+                                                }
+                                            }
+                                            </Mutation>
+                                        )
+                                    }
+                                }
+                            </Mutation>
+
                          </Dialog>
 
                         <Dialog open={dialogEditOpen} onClose={()=>this.setState({dialogEditOpen:false})}>
@@ -634,6 +793,7 @@ class ProductAddMain extends Component{
                                                                 noofpieces:editnoofpieces,
                                                                 expiry:editexpiry
                                                             }
+                                                            console.log(editexpiry);
                                                             state.productDetail[stockitem_edit_index] = newstockObject;
                                                             let calcTotalBuyPrice=0,calcTotalSellPrice=0,calcTotalWholeSalePrice=0,calcTotalNoOfPieces=0;
                                                             state.productDetail.map(
@@ -707,7 +867,7 @@ class ProductAddMain extends Component{
                 <Dialog open={dialogRemoveOpen} onClose={()=>this.setState({dialogRemoveOpen:false})} >
 
                             <div style={{padding:"16px 24px"}}>
-                                <h2>Are you sure, you want to remove this supplier?</h2>
+                                <h2>Are you sure, you want to remove this stock item?</h2>
                             </div>
                             <Mutation
                                 mutation={STOCKITEM_REMOVE_MUTATION}

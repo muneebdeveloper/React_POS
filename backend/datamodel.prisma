@@ -10,8 +10,8 @@ type Supplier{
   email:String
   phone: String
   address: String
-  amounttotake: Float
-  amounttopay: Float
+  amounttotake: Float @default(value:0)
+  amounttopay: Float @default(value:0)
   paid: [PaidDetail!]!
 }
 
@@ -19,12 +19,8 @@ type PaidDetail{
   id: ID! @id
   createdAt : DateTime @createdAt
   description : String
-  amounttopay: Float
   amountpaid : Float
-  amountlefttopay: Float
-  amounttotake:Float
   amounttaken:Float
-  amountlefttotake:Float
   supplier:Supplier!
 }
 

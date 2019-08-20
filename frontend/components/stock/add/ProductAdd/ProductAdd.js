@@ -1,18 +1,18 @@
-import React from 'react';
+import React,{Component} from 'react';
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import DialogActions from '@material-ui/core/DialogActions';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 import styles from './ProductAdd.css';
 
 
 
-const ProductAdd = (props)=>{
+class ProductAdd extends Component{
+    
 
-        const { prochangeHandler,
+      render(){  const { prochangeHandler,
                 stockChangeHandler,
                 productname,
                 badge,
@@ -20,8 +20,9 @@ const ProductAdd = (props)=>{
                 sellprice,
                 wholesaleprice,
                 noofpieces,
-                expiry
-              } = props;
+                expiry,
+                submitDisabled
+              } = this.props;
 
         return(
             
@@ -41,7 +42,7 @@ const ProductAdd = (props)=>{
                             type="text"
                             name="badge"
                             value={badge}
-                            autoFocus={productname?true:false}
+                            autoFocus={productname && true}
                             onChange={prochangeHandler}
                         />
         
@@ -104,6 +105,7 @@ const ProductAdd = (props)=>{
                                 type="submit"
                                 variant="contained"
                                 size="large"
+                                disabled={submitDisabled}
                             >
                                 Create Stock
                             </Button>
@@ -111,6 +113,7 @@ const ProductAdd = (props)=>{
                         
                     </form>
                     );
+                        }
 
     }
 
