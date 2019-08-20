@@ -14,7 +14,7 @@ import Manage_Cash_Table from './Manage_Cash_Table';
 class Manage_Cash extends Component{
 
 
-    summaryClickHandler = (id,name)=>{
+    summaryClickHandler = (id)=>{
         Router.push(`/supplier_cash_manage_summary?id=${id}`);    
     }
 

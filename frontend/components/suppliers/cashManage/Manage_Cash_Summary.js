@@ -3,6 +3,8 @@ import {Query,Mutation} from 'react-apollo';
 import gql from 'graphql-tag';
 
 import Intro from '../../misc/Intro';
+import ErrorDialog from '../../misc/ErrorDialog';
+import SnackBar from '../../misc/SnackBar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -29,12 +31,8 @@ const SUPPLIER_PAID_DETAILS = gql`
             paid{
                 createdAt
                 description
-                amounttopay
                 amountpaid
-                amountlefttopay
-                amounttotake
                 amounttaken
-                amountlefttotake
             }
         }
     }
@@ -66,23 +64,15 @@ const UPDATE_SUPPLIER_AMOUNTTAKE_MUTATION = gql`
 const CREATE_PAID_DETAIL_MUTATION = gql`
     mutation CREATE_PAID_DETAIL_MUTATION(
         $description:String,
-        $amounttopay:Float,
         $amountpaid:Float!,
-        $amountlefttopay:Float,
-        $amounttotake:Float,
         $amounttaken:Float,
-        $amountlefttotake:Float,
         $id:ID!
         ){
         createPaidDetail(
             data:{
                 description:$description,
-                amounttopay:$amounttopay,
                 amountpaid:$amountpaid,
-                amountlefttopay:$amountlefttopay,
-                amounttotake:$amounttotake,
                 amounttaken:$amounttaken,
-                amountlefttotake:$amountlefttotake,
                 supplier:{
                     connect:{
                         id:$id
@@ -100,13 +90,17 @@ class Manage_Cash_Summary extends Component{
     state={
         toggleAmountOpen:false,
         toggleReceiveOpen:false,
-        payDialog:'',
-        payReceiveDialog:'',
-        AmountToPay:'',
-        AmountToTake:'',
-        amountValue:'',
+        payDialog:null,
+        payReceiveDialog:null,
+        amountToPay:'',
+        amountToTake:'',
         receiveDescription:'',
-        receiveValue:''
+        receiveToPay:'',
+        receiveToTake:'',
+        snackbarOpen:false,
+        snackbarMessage:'',
+        errorDialogOpen:false,
+        errorDialogMessage:''
     }
 
     toggleAmountDialog = (value,type)=>()=>{
@@ -177,12 +171,16 @@ class Manage_Cash_Summary extends Component{
         const { toggleAmountOpen,
                 toggleReceiveOpen,
                 payDialog,
-                amountValue,
                 receiveDescription,
-                receiveValue,
+                receiveToPay,
+                receiveToTake,
                 payReceiveDialog,
-                AmountToPay,
-                AmountToTake
+                amountToPay,
+                amountToTake,
+                snackbarOpen,
+                snackbarMessage,
+                errorDialogOpen,
+                errorDialogMessage
               } = this.state;
               
               
@@ -199,44 +197,59 @@ class Manage_Cash_Summary extends Component{
                     fetchPolicy='network-only'
                     >
                     {
-                        ({data:{supplier},error,loading})=>{
+                        ({data,loading})=>{
+
                             if(loading){
                                 return(
-                                <div style={{display:"flex",justifyContent:"center"}}>
+                                <div className="mainLoadingStyle">
                                     <CircularProgress size={70} />
                                 </div>
+                                )
+                            }
+
+                            if(errorDialogOpen){
+                                return(
+                                    <ErrorDialog dialogValue={errorDialogOpen} dialogClose={()=>this.setState({errorDialogOpen:false})}>
+                                        {errorDialogMessage}
+                                    </ErrorDialog>
                                 )
                             }
                          
                             
                             return(
                                 <>
-                                <h2>Supplier Name: {supplier.name}</h2>
-                                <div style={{display:"flex",justifyContent:"space-evenly"}}>
-                                    <div style={{textAlign:"center"}}>
-                                        <h3>Amount to pay</h3>
-                                        <div>{supplier.amounttopay}</div>
-                                        <Button 
-                                            variant="contained"
-                                            onClick={this.toggleAmountDialog(true,"pay")}
-                                        >
-                                            Edit
-                                        </Button>
-                                    </div>
+                                <h2 style={{color:'#736464',marginBottom:'30px'}}>Supplier Name: {data.supplier.name}</h2>
+
+                                <div className="gutterbottomsmall">
+
+                                    <div className={`${styles.mainFlexStyling} gutterbottomsmall`}>
+
+                                        <div className={styles.mainFlexStylingChild}>
+                                            <h3>Amount to pay</h3>
+                                            <span>{data.supplier.amounttopay}</span>
+                                            <Button 
+                                                variant="contained"
+                                                onClick={this.toggleAmountDialog(true,"pay")}
+                                                size="small"
+                                            >
+                                                Edit
+                                            </Button>
+                                        </div>
                                     
-                                    <div style={{textAlign:"center"}}>
-                                        <h3>Amount to take</h3>
-                                        <div>{supplier.amounttotake}</div>
+                                    <div className={styles.mainFlexStylingChild}>
+                                        <h2>Amount to take</h2>
+                                        <div>{data.supplier.amounttotake}</div>
                                         <Button 
                                             variant="contained"
                                             onClick={this.toggleAmountDialog(true,"take")}
+                                            size="small"
                                         >
                                             Edit
                                         </Button>
                                     </div>
 
                                 </div>
-                                <div style={{display:"flex",justifyContent:"flex-end"}}>
+                                <DialogActions>
                                     <Button 
                                         variant="contained"
                                         onClick={this.toggleReceiveDialog(true,"take")}
@@ -250,32 +263,25 @@ class Manage_Cash_Summary extends Component{
                                     >
                                         Pay Now
                                     </Button>
+                                </DialogActions>
                                 </div>
                                 <table>
                                     <thead>
                                         <tr  style={{backgroundColor:'black',color:'white'}}>
                                             <th>Sr#</th>
-                                            <th>Created At</th>
+                                            <th>Date</th>
                                             <th>Description</th>
-                                            <th>Amount to Pay</th>
                                             <th>Amount Paid</th>
-                                            <th>Amount left to pay</th>
-                                            <th>Amount to take</th>
                                             <th>Amount taken</th>
-                                            <th>Amount left to take</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {
-                                            supplier.paid.map((paidDetail,index)=>{
+                                        {   data.supplier.paid &&
+                                            data.supplier.paid.map((paidDetail,index)=>{
                                                 const { createdAt,
                                                         description,
-                                                        amounttopay,
                                                         amountpaid,
-                                                        amountlefttopay,
-                                                        amounttotake,
                                                         amounttaken,
-                                                        amountlefttotake
                                                     } = paidDetail;
                                                 return(
                                                 <Manage_Cash_Summary_Table 
@@ -283,12 +289,8 @@ class Manage_Cash_Summary extends Component{
                                                     sr={index+1} 
                                                     createdAt={createdAt.split("T").shift().split("-").reverse().join("-")}
                                                     description={description}
-                                                    amounttopay={amounttopay}
                                                     amountpaid={amountpaid}
-                                                    amountlefttopay={amountlefttopay}
-                                                    amounttotake={amounttotake}
                                                     amounttaken={amounttaken}
-                                                    amountlefttotake={amountlefttotake}
                                                 />
                                                 )
                                             }   
@@ -310,16 +312,38 @@ class Manage_Cash_Summary extends Component{
                     <Mutation 
                         awaitRefetchQueries
                         mutation={payDialog?UPDATE_SUPPLIER_AMOUNTPAY_MUTATION:UPDATE_SUPPLIER_AMOUNTTAKE_MUTATION} 
-                        variables={payDialog?{id:this.props.id,amounttopay:Number(amountValue)}:{id:this.props.id,amounttotake:Number(amountValue)}}
-                        refetchQueries={[{query:SUPPLIER_PAID_DETAILS,variables:{id:this.props.id}}]}    
+                        variables={payDialog?{id:this.props.id,amounttopay:Number(amountToPay)}:{id:this.props.id,amounttotake:Number(amountToTake)}}
+                        refetchQueries={[{query:SUPPLIER_PAID_DETAILS,variables:{id:this.props.id}}]}
+                        onCompleted={
+                            ()=>{
+                                let message;
+                                if(payDialog){
+                                    message = "Supplier Amount to pay is successfully updated"
+                                }else{
+                                    message = "Supplier Amount to take is successfully updated"
+                                }
+                                this.setState({
+                                    snackbarOpen:true,
+                                    snackbarMessage:message
+                                })
+                            }
+                        }
+                        onError = {
+                            ()=>{
+                                this.setState({
+                                    errorDialogOpen:true,
+                                    errorDialogMessage:"Something went wrong"
+                                })
+                            }
+                        }
                     >
                         {
                             (updateSupplier,{loading})=>{
 
                                 if(loading){
                                     return(
-                                        <div style={{padding:"8px 24px 20px",display:"flex",justifyContent:'center'}}>
-                                                            <CircularProgress size={70} />
+                                        <div className="dialogLoadingStyle">
+                                            <CircularProgress size={70} />
                                         </div>
                                     );
                                 }
@@ -333,8 +357,8 @@ class Manage_Cash_Summary extends Component{
                                             label={payDialog ? "Amount to pay" : "Amount to take"}
                                             variant="outlined"
                                             type="number"
-                                            name="amountValue"
-                                            value={amountValue}
+                                            name={payDialog ? "amountToPay" : "amountToTake"}
+                                            value={payDialog ? amountToPay : amountToTake}
                                             onChange={this.amountInputHandler}
                                             required
                                             fullWidth
@@ -372,19 +396,11 @@ class Manage_Cash_Summary extends Component{
                         variables={{
                             description:receiveDescription,
                             ...(payReceiveDialog?{
-                                amounttopay:Number(AmountToPay),
-                                amountpaid:Number(receiveValue),
-                                amountlefttopay:Number(AmountToPay)-Number(receiveValue),
-                                amounttotake:0,
-                                amounttaken:0,
-                                amountlefttotake:0
+                                amountpaid:Number(receiveToPay),
+                                amounttaken:null,
                             }:{
-                                amounttotake:Number(AmountToTake),
-                                amounttaken:Number(receiveValue),
-                                amountlefttotake:Number(AmountToTake)-Number(receiveValue),
-                                amounttopay:0,
-                                amountpaid:0,
-                                amountlefttopay:0
+                                amounttaken:Number(receiveToTake),
+                                amountpaid:null
                             }),
                             id:this.props.id
                             }}
@@ -427,8 +443,8 @@ class Manage_Cash_Summary extends Component{
                                     <TextField 
                                         label="Amount"
                                         variant="outlined"
-                                        name="receiveValue"
-                                        value={receiveValue}
+                                        name={payReceiveDialog?"receiveToPay":"receiveToTake"}
+                                        value={payReceiveDialog?"receiveToPay":"receiveToTake"}
                                         required
                                         fullWidth
                                         className={styles.marginbottom30}
@@ -452,6 +468,9 @@ class Manage_Cash_Summary extends Component{
 
                    
                 </Dialog>
+                <SnackBar snackbarValue={snackbarOpen} snackbarClose={()=>this.setState({snackbarOpen:false})}>
+                    {snackbarMessage}
+                </SnackBar>
             </>
         );
     }

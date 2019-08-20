@@ -4,7 +4,7 @@ const Manage_Cash_Table = (props)=>{
 
     const {id,sr,name,phone,address,rowClickHandler} = props;
     return(
-        <tr onClick={()=>rowClickHandler(id,name)}>
+        <tr onClick={()=>rowClickHandler(id)}>
             <td>{sr}</td>
             <td>{name}</td>
             <td>{phone}</td>
