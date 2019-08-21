@@ -92,11 +92,11 @@ tbody tr:hover{
     background-color:#292828;
 }
 
-.MuiFormLabel-root.Mui-focused{
+.MuiFormLabel-root.Mui-focused:not(.Mui-error){
     color:black !important;
 }
 
-.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
+.MuiOutlinedInput-root.Mui-focused:not(.Mui-error) .MuiOutlinedInput-notchedOutline:not(.Mui-error){
     border-color:black !important;
 }
 

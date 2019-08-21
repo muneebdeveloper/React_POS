@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Query,Mutation} from 'react-apollo';
+import {Query,Mutation,ApolloConsumer} from 'react-apollo';
 import gql from 'graphql-tag';
 
 import Intro from '../../misc/Intro';
@@ -39,7 +39,7 @@ const SUPPLIER_PAID_DETAILS = gql`
 `;
 
 const UPDATE_SUPPLIER_AMOUNTPAY_MUTATION = gql`
-    mutation UPDATE_SUPPLIER_AMOUNTPAY_MUTATION($id:ID!, $amounttopay:Float!){
+    mutation UPDATE_SUPPLIER_AMOUNTPAY_MUTATION($id:ID!, $amounttopay:Float){
         updateSupplier(
             where:{id:$id},
             data:{amounttopay:$amounttopay}
@@ -50,7 +50,7 @@ const UPDATE_SUPPLIER_AMOUNTPAY_MUTATION = gql`
 `;
 
 const UPDATE_SUPPLIER_AMOUNTTAKE_MUTATION = gql`
-    mutation UPDATE_SUPPLIER_AMOUNTPAY_MUTATION($id:ID!, $amounttotake:Float!){
+    mutation UPDATE_SUPPLIER_AMOUNTPAY_MUTATION($id:ID!, $amounttotake:Float){
         updateSupplier(
             where:{id:$id},
             data:{amounttotake:$amounttotake}
@@ -64,7 +64,7 @@ const UPDATE_SUPPLIER_AMOUNTTAKE_MUTATION = gql`
 const CREATE_PAID_DETAIL_MUTATION = gql`
     mutation CREATE_PAID_DETAIL_MUTATION(
         $description:String,
-        $amountpaid:Float!,
+        $amountpaid:Float,
         $amounttaken:Float,
         $id:ID!
         ){
@@ -92,6 +92,8 @@ class Manage_Cash_Summary extends Component{
         toggleReceiveOpen:false,
         payDialog:null,
         payReceiveDialog:null,
+        fixedAmountToPay:0,
+        fixedAmountToTake:0,
         amountToPay:'',
         amountToTake:'',
         receiveDescription:'',
@@ -155,15 +157,48 @@ class Manage_Cash_Summary extends Component{
         e.preventDefault();
         await updateSupplier();
         this.setState({
-            toggleAmountOpen:false
+            toggleAmountOpen:false,
         });
     }
 
-    amountReceiptHandler = (createPaidDetail)=>async e=>{
+    amountReceiptHandler = (createPaidDetail,client,payCheck)=>async e=>{
+        let {
+            fixedAmountToPay,
+            fixedAmountToTake,
+            receiveToPay,
+            receiveToTake
+        } = this.state;
         e.preventDefault();
+        let amountLeft;
+        if(payCheck){
+            amountLeft = Number(fixedAmountToPay) - Number(receiveToPay);
+        }else{
+            amountLeft = Number(fixedAmountToTake) - Number(receiveToTake);
+        }
+       
+        client.mutate({
+            ...(payCheck?{
+                    mutation:UPDATE_SUPPLIER_AMOUNTPAY_MUTATION,
+                    variables:{
+                        amounttopay:amountLeft,
+                        id:this.props.id,
+                    }
+                }:
+                {
+                    mutation:UPDATE_SUPPLIER_AMOUNTTAKE_MUTATION,
+                    variables:{
+                        id:this.props.id,
+                        amounttotake:amountLeft
+                    }
+                }
+            ),
+        })
         await createPaidDetail();
         this.setState({
-            toggleReceiveOpen:false
+            toggleReceiveOpen:false,
+            receiveToPay:'',
+            receiveToTake:'',
+            receiveDescription:''
         })
     }
     
@@ -177,6 +212,8 @@ class Manage_Cash_Summary extends Component{
                 payReceiveDialog,
                 amountToPay,
                 amountToTake,
+                fixedAmountToPay,
+                fixedAmountToTake,
                 snackbarOpen,
                 snackbarMessage,
                 errorDialogOpen,
@@ -191,8 +228,10 @@ class Manage_Cash_Summary extends Component{
                     query={SUPPLIER_PAID_DETAILS} 
                     variables={{id:this.props.id}}
                     onCompleted={({supplier})=>this.setState({
-                        AmountToPay:supplier.amounttopay,
-                        AmountToTake:supplier.amounttotake
+                        amountToPay:supplier.amounttopay,
+                        fixedAmountToPay:supplier.amounttopay,
+                        fixedAmountToTake:supplier.amounttotake,
+                        amountToTake:supplier.amounttotake
                     })}
                     fetchPolicy='network-only'
                     >
@@ -226,7 +265,7 @@ class Manage_Cash_Summary extends Component{
 
                                         <div className={styles.mainFlexStylingChild}>
                                             <h3>Amount to pay</h3>
-                                            <span>{data.supplier.amounttopay}</span>
+                                            <span>{fixedAmountToPay}</span>
                                             <Button 
                                                 variant="contained"
                                                 onClick={this.toggleAmountDialog(true,"pay")}
@@ -238,7 +277,7 @@ class Manage_Cash_Summary extends Component{
                                     
                                     <div className={styles.mainFlexStylingChild}>
                                         <h2>Amount to take</h2>
-                                        <div>{data.supplier.amounttotake}</div>
+                                        <div>{fixedAmountToTake}</div>
                                         <Button 
                                             variant="contained"
                                             onClick={this.toggleAmountDialog(true,"take")}
@@ -253,13 +292,14 @@ class Manage_Cash_Summary extends Component{
                                     <Button 
                                         variant="contained"
                                         onClick={this.toggleReceiveDialog(true,"take")}
+                                        disabled={!fixedAmountToTake}
                                     >
                                         Take Now
                                     </Button>
                                     <Button 
                                         variant="contained"
-                                        className={styles.checkred}
                                         onClick={this.toggleReceiveDialog(true,"pay")}
+                                        disabled={!fixedAmountToPay}
                                     >
                                         Pay Now
                                     </Button>
@@ -389,82 +429,107 @@ class Manage_Cash_Summary extends Component{
                         {payReceiveDialog ? "Pay Amount" : "Take Amount"}
                     </DialogTitle>
                     
-
-                    <Mutation
-                        awaitRefetchQueries
-                        mutation={CREATE_PAID_DETAIL_MUTATION}
-                        variables={{
-                            description:receiveDescription,
-                            ...(payReceiveDialog?{
-                                amountpaid:Number(receiveToPay),
-                                amounttaken:null,
-                            }:{
-                                amounttaken:Number(receiveToTake),
-                                amountpaid:null
-                            }),
-                            id:this.props.id
-                            }}
-                        refetchQueries={
-                            [
-                                {
-                                    query:SUPPLIER_PAID_DETAILS,
-                                    variables:{
-                                        id:this.props.id
-                                    }
-                                }
-                            ]
-                        }
-                    >
+                    <ApolloConsumer>
                         {
-                            (createPaidDetail,{loading})=>{
-
-                                if(loading){
-                                    return(
-                                        <div style={{padding:"8px 24px 20px",display:"flex",justifyContent:'center'}}>
-                                                            <CircularProgress size={70} />
-                                        </div>
-                                    );
-                                }
-
+                            (client)=>{
                                 return(
-                                    <form onSubmit={this.amountReceiptHandler(createPaidDetail)}>
-                                    <DialogContent>
-                                    <TextField 
-                                        label="Description"
-                                        variant="outlined"
-                                        name="receiveDescription"
-                                        value={receiveDescription}
-                                        required
-                                        fullWidth
-                                        autoFocus
-                                        className={styles.marginbottom30}
-                                        onChange={this.amountInputHandler}
-                                    />
-                                    <TextField 
-                                        label="Amount"
-                                        variant="outlined"
-                                        name={payReceiveDialog?"receiveToPay":"receiveToTake"}
-                                        value={payReceiveDialog?"receiveToPay":"receiveToTake"}
-                                        required
-                                        fullWidth
-                                        className={styles.marginbottom30}
-                                        onChange={this.amountInputHandler}
-                                        />
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <Button 
-                                            variant="contained"
-                                            type="submit"
-                                        >
-                                            {payReceiveDialog ? "Pay Now":"Take Now"}
-                                        </Button>
-                                    </DialogActions>
-                                </form>
-            
+                                    <Mutation
+                                        awaitRefetchQueries
+                                        mutation={CREATE_PAID_DETAIL_MUTATION}
+                                        variables={{
+                                            description:receiveDescription,
+                                            ...(payReceiveDialog?{
+                                                amountpaid:Number(receiveToPay),
+                                                amounttaken:null,
+                                            }:{
+                                                amounttaken:Number(receiveToTake),
+                                                amountpaid:null
+                                            }),
+                                            id:this.props.id
+                                            }}
+                                        refetchQueries={
+                                            [
+                                                {
+                                                    query:SUPPLIER_PAID_DETAILS,
+                                                    variables:{
+                                                        id:this.props.id
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    >
+                                        {
+                                            (createPaidDetail,{loading})=>{
+
+                                                if(loading){
+                                                    return(
+                                                        <div className="dialogLoadingStyle">
+                                                            <CircularProgress size={70} />
+                                                        </div>
+                                                    );
+                                                }
+
+                                                return(
+                                                    <form onSubmit={this.amountReceiptHandler(createPaidDetail,client,payReceiveDialog)}>
+                                                    <DialogContent>
+                                                    <TextField 
+                                                        label="Description"
+                                                        variant="outlined"
+                                                        name="receiveDescription"
+                                                        value={receiveDescription}
+                                                        required
+                                                        fullWidth
+                                                        autoFocus
+                                                        className={styles.marginbottom30}
+                                                        onChange={this.amountInputHandler}
+                                                    />
+                                                    <TextField 
+                                                        label="Amount"
+                                                        variant="outlined"
+                                                        name={payReceiveDialog?"receiveToPay":"receiveToTake"}
+                                                        value={payReceiveDialog?receiveToPay:receiveToTake}
+                                                        required
+                                                        {
+                                                            ...(receiveToPay>fixedAmountToPay && payReceiveDialog && {error:true})
+                                                        }
+                                                        {
+                                                            ...(receiveToTake>fixedAmountToTake && !payReceiveDialog && {error:true})
+                                                        }
+                                                        {
+                                                           ...(receiveToPay>fixedAmountToPay && payReceiveDialog && {helperText:'It should not exceed the Amount to pay'})
+                                                        }
+                                                        {
+                                                            ...(receiveToTake>fixedAmountToTake && !payReceiveDialog  && {helperText:'It should not exceed the Amount to Take'})
+                                                        }
+                                                        fullWidth
+                                                        className={styles.marginbottom30}
+                                                        onChange={this.amountInputHandler}
+                                                        />
+                                                    </DialogContent>
+                                                    <DialogActions>
+                                                        <Button 
+                                                            variant="contained"
+                                                            type="submit"
+                                                            {
+                                                                ...(receiveToPay>fixedAmountToPay && payReceiveDialog && {disabled:true})
+                                                            }
+                                                            {
+                                                                ...(receiveToTake>fixedAmountToTake && !payReceiveDialog && {disabled:true})
+                                                            }
+                                                        >
+                                                            {payReceiveDialog ? "Pay Now":"Take Now"}
+                                                        </Button>
+                                                    </DialogActions>
+                                                </form>
+                            
+                                                )
+                                            }
+                                        }
+                                    </Mutation>
                                 )
                             }
                         }
-                    </Mutation>
+                    </ApolloConsumer>  
 
                    
                 </Dialog>

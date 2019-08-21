@@ -30,6 +30,14 @@ import styles2 from './index.css';
 import {ALL_SUPPLIERS_LIST_QUERY} from '../../../suppliers/editandremove/Suppliers_ed';
 
 
+const SUPPLIER_AMOUNT_TO_PAY_QUERY  =gql`
+    query SUPPLIER_AMOUNT_TO_PAY_QUERY($id:ID!){
+        supplier(where:{id:$id}){
+            amounttopay
+        }
+    }
+`;
+
 
 const PRODUCT_FIND_QUERY = gql`
     query PRODUCT_FIND_QUERY($barcode:String!){
@@ -192,8 +200,10 @@ class ProductAddMain extends Component{
         totalNoOfPieces:0,
         supplier_description:'',
         supplier_amountpaid:'',
+        supplier_previous_amount:0,
         submitStockDialogOpen:false,
-        submitDisabled:true
+        submitDisabled:true,
+        submitStockLoading:false
     }
 
    
@@ -251,7 +261,7 @@ class ProductAddMain extends Component{
         }
     }
 
-    stockSubmitHandler=createStockItem=> async e=>{
+    stockCreateHandler=createStockItem=> async e=>{
         e.preventDefault();
         const {productname,badge,buyprice,sellprice,wholesaleprice,noofpieces,expiry,productDetail} = this.state;
         this.setState({
@@ -333,16 +343,49 @@ class ProductAddMain extends Component{
         await updateStockItem();
     }
 
+    submitStockDialogQueryHandler = async (client)=>{
+        this.setState({
+            submitStockLoading:true,
+            submitStockDialogOpen:true
+        });
+        
+        try{
+            const res = await client.query({
+                query:SUPPLIER_AMOUNT_TO_PAY_QUERY,
+                variables:{
+                    id:this.state.supplier_id
+                },
+                fetchPolicy:'network-only'
+            })
+            this.setState({
+                submitStockLoading:false,
+                supplier_previous_amount:res.data.supplier.amounttopay
+            })
+        }
+        catch(error){
+            this.setState({
+                errorDialogOpen:true,
+                errorMessage:"Something went wrong"
+            })
+        }
+
+    }
+
     submitStockHandler = (updateSupplier,createPaidDetail)=>async (e)=>{
         e.preventDefault();
-        const {
+        let {
             totalBuyPrice,
             supplier_amountpaid,
             supplier_id,
+            supplier_previous_amount,
         } = this.state;
         let amountVar = totalBuyPrice - Number(supplier_amountpaid);
+            if(!supplier_previous_amount){
+                supplier_previous_amount = 0;
+            }
+            amountVar = amountVar + Number(supplier_previous_amount);
         try{
-        if(supplier_amountpaid>0){
+        if(Number(supplier_amountpaid)>0){
             await createPaidDetail();
             await updateSupplier({
                 variables:{
@@ -363,7 +406,12 @@ class ProductAddMain extends Component{
             snackbarOpen:true,
             snackbarMessage:"Amount has been successfully paid",
             submitDisabled:true,
-            submitStockDialogOpen:false
+            submitStockDialogOpen:false,
+            productDetail:[],
+            supplier_id:'',
+            supplier_name:'',
+            supplierDialog:true,
+            submitDisabled:true
         })
         }
         catch(err){
@@ -415,7 +463,8 @@ class ProductAddMain extends Component{
                 supplier_description,
                 supplier_amountpaid,
                 submitStockDialogOpen,
-                submitDisabled
+                submitDisabled,
+                submitStockLoading
               } = this.state;
    
         return(
@@ -524,7 +573,6 @@ class ProductAddMain extends Component{
                                         variant="outlined"
                                         type="text"
                                         name="barcode"
-                                        autoFocus
                                         value={barcode}
                                         required
                                         onChange={this.changeHandler}
@@ -596,7 +644,7 @@ class ProductAddMain extends Component{
                                     <>
                                     <ProductAdd 
                                         prochangeHandler={this.changeHandler}
-                                        stockChangeHandler={this.stockSubmitHandler(createStockItem)}
+                                        stockChangeHandler={this.stockCreateHandler(createStockItem)}
                                         productname={productname}
                                         badge={badge} 
                                         buyprice={buyprice}
@@ -676,16 +724,25 @@ class ProductAddMain extends Component{
                            
                          </table>
                          </div>
-                         <DialogActions>
-                             <Button
-                                variant="contained"
-                                size="large"
-                                disabled={productDetail.length<=0}
-                                onClick={()=>this.setState({submitStockDialogOpen:true})}
-                             >
-                                 Submit Stock
-                             </Button>
-                         </DialogActions>
+                         <ApolloConsumer>
+                             {
+                                 (client)=>{
+                                     return(
+                                        <DialogActions>
+                                            <Button
+                                            variant="contained"
+                                            size="large"
+                                            disabled={productDetail.length<=0}
+                                            onClick={()=>this.submitStockDialogQueryHandler(client)}
+                                            >
+                                                Submit Stock
+                                            </Button>
+                                         </DialogActions>
+                                     )
+                                 }
+                             }
+                         </ApolloConsumer>
+                        
 
                          <Dialog open={productCreateDialogOpen} onClose={()=>this.setState({productCreateDialogOpen:false})}>
                                 <div className="dialogTitleStyle">
@@ -707,7 +764,6 @@ class ProductAddMain extends Component{
                                             <Cancel className={styles2.delete} />
                                     </IconButton>
                                 </div>
-                            
                             <Mutation 
                                 mutation={SUPPLIER_UPDATE_MUTATION}
                             >
@@ -724,7 +780,7 @@ class ProductAddMain extends Component{
                                             >
                                             {
                                                 (createPaidDetail,{loading:loading2})=>{
-                                                    if(loading1 || loading2){
+                                                    if(loading1 || loading2 || submitStockLoading){
                                                         return(
                                                             <div className="dialogLoadingStyle">
                                                                 <CircularProgress size={70} />
