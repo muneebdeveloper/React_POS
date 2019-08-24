@@ -1,0 +1,15 @@
+.tableFoot>:first-child{
+    border:none;
+}
+
+.tableFoot>*:not(:first-child):not(.totalRow){
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.totalRow{
+    font-size: 35px;
+    font-weight: bolder;
+    text-align: center;
+}

@@ -6,7 +6,9 @@ type Query{
     stockItem(where: StockItemWhereUniqueInput!): StockItem
     supplier(where: SupplierWhereUniqueInput!): Supplier
     categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
+    products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
     lineItems(where: LineItemWhereInput, orderBy: LineItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [LineItem]!
+    salesItems(where: SalesItemWhereInput, orderBy: SalesItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SalesItem]!
     suppliers(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Supplier]!
     paidDetails(where: PaidDetailWhereInput, orderBy: PaidDetailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PaidDetail]!
 }
@@ -29,4 +31,9 @@ type Mutation{
      deleteSupplier(where: SupplierWhereUniqueInput!): Supplier
      createPaidDetail(data: PaidDetailCreateInput!): PaidDetail!
      createExpense(data: ExpenseCreateInput!): Expense!
+     createSalesItem(data: SalesItemCreateInput!): SalesItem!
+     updateSalesItem(data: SalesItemUpdateInput!, where: SalesItemWhereUniqueInput!): SalesItem
+     deleteSalesItem(where: SalesItemWhereUniqueInput!): SalesItem
+     createSalesTicket: SalesTicket!
+     
 }

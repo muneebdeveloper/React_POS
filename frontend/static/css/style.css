@@ -132,7 +132,7 @@ tbody tr:hover{
 }
 
 .mainFormStyle>*:not(.MuiCircularProgress-root):not(:last-child){
-    margin-bottom:15px !important;
+    margin-bottom:20px !important;
 }
 
 .dialogLoadingStyle{

@@ -28,7 +28,7 @@
 }
 
 .red{
-    background-color: red !important;
+    background-color: #e21e1e !important;
 }
 
 .aligncenter{
@@ -39,3 +39,10 @@
     margin-right:6px;
 }
 
+.edit{
+    color:#379237 !important;
+}
+
+.delete{
+    color:#e21e1e !important;
+}

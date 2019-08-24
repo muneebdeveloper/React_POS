@@ -121,7 +121,6 @@ class Product extends Component{
                 }
             }
             );
-            console.log(res);
             
             if(!res.data.product){
                 run=false;

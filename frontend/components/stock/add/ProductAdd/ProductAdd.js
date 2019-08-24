@@ -42,7 +42,7 @@ class ProductAdd extends Component{
                             type="text"
                             name="badge"
                             value={badge}
-                            autoFocus={productname && true}
+                            autoFocus={productname ? true:false}
                             onChange={prochangeHandler}
                         />
         

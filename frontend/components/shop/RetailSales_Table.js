@@ -4,16 +4,27 @@ import IconButton from '@material-ui/core/IconButton';
 import Edit from '@material-ui/icons/Edit';
 import Delete from '@material-ui/icons/Delete';
 
+import styles from './RetailSales.css';
 
-const Add_Expense_Detail = (props)=>{
-    const {sr,description,amount} = props;
+const RetailSales_Table = (props)=>{
+    const {
+        id,
+        sr,
+        product,
+        price,
+        quantity,
+        value,
+        productQuantityDialogHandler
+    }=props;
     return(
         <tr>
             <td>{sr}</td>
-            <td>{description}</td>
-            <td>{amount}</td>
+            <td>{product}</td>
+            <td>{price}</td>
+            <td>{quantity}</td>
+            <td>{value}</td>
             <td style={{textAlign:"center"}}>
-                <IconButton size="small"  >
+                <IconButton size="small"  onClick={productQuantityDialogHandler.bind(this)} >
                     <Edit className={styles.edit} />
                 </IconButton>
 
@@ -26,4 +37,6 @@ const Add_Expense_Detail = (props)=>{
     )
 }
 
-export default Add_Expense_Detail;
+export default RetailSales_Table;
+
+// onClick={dialogHandlerRemove.bind(this,id,index)}

@@ -58,14 +58,23 @@ type StockItem{
   supplier:Supplier!
 }
 
-type Sales{
+type SalesItem{
   id: ID! @id
-  createdAt: DateTime! @createdAt
-  product:Product!
+  createdAt:DateTime! @createdAt
   noofpieces:Int!
-  buyPrice:Float!
+  buyPrice:Float
   sellPrice:Float!
-  profit:Float!
+  profit:Float
+  product:Product!
+  supplier:Supplier
+  salesTicket:SalesTicket!
+}
+
+type SalesTicket{
+  id: ID! @id
+  createdAt:DateTime! @createdAt
+  receipt:String! @unique
+  sales:[SalesItem!]!
 }
 
 type Expense{

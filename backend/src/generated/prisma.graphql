@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/muhammad-muneeb-akhlaq/backend/dev
-# timestamp: Mon Aug 19 2019 16:50:48 GMT+0500 (Pakistan Standard Time)
+# timestamp: Sat Aug 24 2019 10:40:38 GMT+0500 (Pakistan Standard Time)
 
 type AggregateCategory {
   count: Int!
@@ -21,7 +21,11 @@ type AggregateProduct {
   count: Int!
 }
 
-type AggregateSales {
+type AggregateSalesItem {
+  count: Int!
+}
+
+type AggregateSalesTicket {
   count: Int!
 }
 
@@ -700,57 +704,63 @@ type Mutation {
   createUser(data: UserCreateInput!): User!
   createPaidDetail(data: PaidDetailCreateInput!): PaidDetail!
   createStockItem(data: StockItemCreateInput!): StockItem!
-  createSales(data: SalesCreateInput!): Sales!
+  createSalesItem(data: SalesItemCreateInput!): SalesItem!
+  createSalesTicket(data: SalesTicketCreateInput!): SalesTicket!
   createExpense(data: ExpenseCreateInput!): Expense!
   createCategory(data: CategoryCreateInput!): Category!
+  createProduct(data: ProductCreateInput!): Product!
   createLineItem(data: LineItemCreateInput!): LineItem!
   createSupplier(data: SupplierCreateInput!): Supplier!
-  createProduct(data: ProductCreateInput!): Product!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updatePaidDetail(data: PaidDetailUpdateInput!, where: PaidDetailWhereUniqueInput!): PaidDetail
   updateStockItem(data: StockItemUpdateInput!, where: StockItemWhereUniqueInput!): StockItem
-  updateSales(data: SalesUpdateInput!, where: SalesWhereUniqueInput!): Sales
+  updateSalesItem(data: SalesItemUpdateInput!, where: SalesItemWhereUniqueInput!): SalesItem
+  updateSalesTicket(data: SalesTicketUpdateInput!, where: SalesTicketWhereUniqueInput!): SalesTicket
   updateExpense(data: ExpenseUpdateInput!, where: ExpenseWhereUniqueInput!): Expense
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
+  updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
   updateLineItem(data: LineItemUpdateInput!, where: LineItemWhereUniqueInput!): LineItem
   updateSupplier(data: SupplierUpdateInput!, where: SupplierWhereUniqueInput!): Supplier
-  updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
   deleteUser(where: UserWhereUniqueInput!): User
   deletePaidDetail(where: PaidDetailWhereUniqueInput!): PaidDetail
   deleteStockItem(where: StockItemWhereUniqueInput!): StockItem
-  deleteSales(where: SalesWhereUniqueInput!): Sales
+  deleteSalesItem(where: SalesItemWhereUniqueInput!): SalesItem
+  deleteSalesTicket(where: SalesTicketWhereUniqueInput!): SalesTicket
   deleteExpense(where: ExpenseWhereUniqueInput!): Expense
   deleteCategory(where: CategoryWhereUniqueInput!): Category
+  deleteProduct(where: ProductWhereUniqueInput!): Product
   deleteLineItem(where: LineItemWhereUniqueInput!): LineItem
   deleteSupplier(where: SupplierWhereUniqueInput!): Supplier
-  deleteProduct(where: ProductWhereUniqueInput!): Product
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   upsertPaidDetail(where: PaidDetailWhereUniqueInput!, create: PaidDetailCreateInput!, update: PaidDetailUpdateInput!): PaidDetail!
   upsertStockItem(where: StockItemWhereUniqueInput!, create: StockItemCreateInput!, update: StockItemUpdateInput!): StockItem!
-  upsertSales(where: SalesWhereUniqueInput!, create: SalesCreateInput!, update: SalesUpdateInput!): Sales!
+  upsertSalesItem(where: SalesItemWhereUniqueInput!, create: SalesItemCreateInput!, update: SalesItemUpdateInput!): SalesItem!
+  upsertSalesTicket(where: SalesTicketWhereUniqueInput!, create: SalesTicketCreateInput!, update: SalesTicketUpdateInput!): SalesTicket!
   upsertExpense(where: ExpenseWhereUniqueInput!, create: ExpenseCreateInput!, update: ExpenseUpdateInput!): Expense!
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
+  upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
   upsertLineItem(where: LineItemWhereUniqueInput!, create: LineItemCreateInput!, update: LineItemUpdateInput!): LineItem!
   upsertSupplier(where: SupplierWhereUniqueInput!, create: SupplierCreateInput!, update: SupplierUpdateInput!): Supplier!
-  upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   updateManyPaidDetails(data: PaidDetailUpdateManyMutationInput!, where: PaidDetailWhereInput): BatchPayload!
   updateManyStockItems(data: StockItemUpdateManyMutationInput!, where: StockItemWhereInput): BatchPayload!
-  updateManySaleses(data: SalesUpdateManyMutationInput!, where: SalesWhereInput): BatchPayload!
+  updateManySalesItems(data: SalesItemUpdateManyMutationInput!, where: SalesItemWhereInput): BatchPayload!
+  updateManySalesTickets(data: SalesTicketUpdateManyMutationInput!, where: SalesTicketWhereInput): BatchPayload!
   updateManyExpenses(data: ExpenseUpdateManyMutationInput!, where: ExpenseWhereInput): BatchPayload!
   updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
+  updateManyProducts(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): BatchPayload!
   updateManyLineItems(data: LineItemUpdateManyMutationInput!, where: LineItemWhereInput): BatchPayload!
   updateManySuppliers(data: SupplierUpdateManyMutationInput!, where: SupplierWhereInput): BatchPayload!
-  updateManyProducts(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
   deleteManyPaidDetails(where: PaidDetailWhereInput): BatchPayload!
   deleteManyStockItems(where: StockItemWhereInput): BatchPayload!
-  deleteManySaleses(where: SalesWhereInput): BatchPayload!
+  deleteManySalesItems(where: SalesItemWhereInput): BatchPayload!
+  deleteManySalesTickets(where: SalesTicketWhereInput): BatchPayload!
   deleteManyExpenses(where: ExpenseWhereInput): BatchPayload!
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
+  deleteManyProducts(where: ProductWhereInput): BatchPayload!
   deleteManyLineItems(where: LineItemWhereInput): BatchPayload!
   deleteManySuppliers(where: SupplierWhereInput): BatchPayload!
-  deleteManyProducts(where: ProductWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -1264,6 +1274,7 @@ type Product implements Node {
   name: String!
   sellPrice: Int
   wholesalePrice: Int
+  supplier: String
   category: Category!
   stock(where: StockItemWhereInput, orderBy: StockItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [StockItem!]
 }
@@ -1284,6 +1295,7 @@ input ProductCreateInput {
   name: String!
   sellPrice: Int
   wholesalePrice: Int
+  supplier: String
   category: CategoryCreateOneInput!
   stock: StockItemCreateManyWithoutProductInput
 }
@@ -1304,6 +1316,7 @@ input ProductCreateWithoutStockInput {
   name: String!
   sellPrice: Int
   wholesalePrice: Int
+  supplier: String
   category: CategoryCreateOneInput!
 }
 
@@ -1327,6 +1340,8 @@ enum ProductOrderByInput {
   sellPrice_DESC
   wholesalePrice_ASC
   wholesalePrice_DESC
+  supplier_ASC
+  supplier_DESC
 }
 
 type ProductPreviousValues {
@@ -1335,6 +1350,7 @@ type ProductPreviousValues {
   name: String!
   sellPrice: Int
   wholesalePrice: Int
+  supplier: String
 }
 
 type ProductSubscriptionPayload {
@@ -1379,6 +1395,7 @@ input ProductUpdateDataInput {
   name: String
   sellPrice: Int
   wholesalePrice: Int
+  supplier: String
   category: CategoryUpdateOneRequiredInput
   stock: StockItemUpdateManyWithoutProductInput
 }
@@ -1388,6 +1405,7 @@ input ProductUpdateInput {
   name: String
   sellPrice: Int
   wholesalePrice: Int
+  supplier: String
   category: CategoryUpdateOneRequiredInput
   stock: StockItemUpdateManyWithoutProductInput
 }
@@ -1397,6 +1415,7 @@ input ProductUpdateManyMutationInput {
   name: String
   sellPrice: Int
   wholesalePrice: Int
+  supplier: String
 }
 
 input ProductUpdateOneRequiredInput {
@@ -1418,6 +1437,7 @@ input ProductUpdateWithoutStockDataInput {
   name: String
   sellPrice: Int
   wholesalePrice: Int
+  supplier: String
   category: CategoryUpdateOneRequiredInput
 }
 
@@ -1604,6 +1624,46 @@ input ProductWhereInput {
 
   """All values greater than or equal the given value."""
   wholesalePrice_gte: Int
+  supplier: String
+
+  """All values that are not equal to given value."""
+  supplier_not: String
+
+  """All values that are contained in given list."""
+  supplier_in: [String!]
+
+  """All values that are not contained in given list."""
+  supplier_not_in: [String!]
+
+  """All values less than the given value."""
+  supplier_lt: String
+
+  """All values less than or equal the given value."""
+  supplier_lte: String
+
+  """All values greater than the given value."""
+  supplier_gt: String
+
+  """All values greater than or equal the given value."""
+  supplier_gte: String
+
+  """All values containing the given string."""
+  supplier_contains: String
+
+  """All values not containing the given string."""
+  supplier_not_contains: String
+
+  """All values starting with the given string."""
+  supplier_starts_with: String
+
+  """All values not starting with the given string."""
+  supplier_not_starts_with: String
+
+  """All values ending with the given string."""
+  supplier_ends_with: String
+
+  """All values not ending with the given string."""
+  supplier_not_ends_with: String
   category: CategoryWhereInput
   stock_every: StockItemWhereInput
   stock_some: StockItemWhereInput
@@ -1619,30 +1679,33 @@ type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   paidDetails(where: PaidDetailWhereInput, orderBy: PaidDetailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PaidDetail]!
   stockItems(where: StockItemWhereInput, orderBy: StockItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [StockItem]!
-  saleses(where: SalesWhereInput, orderBy: SalesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Sales]!
+  salesItems(where: SalesItemWhereInput, orderBy: SalesItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SalesItem]!
+  salesTickets(where: SalesTicketWhereInput, orderBy: SalesTicketOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SalesTicket]!
   expenses(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expense]!
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
+  products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
   lineItems(where: LineItemWhereInput, orderBy: LineItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [LineItem]!
   suppliers(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Supplier]!
-  products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
   user(where: UserWhereUniqueInput!): User
   paidDetail(where: PaidDetailWhereUniqueInput!): PaidDetail
   stockItem(where: StockItemWhereUniqueInput!): StockItem
-  sales(where: SalesWhereUniqueInput!): Sales
+  salesItem(where: SalesItemWhereUniqueInput!): SalesItem
+  salesTicket(where: SalesTicketWhereUniqueInput!): SalesTicket
   expense(where: ExpenseWhereUniqueInput!): Expense
   category(where: CategoryWhereUniqueInput!): Category
+  product(where: ProductWhereUniqueInput!): Product
   lineItem(where: LineItemWhereUniqueInput!): LineItem
   supplier(where: SupplierWhereUniqueInput!): Supplier
-  product(where: ProductWhereUniqueInput!): Product
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   paidDetailsConnection(where: PaidDetailWhereInput, orderBy: PaidDetailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PaidDetailConnection!
   stockItemsConnection(where: StockItemWhereInput, orderBy: StockItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StockItemConnection!
-  salesesConnection(where: SalesWhereInput, orderBy: SalesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SalesConnection!
+  salesItemsConnection(where: SalesItemWhereInput, orderBy: SalesItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SalesItemConnection!
+  salesTicketsConnection(where: SalesTicketWhereInput, orderBy: SalesTicketOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SalesTicketConnection!
   expensesConnection(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExpenseConnection!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
+  productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
   lineItemsConnection(where: LineItemWhereInput, orderBy: LineItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LineItemConnection!
   suppliersConnection(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SupplierConnection!
-  productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -1651,45 +1714,64 @@ type Query {
   ): Node
 }
 
-type Sales implements Node {
+type SalesItem implements Node {
   id: ID!
   createdAt: DateTime!
-  product: Product!
   noofpieces: Int!
-  buyPrice: Float!
+  buyPrice: Float
   sellPrice: Float!
-  profit: Float!
+  profit: Float
+  product: Product!
+  supplier: Supplier
+  salesTicket: SalesTicket!
 }
 
 """A connection to a list of items."""
-type SalesConnection {
+type SalesItemConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [SalesEdge]!
-  aggregate: AggregateSales!
+  edges: [SalesItemEdge]!
+  aggregate: AggregateSalesItem!
 }
 
-input SalesCreateInput {
+input SalesItemCreateInput {
   id: ID
   noofpieces: Int!
-  buyPrice: Float!
+  buyPrice: Float
   sellPrice: Float!
-  profit: Float!
+  profit: Float
   product: ProductCreateOneInput!
+  supplier: SupplierCreateOneInput
+  salesTicket: SalesTicketCreateOneWithoutSalesInput!
+}
+
+input SalesItemCreateManyWithoutSalesTicketInput {
+  create: [SalesItemCreateWithoutSalesTicketInput!]
+  connect: [SalesItemWhereUniqueInput!]
+}
+
+input SalesItemCreateWithoutSalesTicketInput {
+  id: ID
+  noofpieces: Int!
+  buyPrice: Float
+  sellPrice: Float!
+  profit: Float
+  product: ProductCreateOneInput!
+  supplier: SupplierCreateOneInput
 }
 
 """An edge in a connection."""
-type SalesEdge {
+type SalesItemEdge {
   """The item at the end of the edge."""
-  node: Sales!
+  node: SalesItem!
 
   """A cursor for use in pagination."""
   cursor: String!
 }
 
-enum SalesOrderByInput {
+enum SalesItemOrderByInput {
   id_ASC
   id_DESC
   createdAt_ASC
@@ -1704,31 +1786,192 @@ enum SalesOrderByInput {
   profit_DESC
 }
 
-type SalesPreviousValues {
+type SalesItemPreviousValues {
   id: ID!
   createdAt: DateTime!
   noofpieces: Int!
-  buyPrice: Float!
+  buyPrice: Float
   sellPrice: Float!
-  profit: Float!
+  profit: Float
 }
 
-type SalesSubscriptionPayload {
-  mutation: MutationType!
-  node: Sales
-  updatedFields: [String!]
-  previousValues: SalesPreviousValues
-}
-
-input SalesSubscriptionWhereInput {
+input SalesItemScalarWhereInput {
   """Logical AND on all given filters."""
-  AND: [SalesSubscriptionWhereInput!]
+  AND: [SalesItemScalarWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [SalesSubscriptionWhereInput!]
+  OR: [SalesItemScalarWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [SalesSubscriptionWhereInput!]
+  NOT: [SalesItemScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  noofpieces: Int
+
+  """All values that are not equal to given value."""
+  noofpieces_not: Int
+
+  """All values that are contained in given list."""
+  noofpieces_in: [Int!]
+
+  """All values that are not contained in given list."""
+  noofpieces_not_in: [Int!]
+
+  """All values less than the given value."""
+  noofpieces_lt: Int
+
+  """All values less than or equal the given value."""
+  noofpieces_lte: Int
+
+  """All values greater than the given value."""
+  noofpieces_gt: Int
+
+  """All values greater than or equal the given value."""
+  noofpieces_gte: Int
+  buyPrice: Float
+
+  """All values that are not equal to given value."""
+  buyPrice_not: Float
+
+  """All values that are contained in given list."""
+  buyPrice_in: [Float!]
+
+  """All values that are not contained in given list."""
+  buyPrice_not_in: [Float!]
+
+  """All values less than the given value."""
+  buyPrice_lt: Float
+
+  """All values less than or equal the given value."""
+  buyPrice_lte: Float
+
+  """All values greater than the given value."""
+  buyPrice_gt: Float
+
+  """All values greater than or equal the given value."""
+  buyPrice_gte: Float
+  sellPrice: Float
+
+  """All values that are not equal to given value."""
+  sellPrice_not: Float
+
+  """All values that are contained in given list."""
+  sellPrice_in: [Float!]
+
+  """All values that are not contained in given list."""
+  sellPrice_not_in: [Float!]
+
+  """All values less than the given value."""
+  sellPrice_lt: Float
+
+  """All values less than or equal the given value."""
+  sellPrice_lte: Float
+
+  """All values greater than the given value."""
+  sellPrice_gt: Float
+
+  """All values greater than or equal the given value."""
+  sellPrice_gte: Float
+  profit: Float
+
+  """All values that are not equal to given value."""
+  profit_not: Float
+
+  """All values that are contained in given list."""
+  profit_in: [Float!]
+
+  """All values that are not contained in given list."""
+  profit_not_in: [Float!]
+
+  """All values less than the given value."""
+  profit_lt: Float
+
+  """All values less than or equal the given value."""
+  profit_lte: Float
+
+  """All values greater than the given value."""
+  profit_gt: Float
+
+  """All values greater than or equal the given value."""
+  profit_gte: Float
+}
+
+type SalesItemSubscriptionPayload {
+  mutation: MutationType!
+  node: SalesItem
+  updatedFields: [String!]
+  previousValues: SalesItemPreviousValues
+}
+
+input SalesItemSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [SalesItemSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [SalesItemSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [SalesItemSubscriptionWhereInput!]
 
   """The subscription event gets dispatched when it's listed in mutation_in"""
   mutation_in: [MutationType!]
@@ -1747,33 +1990,79 @@ input SalesSubscriptionWhereInput {
   The subscription event gets only dispatched when some of the field names included in this list have been updated
   """
   updatedFields_contains_some: [String!]
-  node: SalesWhereInput
+  node: SalesItemWhereInput
 }
 
-input SalesUpdateInput {
+input SalesItemUpdateInput {
   noofpieces: Int
   buyPrice: Float
   sellPrice: Float
   profit: Float
   product: ProductUpdateOneRequiredInput
+  supplier: SupplierUpdateOneInput
+  salesTicket: SalesTicketUpdateOneRequiredWithoutSalesInput
 }
 
-input SalesUpdateManyMutationInput {
+input SalesItemUpdateManyDataInput {
   noofpieces: Int
   buyPrice: Float
   sellPrice: Float
   profit: Float
 }
 
-input SalesWhereInput {
+input SalesItemUpdateManyMutationInput {
+  noofpieces: Int
+  buyPrice: Float
+  sellPrice: Float
+  profit: Float
+}
+
+input SalesItemUpdateManyWithoutSalesTicketInput {
+  create: [SalesItemCreateWithoutSalesTicketInput!]
+  connect: [SalesItemWhereUniqueInput!]
+  set: [SalesItemWhereUniqueInput!]
+  disconnect: [SalesItemWhereUniqueInput!]
+  delete: [SalesItemWhereUniqueInput!]
+  update: [SalesItemUpdateWithWhereUniqueWithoutSalesTicketInput!]
+  updateMany: [SalesItemUpdateManyWithWhereNestedInput!]
+  deleteMany: [SalesItemScalarWhereInput!]
+  upsert: [SalesItemUpsertWithWhereUniqueWithoutSalesTicketInput!]
+}
+
+input SalesItemUpdateManyWithWhereNestedInput {
+  where: SalesItemScalarWhereInput!
+  data: SalesItemUpdateManyDataInput!
+}
+
+input SalesItemUpdateWithoutSalesTicketDataInput {
+  noofpieces: Int
+  buyPrice: Float
+  sellPrice: Float
+  profit: Float
+  product: ProductUpdateOneRequiredInput
+  supplier: SupplierUpdateOneInput
+}
+
+input SalesItemUpdateWithWhereUniqueWithoutSalesTicketInput {
+  where: SalesItemWhereUniqueInput!
+  data: SalesItemUpdateWithoutSalesTicketDataInput!
+}
+
+input SalesItemUpsertWithWhereUniqueWithoutSalesTicketInput {
+  where: SalesItemWhereUniqueInput!
+  update: SalesItemUpdateWithoutSalesTicketDataInput!
+  create: SalesItemCreateWithoutSalesTicketInput!
+}
+
+input SalesItemWhereInput {
   """Logical AND on all given filters."""
-  AND: [SalesWhereInput!]
+  AND: [SalesItemWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [SalesWhereInput!]
+  OR: [SalesItemWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [SalesWhereInput!]
+  NOT: [SalesItemWhereInput!]
   id: ID
 
   """All values that are not equal to given value."""
@@ -1925,10 +2214,252 @@ input SalesWhereInput {
   """All values greater than or equal the given value."""
   profit_gte: Float
   product: ProductWhereInput
+  supplier: SupplierWhereInput
+  salesTicket: SalesTicketWhereInput
 }
 
-input SalesWhereUniqueInput {
+input SalesItemWhereUniqueInput {
   id: ID
+}
+
+type SalesTicket implements Node {
+  id: ID!
+  createdAt: DateTime!
+  receipt: String!
+  sales(where: SalesItemWhereInput, orderBy: SalesItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SalesItem!]
+}
+
+"""A connection to a list of items."""
+type SalesTicketConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [SalesTicketEdge]!
+  aggregate: AggregateSalesTicket!
+}
+
+input SalesTicketCreateInput {
+  id: ID
+  receipt: String!
+  sales: SalesItemCreateManyWithoutSalesTicketInput
+}
+
+input SalesTicketCreateOneWithoutSalesInput {
+  create: SalesTicketCreateWithoutSalesInput
+  connect: SalesTicketWhereUniqueInput
+}
+
+input SalesTicketCreateWithoutSalesInput {
+  id: ID
+  receipt: String!
+}
+
+"""An edge in a connection."""
+type SalesTicketEdge {
+  """The item at the end of the edge."""
+  node: SalesTicket!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum SalesTicketOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  receipt_ASC
+  receipt_DESC
+}
+
+type SalesTicketPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  receipt: String!
+}
+
+type SalesTicketSubscriptionPayload {
+  mutation: MutationType!
+  node: SalesTicket
+  updatedFields: [String!]
+  previousValues: SalesTicketPreviousValues
+}
+
+input SalesTicketSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [SalesTicketSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [SalesTicketSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [SalesTicketSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: SalesTicketWhereInput
+}
+
+input SalesTicketUpdateInput {
+  receipt: String
+  sales: SalesItemUpdateManyWithoutSalesTicketInput
+}
+
+input SalesTicketUpdateManyMutationInput {
+  receipt: String
+}
+
+input SalesTicketUpdateOneRequiredWithoutSalesInput {
+  create: SalesTicketCreateWithoutSalesInput
+  connect: SalesTicketWhereUniqueInput
+  update: SalesTicketUpdateWithoutSalesDataInput
+  upsert: SalesTicketUpsertWithoutSalesInput
+}
+
+input SalesTicketUpdateWithoutSalesDataInput {
+  receipt: String
+}
+
+input SalesTicketUpsertWithoutSalesInput {
+  update: SalesTicketUpdateWithoutSalesDataInput!
+  create: SalesTicketCreateWithoutSalesInput!
+}
+
+input SalesTicketWhereInput {
+  """Logical AND on all given filters."""
+  AND: [SalesTicketWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [SalesTicketWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [SalesTicketWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  receipt: String
+
+  """All values that are not equal to given value."""
+  receipt_not: String
+
+  """All values that are contained in given list."""
+  receipt_in: [String!]
+
+  """All values that are not contained in given list."""
+  receipt_not_in: [String!]
+
+  """All values less than the given value."""
+  receipt_lt: String
+
+  """All values less than or equal the given value."""
+  receipt_lte: String
+
+  """All values greater than the given value."""
+  receipt_gt: String
+
+  """All values greater than or equal the given value."""
+  receipt_gte: String
+
+  """All values containing the given string."""
+  receipt_contains: String
+
+  """All values not containing the given string."""
+  receipt_not_contains: String
+
+  """All values starting with the given string."""
+  receipt_starts_with: String
+
+  """All values not starting with the given string."""
+  receipt_not_starts_with: String
+
+  """All values ending with the given string."""
+  receipt_ends_with: String
+
+  """All values not ending with the given string."""
+  receipt_not_ends_with: String
+  sales_every: SalesItemWhereInput
+  sales_some: SalesItemWhereInput
+  sales_none: SalesItemWhereInput
+}
+
+input SalesTicketWhereUniqueInput {
+  id: ID
+  receipt: String
 }
 
 type StockItem implements Node {
@@ -2581,12 +3112,13 @@ type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   paidDetail(where: PaidDetailSubscriptionWhereInput): PaidDetailSubscriptionPayload
   stockItem(where: StockItemSubscriptionWhereInput): StockItemSubscriptionPayload
-  sales(where: SalesSubscriptionWhereInput): SalesSubscriptionPayload
+  salesItem(where: SalesItemSubscriptionWhereInput): SalesItemSubscriptionPayload
+  salesTicket(where: SalesTicketSubscriptionWhereInput): SalesTicketSubscriptionPayload
   expense(where: ExpenseSubscriptionWhereInput): ExpenseSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
+  product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
   lineItem(where: LineItemSubscriptionWhereInput): LineItemSubscriptionPayload
   supplier(where: SupplierSubscriptionWhereInput): SupplierSubscriptionPayload
-  product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
 }
 
 type Supplier implements Node {
@@ -2741,6 +3273,15 @@ input SupplierUpdateManyMutationInput {
   address: String
   amounttotake: Float
   amounttopay: Float
+}
+
+input SupplierUpdateOneInput {
+  create: SupplierCreateInput
+  connect: SupplierWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: SupplierUpdateDataInput
+  upsert: SupplierUpsertNestedInput
 }
 
 input SupplierUpdateOneRequiredInput {

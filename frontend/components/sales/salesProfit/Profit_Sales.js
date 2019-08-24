@@ -1,44 +1,534 @@
 import React, {Component} from 'react';
-import {Query} from 'react-apollo';
+import {Query,ApolloConsumer} from 'react-apollo';
 import gql from 'graphql-tag';
 
-import Intro from '../../misc/Intro';
+import ErrorDialog from '../../misc/ErrorDialog';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
+import styles from './Profit_Sales.css';
 
-// const REQUIRED_SALES_PROFIT_LIST=gql`
-//     query REQUIRED_SALES_PROFIT_LIST{
-        
-//     }
-// `;
+import {FETCH_LINEITEMS_QUERY} from '../../stock/define/Category';
+import {ALL_SUPPLIERS_LIST_QUERY} from '../../suppliers/editandremove/Suppliers_ed';
+
+
+const ALL_CATEGORIES_QUERY = gql`
+    query ALL_CATEGORIES_QUERY{
+        categories{
+            id
+            name
+        }
+    }
+`;
+
+const ALL_PRODUCTS_QUERY = gql`
+    query ALL_PRODUCTS_QUERY{
+        products{
+            id
+            name
+        }
+    }
+`;
+
+const SALESITEM_BY_DATE_QUERY_ALL = gql`
+    query SALESITEM_BY_DATE_QUERY_ALL($dateStart:DateTime,$dateEnd:DateTime){
+        salesItems(where:{
+            AND:[
+                {createdAt_gte:$dateStart},
+                {createdAt_lte:$dateEnd}
+            ]
+        }){
+            noofpieces
+            buyPrice
+            sellPrice
+            profit
+            product{
+                name
+            }
+        }
+    }
+`;
+
+const SALESITEM_BY_DATE_QUERY_PRODUCT = gql`
+    query SALESITEM_BY_DATE_QUERY_PRODUCT($dateStart:DateTime,$dateEnd:DateTime,$id:ID){
+        salesItems(where:{
+            AND:[
+                {createdAt_gte:$dateStart},
+                {createdAt_lte:$dateEnd},
+                {product:{
+                    id:$id
+                    }
+                }
+            ]
+        }){
+            noofpieces
+            buyPrice
+            sellPrice
+            profit
+            product{
+                name
+            }
+        }
+    }
+`;
+
+const SALESITEM_BY_DATE_QUERY_CATEGORY = gql`
+    query SALESITEM_BY_DATE_QUERY_CATEGORY($dateStart:DateTime,$dateEnd:DateTime,$id:ID){
+        salesItems(where:{
+            AND:[
+                {createdAt_gte:$dateStart},
+                {createdAt_lte:$dateEnd},
+                {product:{
+                    category:{
+                        id:$id
+                    }
+                }}
+            ]
+        }){
+            noofpieces
+            buyPrice
+            sellPrice
+            profit
+            product{
+                name
+            }
+        }
+    }
+`;
+
+const SALESITEM_BY_DATE_QUERY_LINEITEM = gql`
+    query SALESITEM_BY_DATE_QUERY_LINEITEM($dateStart:DateTime,$dateEnd:DateTime,$id:ID){
+        salesItems(where:{
+            AND:[
+                {createdAt_gte:$dateStart},
+                {createdAt_lte:$dateEnd},
+                {product:{
+                    category:{
+                        lineitem:{
+                            id:$id
+                        }
+                    }
+                }
+                }
+            ]
+        }){
+            noofpieces
+            buyPrice
+            sellPrice
+            profit
+            product{
+                name
+            }
+        }
+    }
+`;
+
+const SALESITEM_BY_DATE_QUERY_SUPPLIER = gql`
+    query SALESITEM_BY_DATE_QUERY_SUPPLIER($dateStart:DateTime,$dateEnd:DateTime,$id:ID){
+        salesItems(where:{
+            AND:[
+                {createdAt_gte:$dateStart},
+                {createdAt_lte:$dateEnd},
+                {supplier:{
+                    id:$id
+                    }
+                }
+            ]
+        }){
+            noofpieces
+            buyPrice
+            sellPrice
+            profit
+            product{
+                name
+            }
+        }
+    }
+`;
 
 class Profit_Sales extends Component{
 
+    state={
+        mainmenu:'',
+        submenu:'',
+        dateStart:'',
+        dateEnd:'',
+        mainmenuSelectionLoading:false,
+        salesResultLoading:false,
+        subSelect:[],
+        salesResult:[],
+        errorDialogOpen:false,
+        errorMessage:'',
+        disableSubMenu:true,
+        totalBuyPrice:0,
+        totalSellPrice:0,
+        totalProfit:0,
+        totalQuantity:0,
+        totalSale:0,
+    }
+
+    changeHandler = (e)=>{
+        this.setState({
+            [e.target.name]:e.target.value
+        })
+    }
+
+    mainmenuHandler = (client)=>async (e)=>{
+        let res;
+        this.setState({
+            mainmenu:e.target.value,
+            mainmenuSelectionLoading:true
+        });
+        switch(e.target.value){
+
+            case "all":
+                this.setState({
+                    mainmenuSelectionLoading:false,
+                    disableSubMenu:true
+                })
+                break;
+            case "lineitem":
+                try{
+                    res = await client.query({
+                        query:FETCH_LINEITEMS_QUERY
+                    });
+                    this.setState({
+                        subSelect:res.data.lineItems,
+                        mainmenuSelectionLoading:false,
+                        disableSubMenu:false
+                    })
+                    break;
+                }catch(err){
+                    this.setState({
+                        errorDialogOpen:true,
+                        errorMessage:"Something went wrong",
+                        mainmenuSelectionLoading:false
+                    });
+                    break;
+                }
+            case "category":
+                try{
+                    res = await client.query({
+                        query:ALL_CATEGORIES_QUERY
+                    });
+                    this.setState({
+                        subSelect:res.data.categories,
+                        mainmenuSelectionLoading:false,
+                        disableSubMenu:false
+                    })
+                    break;
+                }catch(err){
+                    this.setState({
+                        errorDialogOpen:true,
+                        errorMessage:"Something went wrong",
+                        mainmenuSelectionLoading:false
+                    });
+                    break;
+                }
+            case "product":
+                try{
+                    res = await client.query({
+                        query:ALL_PRODUCTS_QUERY
+                    });
+                    this.setState({
+                        subSelect:res.data.products,
+                        mainmenuSelectionLoading:false,
+                        disableSubMenu:false
+                    })
+                    break;
+                }catch(err){
+                    this.setState({
+                        errorDialogOpen:true,
+                        errorMessage:"Something went wrong",
+                        mainmenuSelectionLoading:false
+                    });
+                    break;
+                }
+            case "supplier":
+                try{
+                    res = await client.query({
+                        query:ALL_SUPPLIERS_LIST_QUERY
+                    });
+                    this.setState({
+                        subSelect:res.data.suppliers,
+                        mainmenuSelectionLoading:false,
+                        disableSubMenu:false
+                    })
+                    break;
+                }catch(err){
+                    this.setState({
+                        errorDialogOpen:true,
+                        errorMessage:"Something went wrong",
+                        mainmenuSelectionLoading:false
+                    });
+                    break;
+                }
+
+        }
+    }
+
+    salesProfitFormSubmitHandler = (client)=>async (e)=>{
+        e.preventDefault();
+        const {dateStart,dateEnd,mainmenu,submenu} = this.state;
+        let res;
+        this.setState({
+            salesResultLoading:true
+        })
+
+        try{
+            switch(mainmenu){
+
+                case "all":
+                        res = await client.query({
+                        query:SALESITEM_BY_DATE_QUERY_ALL,
+                        variables:{
+                            dateStart,
+                            dateEnd,
+                        }
+                        });
+                        break;
+                
+                case "product":
+                        res = await client.query({
+                        query:SALESITEM_BY_DATE_QUERY_PRODUCT,
+                        variables:{
+                            dateStart,
+                            dateEnd,
+                            id:submenu
+                        }
+                        });
+                        break;
+                
+                case "category":
+                        res = await client.query({
+                        query:SALESITEM_BY_DATE_QUERY_CATEGORY,
+                        variables:{
+                            dateStart,
+                            dateEnd,
+                            id:submenu
+                        }
+                        });
+                        break;
+
+                case "lineitem":
+                        res = await client.query({
+                        query:SALESITEM_BY_DATE_QUERY_LINEITEM,
+                        variables:{
+                            dateStart,
+                            dateEnd,
+                            id:submenu
+                        }
+                        });
+                        break;
+
+                case "supplier":
+                        res = await client.query({
+                        query:SALESITEM_BY_DATE_QUERY_SUPPLIER,
+                        variables:{
+                            dateStart,
+                            dateEnd,
+                            id:submenu
+                        }
+                        });
+                        break;
+                        
+            }
+            
+            let calcBuyPrice=0,calcSellPrice=0,calcSale=0,calcQuantity=0,calcProfit=0;
+            res.data.salesItems.map((item)=>{
+                calcBuyPrice = calcBuyPrice + item.buyPrice;
+                calcSellPrice = calcSellPrice + item.sellPrice;
+                calcProfit = calcProfit + item.profit;
+                calcQuantity = calcQuantity + item.noofpieces;
+                item.sale = item.noofpieces * item.sellPrice;
+                calcSale = calcSale + item.sale;
+            });
+            this.setState({
+                salesResult:[...res.data.salesItems],
+                salesResultLoading:false,
+                totalBuyPrice:calcBuyPrice,
+                totalSellPrice:calcSellPrice,
+                totalProfit:calcProfit,
+                totalQuantity:calcQuantity,
+                totalSale:calcSale
+            })
+        }catch(err){
+            this.setState({
+                errorMessage:"Something went wrong"+err,
+                errorDialogOpen:true,
+                salesResultLoading:false
+            })
+        }
+        
+    }
+
     render(){
+        const { mainmenu,
+                submenu,
+                disableSubMenu,
+                dateStart,
+                dateEnd,
+                mainmenuSelectionLoading,
+                subSelect,
+                salesResultLoading,
+                salesResult,
+                errorMessage,
+                errorDialogOpen,
+                totalBuyPrice,
+                totalSellPrice,
+                totalQuantity,
+                totalSale,
+                totalProfit
+        } = this.state;
+
         return(
             <>
-                <Intro>Sales Profit</Intro>
+            <ApolloConsumer>
+                {
+                    client=>{
 
-                <form>
-                    <label>
-                        Choose start time
-                        <input type="date" />
-                    </label>
+                        if(salesResultLoading){
+                            return(
+                                <div className="mainLoadingStyle">
+                                    <CircularProgress size={70} />
+                                </div>
+                            );
+                        }
+                        return(
+                            <form onSubmit={this.salesProfitFormSubmitHandler(client)}>
+                    <div className="mainFormStyle">
 
-                    <label>
-                        Choose end Time
-                        <input type="date" />
-                    </label>
+                        <FormControl required>
+                            <InputLabel>Sales Profit by</InputLabel>
+                            <Select
+                                name="mainmenu"
+                                value={mainmenu}
+                                onChange={this.mainmenuHandler(client)}
+                            >                          
+                                <MenuItem value={'all'}>All</MenuItem>
+                                <MenuItem value={'lineitem'}>LineItem</MenuItem>
+                                <MenuItem value={'category'}>Category</MenuItem>
+                                <MenuItem value={'product'}>Product</MenuItem>
+                                <MenuItem value={'supplier'}>Supplier</MenuItem>
+                            </Select>
+                                              
+                        </FormControl>
+                        {
+                            mainmenuSelectionLoading ?
+                            (<div className="mainLoadingStyle">
+                                <CircularProgress size={70} />
+                            </div>):
+                            (
+                            <FormControl required disabled={disableSubMenu}>
+                                <InputLabel>Choose</InputLabel>
+                
+                                <Select
+                                    name="submenu"
+                                    value={submenu}
+                                    onChange={this.changeHandler}
+                                >
+                                    {
+                                        subSelect.map(
+                                            (sub,index)=>{
+                                                return(
+                                                    <MenuItem key={index} value={sub.id}>{sub.name}</MenuItem>
+                                                )
+                                            }
+                                        )
+                                    }
+                                </Select>
+                                              
+                            </FormControl>
+                            )
+                        }                    
+                       
+                        <TextField
+                            label="Choose Start date"
+                            name="dateStart"
+                            value={dateStart}
+                            onChange={this.changeHandler}
+                            InputLabelProps={{
+                                shrink:true
+                            }}
+                            type="date"
+                        />
 
-                    <Button 
-                        type="submit"
-                        variant="contained"
-                        // size="large"
-                    >
-                        Submit
-                    </Button>
-            
+                        <TextField
+                            label="Choose End date"
+                            name="dateEnd"
+                            value={dateEnd}
+                            onChange={this.changeHandler}
+                            InputLabelProps={{
+                                shrink:true
+                            }}
+                            type="date"
+                        />
+
+                        <Button 
+                            type="submit"
+                            variant="contained"
+                            size="large"
+                        >
+                            Submit
+                        </Button>
+                    </div>
                 </form>
+                        )
+                    }
+                }
+            </ApolloConsumer>
+            <div className="gutterbottom">
+            <table>
+                <thead>
+                    <tr>
+                        <th>sr</th>
+                        <th>Name</th>
+                        <th>Buy Price</th>
+                        <th>Sell Price</th>
+                        <th>Quantity</th>
+                        <th>Sale</th>
+                        <th>Profit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        salesResult.map((item,index)=>{
+                            const {noofpieces,sellPrice,buyPrice,sale,profit,product:{name}} = item;
+                            return(
+                                <tr>
+                                    <td>{index+1}</td>
+                                    <td>{name}</td>
+                                    <td>{buyPrice}</td>
+                                    <td>{sellPrice}</td>
+                                    <td>{noofpieces}</td>
+                                    <td>{sale}</td>
+                                    <td>{profit}</td>
+                                </tr>
+                            )
+                        })
+                    }
+                </tbody>
+                <tfoot >
+                                <tr className={styles.tableFoot}>
+                                    <td ></td>
+                                    <td className={styles.totalRow}>Total</td>
+                                    <td>{totalBuyPrice}</td>
+                                    <td>{totalSellPrice}</td>
+                                    <td>{totalQuantity}</td>
+                                    <td>{totalSale}</td>
+                                    <td>{totalProfit}</td>
+                                </tr>
+                            </tfoot>
+            </table>
+            </div>
+                <ErrorDialog dialogValue={errorDialogOpen} dialogClose={()=>this.setState({errorDialogOpen:false})}>
+                    {errorMessage}
+                </ErrorDialog>
             </>
         );
     }

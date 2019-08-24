@@ -7,7 +7,7 @@ const HomePage = ()=>{
 
     
         return(
-            <div class="mainpage">
+            <div className="mainpage">
                 <RetailSales />
             </div>
         )

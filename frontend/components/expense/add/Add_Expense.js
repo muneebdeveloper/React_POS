@@ -76,7 +76,11 @@ class Add_Expense extends Component{
                 {
                     (createExpense,{loading})=>{
                         if(loading){
-                            return(<CircularProgress size={70} />);
+                            return(
+                                <div className="mainLoadingStyle">
+                                    <CircularProgress size={70} />
+                                </div>
+                            );
                         }
 
                         return(
@@ -123,6 +127,7 @@ class Add_Expense extends Component{
                         <th>Sr#</th>
                         <th>Description</th>
                         <th>Amount</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
