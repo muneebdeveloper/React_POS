@@ -39,8 +39,8 @@ type Product{
   id: ID! @id
   barcode: String! @unique
   name: String!
-  sellPrice: Int
-  wholesalePrice: Int
+  sellPrice: Float
+  wholesalePrice: Float
   category:Category!
   stock:[StockItem!]!
 }
@@ -63,7 +63,8 @@ type SalesItem{
   createdAt:DateTime! @createdAt
   noofpieces:Int!
   buyPrice:Float
-  sellPrice:Float!
+  sellPrice:Float
+  wholesalePrice:Float
   profit:Float
   product:Product!
   supplier:Supplier
@@ -81,5 +82,5 @@ type Expense{
   id: ID! @id
   createdAt: DateTime! @createdAt
   description: String!
-  price: Float!
+  amount: Float!
 }

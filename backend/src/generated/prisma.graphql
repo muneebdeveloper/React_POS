@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/muhammad-muneeb-akhlaq/backend/dev
-# timestamp: Sat Aug 24 2019 10:40:38 GMT+0500 (Pakistan Standard Time)
+# timestamp: Sat Aug 24 2019 21:55:47 GMT+0500 (Pakistan Standard Time)
 
 type AggregateCategory {
   count: Int!
@@ -259,7 +259,7 @@ type Expense implements Node {
   id: ID!
   createdAt: DateTime!
   description: String!
-  price: Float!
+  amount: Float!
 }
 
 """A connection to a list of items."""
@@ -275,7 +275,7 @@ type ExpenseConnection {
 input ExpenseCreateInput {
   id: ID
   description: String!
-  price: Float!
+  amount: Float!
 }
 
 """An edge in a connection."""
@@ -294,15 +294,15 @@ enum ExpenseOrderByInput {
   createdAt_DESC
   description_ASC
   description_DESC
-  price_ASC
-  price_DESC
+  amount_ASC
+  amount_DESC
 }
 
 type ExpensePreviousValues {
   id: ID!
   createdAt: DateTime!
   description: String!
-  price: Float!
+  amount: Float!
 }
 
 type ExpenseSubscriptionPayload {
@@ -344,12 +344,12 @@ input ExpenseSubscriptionWhereInput {
 
 input ExpenseUpdateInput {
   description: String
-  price: Float
+  amount: Float
 }
 
 input ExpenseUpdateManyMutationInput {
   description: String
-  price: Float
+  amount: Float
 }
 
 input ExpenseWhereInput {
@@ -463,28 +463,28 @@ input ExpenseWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
-  price: Float
+  amount: Float
 
   """All values that are not equal to given value."""
-  price_not: Float
+  amount_not: Float
 
   """All values that are contained in given list."""
-  price_in: [Float!]
+  amount_in: [Float!]
 
   """All values that are not contained in given list."""
-  price_not_in: [Float!]
+  amount_not_in: [Float!]
 
   """All values less than the given value."""
-  price_lt: Float
+  amount_lt: Float
 
   """All values less than or equal the given value."""
-  price_lte: Float
+  amount_lte: Float
 
   """All values greater than the given value."""
-  price_gt: Float
+  amount_gt: Float
 
   """All values greater than or equal the given value."""
-  price_gte: Float
+  amount_gte: Float
 }
 
 input ExpenseWhereUniqueInput {
@@ -1272,9 +1272,8 @@ type Product implements Node {
   id: ID!
   barcode: String!
   name: String!
-  sellPrice: Int
-  wholesalePrice: Int
-  supplier: String
+  sellPrice: Float
+  wholesalePrice: Float
   category: Category!
   stock(where: StockItemWhereInput, orderBy: StockItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [StockItem!]
 }
@@ -1293,9 +1292,8 @@ input ProductCreateInput {
   id: ID
   barcode: String!
   name: String!
-  sellPrice: Int
-  wholesalePrice: Int
-  supplier: String
+  sellPrice: Float
+  wholesalePrice: Float
   category: CategoryCreateOneInput!
   stock: StockItemCreateManyWithoutProductInput
 }
@@ -1314,9 +1312,8 @@ input ProductCreateWithoutStockInput {
   id: ID
   barcode: String!
   name: String!
-  sellPrice: Int
-  wholesalePrice: Int
-  supplier: String
+  sellPrice: Float
+  wholesalePrice: Float
   category: CategoryCreateOneInput!
 }
 
@@ -1340,17 +1337,14 @@ enum ProductOrderByInput {
   sellPrice_DESC
   wholesalePrice_ASC
   wholesalePrice_DESC
-  supplier_ASC
-  supplier_DESC
 }
 
 type ProductPreviousValues {
   id: ID!
   barcode: String!
   name: String!
-  sellPrice: Int
-  wholesalePrice: Int
-  supplier: String
+  sellPrice: Float
+  wholesalePrice: Float
 }
 
 type ProductSubscriptionPayload {
@@ -1393,9 +1387,8 @@ input ProductSubscriptionWhereInput {
 input ProductUpdateDataInput {
   barcode: String
   name: String
-  sellPrice: Int
-  wholesalePrice: Int
-  supplier: String
+  sellPrice: Float
+  wholesalePrice: Float
   category: CategoryUpdateOneRequiredInput
   stock: StockItemUpdateManyWithoutProductInput
 }
@@ -1403,9 +1396,8 @@ input ProductUpdateDataInput {
 input ProductUpdateInput {
   barcode: String
   name: String
-  sellPrice: Int
-  wholesalePrice: Int
-  supplier: String
+  sellPrice: Float
+  wholesalePrice: Float
   category: CategoryUpdateOneRequiredInput
   stock: StockItemUpdateManyWithoutProductInput
 }
@@ -1413,9 +1405,8 @@ input ProductUpdateInput {
 input ProductUpdateManyMutationInput {
   barcode: String
   name: String
-  sellPrice: Int
-  wholesalePrice: Int
-  supplier: String
+  sellPrice: Float
+  wholesalePrice: Float
 }
 
 input ProductUpdateOneRequiredInput {
@@ -1435,9 +1426,8 @@ input ProductUpdateOneRequiredWithoutStockInput {
 input ProductUpdateWithoutStockDataInput {
   barcode: String
   name: String
-  sellPrice: Int
-  wholesalePrice: Int
-  supplier: String
+  sellPrice: Float
+  wholesalePrice: Float
   category: CategoryUpdateOneRequiredInput
 }
 
@@ -1580,90 +1570,50 @@ input ProductWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
-  sellPrice: Int
+  sellPrice: Float
 
   """All values that are not equal to given value."""
-  sellPrice_not: Int
+  sellPrice_not: Float
 
   """All values that are contained in given list."""
-  sellPrice_in: [Int!]
+  sellPrice_in: [Float!]
 
   """All values that are not contained in given list."""
-  sellPrice_not_in: [Int!]
+  sellPrice_not_in: [Float!]
 
   """All values less than the given value."""
-  sellPrice_lt: Int
+  sellPrice_lt: Float
 
   """All values less than or equal the given value."""
-  sellPrice_lte: Int
+  sellPrice_lte: Float
 
   """All values greater than the given value."""
-  sellPrice_gt: Int
+  sellPrice_gt: Float
 
   """All values greater than or equal the given value."""
-  sellPrice_gte: Int
-  wholesalePrice: Int
+  sellPrice_gte: Float
+  wholesalePrice: Float
 
   """All values that are not equal to given value."""
-  wholesalePrice_not: Int
+  wholesalePrice_not: Float
 
   """All values that are contained in given list."""
-  wholesalePrice_in: [Int!]
+  wholesalePrice_in: [Float!]
 
   """All values that are not contained in given list."""
-  wholesalePrice_not_in: [Int!]
+  wholesalePrice_not_in: [Float!]
 
   """All values less than the given value."""
-  wholesalePrice_lt: Int
+  wholesalePrice_lt: Float
 
   """All values less than or equal the given value."""
-  wholesalePrice_lte: Int
+  wholesalePrice_lte: Float
 
   """All values greater than the given value."""
-  wholesalePrice_gt: Int
+  wholesalePrice_gt: Float
 
   """All values greater than or equal the given value."""
-  wholesalePrice_gte: Int
-  supplier: String
-
-  """All values that are not equal to given value."""
-  supplier_not: String
-
-  """All values that are contained in given list."""
-  supplier_in: [String!]
-
-  """All values that are not contained in given list."""
-  supplier_not_in: [String!]
-
-  """All values less than the given value."""
-  supplier_lt: String
-
-  """All values less than or equal the given value."""
-  supplier_lte: String
-
-  """All values greater than the given value."""
-  supplier_gt: String
-
-  """All values greater than or equal the given value."""
-  supplier_gte: String
-
-  """All values containing the given string."""
-  supplier_contains: String
-
-  """All values not containing the given string."""
-  supplier_not_contains: String
-
-  """All values starting with the given string."""
-  supplier_starts_with: String
-
-  """All values not starting with the given string."""
-  supplier_not_starts_with: String
-
-  """All values ending with the given string."""
-  supplier_ends_with: String
-
-  """All values not ending with the given string."""
-  supplier_not_ends_with: String
+  wholesalePrice_gte: Float
   category: CategoryWhereInput
   stock_every: StockItemWhereInput
   stock_some: StockItemWhereInput
@@ -1719,7 +1669,8 @@ type SalesItem implements Node {
   createdAt: DateTime!
   noofpieces: Int!
   buyPrice: Float
-  sellPrice: Float!
+  sellPrice: Float
+  wholesalePrice: Float
   profit: Float
   product: Product!
   supplier: Supplier
@@ -1740,7 +1691,8 @@ input SalesItemCreateInput {
   id: ID
   noofpieces: Int!
   buyPrice: Float
-  sellPrice: Float!
+  sellPrice: Float
+  wholesalePrice: Float
   profit: Float
   product: ProductCreateOneInput!
   supplier: SupplierCreateOneInput
@@ -1756,7 +1708,8 @@ input SalesItemCreateWithoutSalesTicketInput {
   id: ID
   noofpieces: Int!
   buyPrice: Float
-  sellPrice: Float!
+  sellPrice: Float
+  wholesalePrice: Float
   profit: Float
   product: ProductCreateOneInput!
   supplier: SupplierCreateOneInput
@@ -1782,6 +1735,8 @@ enum SalesItemOrderByInput {
   buyPrice_DESC
   sellPrice_ASC
   sellPrice_DESC
+  wholesalePrice_ASC
+  wholesalePrice_DESC
   profit_ASC
   profit_DESC
 }
@@ -1791,7 +1746,8 @@ type SalesItemPreviousValues {
   createdAt: DateTime!
   noofpieces: Int!
   buyPrice: Float
-  sellPrice: Float!
+  sellPrice: Float
+  wholesalePrice: Float
   profit: Float
 }
 
@@ -1932,6 +1888,28 @@ input SalesItemScalarWhereInput {
 
   """All values greater than or equal the given value."""
   sellPrice_gte: Float
+  wholesalePrice: Float
+
+  """All values that are not equal to given value."""
+  wholesalePrice_not: Float
+
+  """All values that are contained in given list."""
+  wholesalePrice_in: [Float!]
+
+  """All values that are not contained in given list."""
+  wholesalePrice_not_in: [Float!]
+
+  """All values less than the given value."""
+  wholesalePrice_lt: Float
+
+  """All values less than or equal the given value."""
+  wholesalePrice_lte: Float
+
+  """All values greater than the given value."""
+  wholesalePrice_gt: Float
+
+  """All values greater than or equal the given value."""
+  wholesalePrice_gte: Float
   profit: Float
 
   """All values that are not equal to given value."""
@@ -1997,6 +1975,7 @@ input SalesItemUpdateInput {
   noofpieces: Int
   buyPrice: Float
   sellPrice: Float
+  wholesalePrice: Float
   profit: Float
   product: ProductUpdateOneRequiredInput
   supplier: SupplierUpdateOneInput
@@ -2007,6 +1986,7 @@ input SalesItemUpdateManyDataInput {
   noofpieces: Int
   buyPrice: Float
   sellPrice: Float
+  wholesalePrice: Float
   profit: Float
 }
 
@@ -2014,6 +1994,7 @@ input SalesItemUpdateManyMutationInput {
   noofpieces: Int
   buyPrice: Float
   sellPrice: Float
+  wholesalePrice: Float
   profit: Float
 }
 
@@ -2038,6 +2019,7 @@ input SalesItemUpdateWithoutSalesTicketDataInput {
   noofpieces: Int
   buyPrice: Float
   sellPrice: Float
+  wholesalePrice: Float
   profit: Float
   product: ProductUpdateOneRequiredInput
   supplier: SupplierUpdateOneInput
@@ -2191,6 +2173,28 @@ input SalesItemWhereInput {
 
   """All values greater than or equal the given value."""
   sellPrice_gte: Float
+  wholesalePrice: Float
+
+  """All values that are not equal to given value."""
+  wholesalePrice_not: Float
+
+  """All values that are contained in given list."""
+  wholesalePrice_in: [Float!]
+
+  """All values that are not contained in given list."""
+  wholesalePrice_not_in: [Float!]
+
+  """All values less than the given value."""
+  wholesalePrice_lt: Float
+
+  """All values less than or equal the given value."""
+  wholesalePrice_lte: Float
+
+  """All values greater than the given value."""
+  wholesalePrice_gt: Float
+
+  """All values greater than or equal the given value."""
+  wholesalePrice_gte: Float
   profit: Float
 
   """All values that are not equal to given value."""

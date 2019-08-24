@@ -849,7 +849,7 @@ class ProductAddMain extends Component{
                                                                 noofpieces:editnoofpieces,
                                                                 expiry:editexpiry
                                                             }
-                                                            console.log(editexpiry);
+                                                            
                                                             state.productDetail[stockitem_edit_index] = newstockObject;
                                                             let calcTotalBuyPrice=0,calcTotalSellPrice=0,calcTotalWholeSalePrice=0,calcTotalNoOfPieces=0;
                                                             state.productDetail.map(

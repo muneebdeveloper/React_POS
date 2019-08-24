@@ -1,38 +1,86 @@
 import React, {Component} from 'react';
-import {Mutation} from 'react-apollo';
+import {Mutation,ApolloConsumer} from 'react-apollo';
 import gql from 'graphql-tag';
 
 import styles from './Add_Expense.css';
 
-import Intro from '../../misc/Intro';
+import ErrorDialog from '../../misc/ErrorDialog';
+import SnackBar from '../../misc/SnackBar';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from '@material-ui/core/DialogActions';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 import Add_Expense_Detail from './Add_Expense_Detail';
 
 
 
 const CREATE_EXPENSE_MUTATION = gql`
-    mutation CREATE_EXPENSE_MUTATION($description:String!,$price:Float!){
+    mutation CREATE_EXPENSE_MUTATION($description:String!,$amount:Float!){
         createExpense(
             data:{
                 description:$description,
-                price:$price
+                amount:$amount
             }
         ){
-            price
+            id
         }
     }
 `;
 
+const EXPENSE_ITEM_QUERY = gql`
+    query EXPENSE_ITEM_QUERY($id:ID!){
+        expense(where:{id:$id}){
+            description
+            amount
+        }
+    }
+`;
+
+const UPDATE_EXPENSE_MUTATION = gql`
+    mutation UPDATE_EXPENSE_MUTATION($id:ID!,$description:String!,$amount:Float!){
+        updateExpense(
+            data:{
+                description:$description,
+                amount:$amount
+            },
+            where:{
+                id:$id
+            }
+        ){
+            amount
+        }
+    }
+`;
+
+const REMOVE_EXPENSE_MUTATION = gql`
+    mutation REMOVE_EXPENSE_MUTATION($id:ID!){
+        deleteExpense(where:{id:$id}){
+            id
+        }
+    }
+`;
 
 class Add_Expense extends Component{
 
     state={
         description:'',
         amount:'',
-        expenseDetail:[]
+        expenseDetail:[],
+        editDialogOpen:false,
+        edit_id:'',
+        edit_index:'',
+        edit_description:'',
+        edit_amount:'',
+        editDialogLoading:false,
+        errorDialogOpen:false,
+        errorMessage:'',
+        removeDialogLoading:false,
+        removeDialogOpen:false
     }
 
     inputChangeHandler = e =>{
@@ -43,8 +91,9 @@ class Add_Expense extends Component{
 
     expenseSubmitHandler = (createExpense)=>async (e)=>{
         e.preventDefault();
-        await createExpense();
+        const res = await createExpense();
         const expenseDetailArray = [...this.state.expenseDetail,{
+            id:res.data.createExpense.id,
             description:this.state.description,
             amount:this.state.amount
         }];
@@ -56,21 +105,130 @@ class Add_Expense extends Component{
 
     }
 
+    editDialogHandler = (client)=>async (id,index)=>{
+        
+        this.setState({
+            editDialogOpen:true,
+            editDialogLoading:true
+        });
+        try{
+            const res = await client.query({
+                query:EXPENSE_ITEM_QUERY,
+                variables:{
+                    id
+                }
+            });
+            this.setState({
+                editDialogLoading:false,
+                edit_id:id,
+                edit_index:index,
+                edit_description:res.data.expense.description,
+                edit_amount:res.data.expense.amount
+            })
+        }catch(e){
+            this.setState({
+                editDialogLoading:false,
+                editDialogOpen:false,
+                errorMessage:"Something went wrong",
+                errorDialogOpen:true
+            })
+        }
+      
+    }
+
+    formEditDialogHandler = (client)=>async (e)=>{
+        e.preventDefault();
+        const {edit_index,edit_id,edit_amount,edit_description,expenseDetail}=this.state;
+        this.setState({
+            editDialogLoading:true,
+        });
+        try{
+            await client.mutate({
+                mutation:UPDATE_EXPENSE_MUTATION,
+                variables:{
+                    amount:Number(edit_amount),
+                    description:edit_description,
+                    id:edit_id
+                }
+            });
+            let objectToEdit = expenseDetail[edit_index];
+            objectToEdit.amount=edit_amount;
+            objectToEdit.description = edit_description;
+            this.setState((state)=>{
+                state.expenseDetail[edit_index] = objectToEdit;
+                return{
+                    editDialogLoading:false,
+                    editDialogOpen:false
+                }
+            })
+        }catch(e){
+            this.setState({
+                editDialogLoading:false,
+                editDialogOpen:false,
+                errorMessage:"Something went wrong",
+                errorDialogOpen:true
+            })
+        }
+        
+    }
+
+    formRemoveDialogHandler = (client)=>async ()=>{
+        const {edit_id,edit_index} = this.state;
+        this.setState({
+            removeDialogLoading:true
+        });
+        try{
+            await client.mutate({
+                mutation:REMOVE_EXPENSE_MUTATION,
+                variables:{
+                    id:edit_id
+                }
+            });
+            this.setState((state)=>{
+                state.expenseDetail.splice(edit_index,1);
+                return{
+                    removeDialogLoading:false,
+                    removeDialogOpen:false
+                }
+            })
+        }catch(e){
+            this.setState({
+                removeDialogLoading:false,
+                removeDialogOpen:false,
+                errorMessage:"Something went wrong",
+                errorDialogOpen:true
+            })
+        }
+
+    }
 
     render(){
         const { description,
                 amount,
-                expenseDetail
+                expenseDetail,
+                editDialogOpen,
+                edit_description,
+                edit_amount,
+                editDialogLoading,
+                removeDialogLoading,
+                removeDialogOpen,
+                errorDialogOpen,
+                errorMessage
               } = this.state;
 
         return(
             <>
-            <Intro>Add Expense</Intro>
+             <ApolloConsumer>
+                {
+                    (client)=>{
+                        return(
+                            <>
+           
             <Mutation 
                 mutation={CREATE_EXPENSE_MUTATION}
                 variables={{
                     description,
-                    price:Number(amount)
+                    amount:Number(amount)
                 }}    
             >
                 {
@@ -94,7 +252,6 @@ class Add_Expense extends Component{
                         required
                         type="text"
                         value={description}
-                        autoFocus
                         className={`${styles.width50} ${styles.marginbottom30}`}
                         onChange={this.inputChangeHandler}
                     />
@@ -133,12 +290,17 @@ class Add_Expense extends Component{
                 <tbody>
                     {
                         expenseDetail.map((detail,index)=>{
-                            const {description,amount}=detail;
+                            const {id,description,amount}=detail;
                             return(
                                 <Add_Expense_Detail 
                                     sr={index+1}
+                                    key={index}
+                                    id={id}
+                                    index={index}
                                     description={description}
-                                    amount={amount}    
+                                    amount={amount}
+                                    editDialogHandler={this.editDialogHandler(client)}
+                                    removeDialogHandler={(id,index)=>this.setState({removeDialogOpen:true,edit_id:id,edit_index:index})}
                                 />                                
                             )
                         })
@@ -150,6 +312,103 @@ class Add_Expense extends Component{
                     }
                 }
             </Mutation>
+
+           
+                            <Dialog open={editDialogOpen} onClose={()=>this.setState({editDialogOpen:false})}>
+                            <div className="dialogTitleStyle">
+                                <h2>Edit Expense</h2>
+                                <IconButton onClick={()=>this.setState({editDialogOpen:false})}>
+                                    <CancelIcon className={styles.delete} />
+                                </IconButton>
+                            </div>
+                            <form onSubmit={this.formEditDialogHandler(client)}>
+                                {
+                                    editDialogLoading ?(
+                                        <div className="dialogLoadingStyle">
+                                            <CircularProgress size={70} />
+                                        </div>
+                                    ):(
+                                        <>
+                                <DialogContent className={styles.dialogMargin}>
+                                    <TextField 
+                                        label="Descrtiption"
+                                        name="edit_description"
+                                        variant="outlined"
+                                        value={edit_description}
+                                        onChange={this.inputChangeHandler}
+                                        autoFocus
+                                        required
+                                        fullWidth
+                                    />
+                                    <TextField 
+                                        label="Amount"
+                                        name="edit_amount"
+                                        variant="outlined"
+                                        value={edit_amount}
+                                        required
+                                        onChange={this.inputChangeHandler}
+                                        fullWidth
+                                    />
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button
+                                        variant="contained"
+                                        type="submit"
+                                        size="large"
+                                    >
+                                        Submit
+                                    </Button>
+                                </DialogActions>
+                                </>
+                                    )
+                                }
+                            </form>
+                        </Dialog>
+            
+                        <Dialog open={removeDialogOpen} onClose={()=>this.setState({removeDialogOpen:false})} >
+            
+                            <div className="dialogTitleStyle">
+                                <h2>Are you sure, you want to remove this stock item?</h2>
+                            </div>
+                            
+                            {
+                                removeDialogLoading ? (
+                                    <div className="dialogLoadingStyle">
+                                        <CircularProgress size={70} />
+                                    </div>
+                                ):(
+                                    <DialogActions>
+                                    <Button 
+                                        variant="contained"
+                                        size="large"
+                                        onClick={()=>this.setState({removeDialogOpen:false})}
+                                        className={styles.deleteButton}
+                                    >
+                                        Cancel
+                                    </Button>
+                
+                                    <Button 
+                                        variant="contained"
+                                        size="large"
+                                        onClick={this.formRemoveDialogHandler(client)}
+                                    >
+                                        yes
+                                    </Button>
+                
+                                </DialogActions>
+                                )
+                            }
+                            
+                        </Dialog>
+                        </>
+                        );
+                    }
+                }
+            </ApolloConsumer>
+            <ErrorDialog dialogValue={errorDialogOpen} dialogClose={()=>this.setState({errorDialogOpen:false})}>
+                {errorMessage}
+            </ErrorDialog>
+      
             </>
         );
     }

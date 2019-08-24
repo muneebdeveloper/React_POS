@@ -5,3 +5,19 @@
 .marginbottom30{
     margin-bottom:15px !important;
 }
+
+.edit{
+    color:#379237 !important;
+}
+
+.delete{
+    color:#e21e1e !important;
+}
+
+.deleteButton{
+    background-color:#e21e1e !important;
+}
+
+.dialogMargin>*:not(:last-child){
+    margin-bottom:20px !important;
+}

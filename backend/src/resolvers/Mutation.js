@@ -11,6 +11,8 @@ const Mutation = {
     deleteSupplier:forwardTo('db'),
     createPaidDetail:forwardTo('db'),
     createExpense:forwardTo('db'),
+    updateExpense:forwardTo('db'),
+    deleteExpense:forwardTo('db'),
 
     createStockItem(parent,args,ctx,info){
 

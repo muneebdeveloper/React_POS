@@ -5,6 +5,8 @@ type Query{
     product(where: ProductWhereUniqueInput!): Product
     stockItem(where: StockItemWhereUniqueInput!): StockItem
     supplier(where: SupplierWhereUniqueInput!): Supplier
+    expense(where: ExpenseWhereUniqueInput!): Expense
+    expenses(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expense]!
     categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
     products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
     lineItems(where: LineItemWhereInput, orderBy: LineItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [LineItem]!
@@ -31,6 +33,8 @@ type Mutation{
      deleteSupplier(where: SupplierWhereUniqueInput!): Supplier
      createPaidDetail(data: PaidDetailCreateInput!): PaidDetail!
      createExpense(data: ExpenseCreateInput!): Expense!
+     updateExpense(data: ExpenseUpdateInput!, where: ExpenseWhereUniqueInput!): Expense
+     deleteExpense(where: ExpenseWhereUniqueInput!): Expense
      createSalesItem(data: SalesItemCreateInput!): SalesItem!
      updateSalesItem(data: SalesItemUpdateInput!, where: SalesItemWhereUniqueInput!): SalesItem
      deleteSalesItem(where: SalesItemWhereUniqueInput!): SalesItem
