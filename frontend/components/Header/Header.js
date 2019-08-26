@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import Drawer from '@material-ui/core/Drawer';
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Badge from '@material-ui/core/Badge';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -15,8 +15,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 
+import CurrentUser from '../CurrentUser';
+
 
 import {StylesProvider} from '@material-ui/styles';
+
 
 class Header extends Component{
 
@@ -96,6 +99,19 @@ class Header extends Component{
                             <NotificationsIcon />
                         </Badge>
                     </IconButton>
+                    
+                    <CurrentUser>
+                      {
+                        ({data:{currentUser}})=>{
+                          if(currentUser){
+                          return(
+                           
+                        <span style={{color:"white"}}>{currentUser.username}</span>)
+                        }
+                        return null;
+                      }
+                      }
+                    </CurrentUser>
                     
                     </div>
 

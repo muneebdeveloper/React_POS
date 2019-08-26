@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/muhammad-muneeb-akhlaq/backend/dev
-# timestamp: Sat Aug 24 2019 21:55:47 GMT+0500 (Pakistan Standard Time)
+# timestamp: Mon Aug 26 2019 17:03:37 GMT+0500 (Pakistan Standard Time)
 
 type AggregateCategory {
   count: Int!
@@ -3810,4 +3810,5 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
+  username: String
 }

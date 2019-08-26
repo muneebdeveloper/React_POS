@@ -1,3 +1,5 @@
+require('dotenv').config({path:'.env'});
+const jwt = require('jsonwebtoken');
 const {forwardTo} = require('prisma-binding');
 
 
@@ -13,6 +15,35 @@ const Mutation = {
     createExpense:forwardTo('db'),
     updateExpense:forwardTo('db'),
     deleteExpense:forwardTo('db'),
+
+    async signin(parent,args,ctx,info){
+        let {username,password} = args.data;
+        username = username.toLowerCase();
+
+        const user = await ctx.db.query.user({
+            where:{
+                username
+            }
+        })
+        if(!user){
+            throw new Error("The username doesnot exist")
+        }
+        if(user.password!==password){
+            throw new Error("password isnot correct")
+        }
+        const token = jwt.sign({userId:user.id},process.env.JWT_SECRET);
+        ctx.response.cookie(
+            'token',
+            token,
+            {
+                httpOnly:true,
+                maxAge:1000 * 60 * 60 * 24 * 365
+            }
+        );
+
+        return user;
+
+    },
 
     createStockItem(parent,args,ctx,info){
 

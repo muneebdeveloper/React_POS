@@ -2,6 +2,7 @@
 
 
 type Query{
+    currentUser:User
     product(where: ProductWhereUniqueInput!): Product
     stockItem(where: StockItemWhereUniqueInput!): StockItem
     supplier(where: SupplierWhereUniqueInput!): Supplier
@@ -16,28 +17,34 @@ type Query{
 }
 
 type Mutation{
-     createLineItem(data: LineItemCreateInput!): LineItem!
-     updateLineItem(data: LineItemUpdateInput!, where: LineItemWhereUniqueInput!): LineItem
-     deleteLineItem(where: LineItemWhereUniqueInput!): LineItem
-     createCategory(data: CategoryCreateInput!): Category!
-     updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
-     deleteCategory(where: CategoryWhereUniqueInput!): Category
-     createProduct(data: ProductCreateInput!): Product!
-     updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
-     deleteProduct(where: ProductWhereUniqueInput!): Product
-     createStockItem(data: StockItemCreateInput!): StockItem!
-     updateStockItem(data: StockItemUpdateInput!, where: StockItemWhereUniqueInput!): StockItem
-     deleteStockItem(where: StockItemWhereUniqueInput!): StockItem
-     createSupplier(data: SupplierCreateInput!): Supplier!
-     updateSupplier(data: SupplierUpdateInput!, where: SupplierWhereUniqueInput!): Supplier
-     deleteSupplier(where: SupplierWhereUniqueInput!): Supplier
-     createPaidDetail(data: PaidDetailCreateInput!): PaidDetail!
-     createExpense(data: ExpenseCreateInput!): Expense!
-     updateExpense(data: ExpenseUpdateInput!, where: ExpenseWhereUniqueInput!): Expense
-     deleteExpense(where: ExpenseWhereUniqueInput!): Expense
-     createSalesItem(data: SalesItemCreateInput!): SalesItem!
-     updateSalesItem(data: SalesItemUpdateInput!, where: SalesItemWhereUniqueInput!): SalesItem
-     deleteSalesItem(where: SalesItemWhereUniqueInput!): SalesItem
-     createSalesTicket: SalesTicket!
+    signin(data:SignInUserInput!):User!
+    createLineItem(data: LineItemCreateInput!): LineItem!
+    updateLineItem(data: LineItemUpdateInput!, where: LineItemWhereUniqueInput!): LineItem
+    deleteLineItem(where: LineItemWhereUniqueInput!): LineItem
+    createCategory(data: CategoryCreateInput!): Category!
+    updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
+    deleteCategory(where: CategoryWhereUniqueInput!): Category
+    createProduct(data: ProductCreateInput!): Product!
+    updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
+    deleteProduct(where: ProductWhereUniqueInput!): Product
+    createStockItem(data: StockItemCreateInput!): StockItem!
+    updateStockItem(data: StockItemUpdateInput!, where: StockItemWhereUniqueInput!): StockItem
+    deleteStockItem(where: StockItemWhereUniqueInput!): StockItem
+    createSupplier(data: SupplierCreateInput!): Supplier!
+    updateSupplier(data: SupplierUpdateInput!, where: SupplierWhereUniqueInput!): Supplier
+    deleteSupplier(where: SupplierWhereUniqueInput!): Supplier
+    createPaidDetail(data: PaidDetailCreateInput!): PaidDetail!
+    createExpense(data: ExpenseCreateInput!): Expense!
+    updateExpense(data: ExpenseUpdateInput!, where: ExpenseWhereUniqueInput!): Expense
+    deleteExpense(where: ExpenseWhereUniqueInput!): Expense
+    createSalesItem(data: SalesItemCreateInput!): SalesItem!
+    updateSalesItem(data: SalesItemUpdateInput!, where: SalesItemWhereUniqueInput!): SalesItem
+    deleteSalesItem(where: SalesItemWhereUniqueInput!): SalesItem
+    createSalesTicket: SalesTicket!
      
+}
+
+input SignInUserInput {
+    username:String!
+    password:String!
 }
