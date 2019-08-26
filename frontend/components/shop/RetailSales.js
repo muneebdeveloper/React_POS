@@ -72,7 +72,16 @@ class RetailSales extends Component{
         barcode:'',
         receipt:[],
         snackbarOpen:false,
+        edit_quantity:'',
         snackbarMessage:'',
+        subTotal:function(){
+            let totalValue=0;
+            this.receipt.map((t)=>{
+                totalValue = totalValue + t.value();
+            });
+            return totalValue;
+        },
+        discount:0,
         productQuantityDialogOpen:false
     }
 
@@ -146,6 +155,28 @@ class RetailSales extends Component{
         }
     }
 
+    productRemoveHandler = (index)=>{
+        this.setState((state)=>{
+            state.receipt.splice(index,1);
+            return{
+            }
+        });
+    }
+
+    productQuantityHandler = (e)=>{
+        e.preventDefault();
+        let {receipt,edit_index,edit_quantity} = this.state;
+        let productObject = receipt[edit_index];
+        productObject.quantity=edit_quantity;
+        this.setState((state)=>{
+            state.receipt[state.edit_index]=productObject;
+            return{
+                productQuantityDialogOpen:false,
+                edit_quantity:''
+            }
+        })
+    }
+
     printReceiptHandler = (client)=>async ()=>{
         const res= await client.mutate({
             mutation:CREATE_SALESTICKET_MUTATION
@@ -170,6 +201,8 @@ class RetailSales extends Component{
             barcode,
             receipt,
             snackbarOpen,
+            edit_quantity,
+            discount,
             snackbarMessage,
             productQuantityDialogOpen
         } = this.state;
@@ -270,12 +303,14 @@ class RetailSales extends Component{
                             <RetailSales_Table 
                                 key={index}
                                 id={id}
+                                index={index}
                                 sr={index+1}
                                 product={product}
                                 price={price}
                                 quantity={quantity}
                                 value={r.value()}
-                                productQuantityDialogHandler={()=>this.setState({productQuantityDialogOpen:true})}
+                                productQuantityDialogHandler={(index)=>this.setState({productQuantityDialogOpen:true,edit_index:index})}
+                                productRemoveHandler={this.productRemoveHandler}
                             />)
                         }
                     )
@@ -291,17 +326,23 @@ class RetailSales extends Component{
             <div className="gutterbottom" style={{display:"flex",justifyContent:"center",position:"relative"}}>
                 <div className={styles.aligncenter}>
                     <h1 style={{color:"green"}}>SubTotal</h1>
-                    <h2>56</h2>
+                    <h2>{this.state.subTotal()}</h2>
                 </div>
 
                 <div style={{marginRight:"100px",marginLeft:"100px"}} className={styles.aligncenter}>
                     <h1 style={{color:"red"}}>Discount</h1>
-                    <input type="number"  style={{width:"130px",fontSize:"25px",textAlign:"center"}} />
+                    <input 
+                        type="number"
+                        name="discount"
+                        value={discount}
+                        onChange={this.inputChangeHandler}
+                        style={{width:"130px",fontSize:"25px",textAlign:"center"}} 
+                    />
                 </div>
 
                 <div className={styles.aligncenter}>
                     <h1 >Total</h1>
-                    <h2>56</h2>
+                    <h2>{this.state.subTotal()-discount}</h2>
                 </div>
                 <ApolloConsumer>
                     {
@@ -312,7 +353,7 @@ class RetailSales extends Component{
                                     className={styles.buttonsetting}
                                     size="large"
                                     onClick={this.printReceiptHandler(client)}
-                                    // disabled={receipt.length>0?false:true}
+                                    disabled={receipt.length>0?false:true}
                                 >
                                     Print receipt
                                 </Button>
@@ -332,11 +373,14 @@ class RetailSales extends Component{
                                     <CancelIcon className={styles.delete} />
                             </IconButton>
                     </div>
+                    <form  method="post"  onSubmit={this.productQuantityHandler} >
                     <DialogContent>
                         <TextField
-                            name="quantity"
+                            name="edit_quantity"
                             variant="outlined"
                             label="Quantity"
+                            value={edit_quantity}
+                            onChange={this.inputChangeHandler}
                             required
                             autoFocus
                             fullWidth 
@@ -350,6 +394,7 @@ class RetailSales extends Component{
                             Submit
                         </Button>
                     </DialogActions>
+                    </form>
 
                 </Dialog>
 

@@ -10,11 +10,13 @@ const RetailSales_Table = (props)=>{
     const {
         id,
         sr,
+        index,
         product,
         price,
         quantity,
         value,
-        productQuantityDialogHandler
+        productQuantityDialogHandler,
+        productRemoveHandler
     }=props;
     return(
         <tr>
@@ -24,11 +26,11 @@ const RetailSales_Table = (props)=>{
             <td>{quantity}</td>
             <td>{value}</td>
             <td style={{textAlign:"center"}}>
-                <IconButton size="small"  onClick={productQuantityDialogHandler.bind(this)} >
+                <IconButton size="small"  onClick={productQuantityDialogHandler.bind(this,index)} >
                     <Edit className={styles.edit} />
                 </IconButton>
 
-                <IconButton size="small" >
+                <IconButton size="small" onClick={productRemoveHandler.bind(this,index)}>
                     <Delete className={styles.delete} />
                 </IconButton>
                               

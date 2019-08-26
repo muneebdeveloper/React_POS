@@ -368,7 +368,7 @@ class Add_Expense extends Component{
                         <Dialog open={removeDialogOpen} onClose={()=>this.setState({removeDialogOpen:false})} >
             
                             <div className="dialogTitleStyle">
-                                <h2>Are you sure, you want to remove this stock item?</h2>
+                                <h2>Are you sure, you want to remove this expense item?</h2>
                             </div>
                             
                             {
