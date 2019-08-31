@@ -1,5 +1,6 @@
 import React from 'react';
 
+import PleaseSignIn from '../components/PleaseSignIn';
 import Add_Expense from '../components/expense/add/Add_Expense';
 import Intro from '../components/misc/Intro';
 
@@ -7,8 +8,10 @@ import Intro from '../components/misc/Intro';
 const Add_Expense_Page = ()=>{
     return(
         <div className="mainpage">
-            <Intro>Add Expense</Intro>
-            <Add_Expense />
+            <PleaseSignIn>
+                <Intro>Add Expense</Intro>
+                <Add_Expense />
+            </PleaseSignIn>
         </div>
     )
 }

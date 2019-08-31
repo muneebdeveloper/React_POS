@@ -45,23 +45,29 @@ const Mutation = {
 
     },
 
+    signout(parent,args,ctx,info){
+        ctx.response.clearCookie('token');
+        return {message:"Successfully signed out"};
+    },
+
     createStockItem(parent,args,ctx,info){
 
-        const {data:{sellPrice,product:{connect:{id}}}} = args;
-        ctx.db.mutation.updateProduct({data:{sellPrice},where:{id}});
+        const {data:{sellPrice,wholesalePrice,product:{connect:{id}}}} = args;
+        ctx.db.mutation.updateProduct({data:{sellPrice,wholesalePrice},where:{id}});
 
         return ctx.db.mutation.createStockItem({data:args.data},info);
     },
     async deleteStockItem(parent,args,ctx,info){
-
-        const user = await ctx.db.query.stockItem({where:{id:args.where.id}},`{product{id stock{sellPrice}}}`);
-        
-        if(user.product.stock.length){
-            ctx.db.mutation.updateProduct({data:{sellPrice:user.product.stock.pop().sellPrice},where:{id:user.product.id}});
+        const productID = await ctx.db.query.stockItem({where:{id:args.where.id}},`{product{id}}`);
+        const productRemove = await ctx.db.mutation.deleteStockItem({where:{id:args.where.id}},info);
+        const stockItem = await ctx.db.query.stockItem({where:{id:args.where.id}},`{product{id stock{sellPrice}}}`);
+        if(stockItem){
+            let requiredObject = stockItem.product.stock.pop();
+            ctx.db.mutation.updateProduct({data:{sellPrice:requiredObject.sellPrice,wholesalePrice:requiredObject.wholesalePrice},where:{id:user.product.id}});
         }else{
-            ctx.db.mutation.updateProduct({data:{sellPrice:null},where:{id:user.product.id}});
+            ctx.db.mutation.updateProduct({data:{sellPrice:null,wholesalePrice:null},where:{id:productID.product.id}});
         }
-        return ctx.db.mutation.deleteStockItem({where:{id:args.where.id}},info);
+        return productRemove;
 
     },
     async createSalesTicket(parent,args,ctx,info){

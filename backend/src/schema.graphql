@@ -18,6 +18,7 @@ type Query{
 
 type Mutation{
     signin(data:SignInUserInput!):User!
+    signout:Message
     createLineItem(data: LineItemCreateInput!): LineItem!
     updateLineItem(data: LineItemUpdateInput!, where: LineItemWhereUniqueInput!): LineItem
     deleteLineItem(where: LineItemWhereUniqueInput!): LineItem
@@ -47,4 +48,8 @@ type Mutation{
 input SignInUserInput {
     username:String!
     password:String!
+}
+
+type Message{
+    message:String!
 }

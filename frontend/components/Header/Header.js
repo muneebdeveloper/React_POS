@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 
 import Drawer from '@material-ui/core/Drawer';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
 import Badge from '@material-ui/core/Badge';
+
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import styles from './Header.css';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
@@ -14,6 +15,10 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+
+import SignOut from './SignOut';
+
+import styles from './Header.css';
 
 import CurrentUser from '../CurrentUser';
 
@@ -93,25 +98,31 @@ class Header extends Component{
                        <h3>React POS</h3>
                     </div>
 
-                    <div>
-                    <IconButton  color="inherit" aria-label="menu">
-                        <Badge badgeContent={11} color="primary">
-                            <NotificationsIcon />
-                        </Badge>
-                    </IconButton>
+                    <div className={styles.logoutGrid}>
                     
                     <CurrentUser>
                       {
                         ({data:{currentUser}})=>{
                           if(currentUser){
                           return(
-                           
-                        <span style={{color:"white"}}>{currentUser.username}</span>)
+                            <>
+                              <IconButton  color="inherit" aria-label="menu">
+                                  <Badge badgeContent={11} color="primary">
+                                  <NotificationsIcon />
+                                  </Badge>
+                              </IconButton>
+                        
+                              <Typography variant="button">Hi, {currentUser.username}</Typography>
+                              <SignOut />
+                            </>
+                           )
                         }
                         return null;
                       }
                       }
                     </CurrentUser>
+                    
+                    
                     
                     </div>
 

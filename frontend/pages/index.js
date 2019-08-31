@@ -1,5 +1,6 @@
 import React from 'react';
 
+import PleaseSignIn from '../components/PleaseSignIn';
 import RetailSales from '../components/shop/RetailSales';
 
 
@@ -8,7 +9,9 @@ const HomePage = ()=>{
     
         return(
             <div className="mainpage">
-                <RetailSales />
+                <PleaseSignIn>
+                    <RetailSales />
+                </PleaseSignIn>
             </div>
         )
     

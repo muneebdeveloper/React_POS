@@ -1,12 +1,15 @@
 import React from 'react';
 
+import PleaseSignIn from '../components/PleaseSignIn';
 import Manage_Cash from '../components/suppliers/cashManage/Manage_Cash';
 
 const Supplier_Manage_Cash_Page = ()=>{
 
     return(
         <div className="mainpage">
-            <Manage_Cash />
+            <PleaseSignIn>
+                <Manage_Cash />
+            </PleaseSignIn>
         </div>
     );
 

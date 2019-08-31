@@ -1,3 +1,12 @@
+.logoutGrid{
+    display:grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    align-items: center;
+    grid-column-gap: 10px;
+}
+
+
 .linkitems{
     list-style:none;
 }

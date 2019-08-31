@@ -7,6 +7,7 @@ import SnackBar from '../misc/SnackBar';
 import Button from '@material-ui/core/Button';
 import Badge from '@material-ui/core/Badge';
 import TextField from '@material-ui/core/TextField';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -82,7 +83,8 @@ class RetailSales extends Component{
             return totalValue;
         },
         discount:0,
-        productQuantityDialogOpen:false
+        productQuantityDialogOpen:false,
+        barcodeSubmitLoading:false
     }
 
     componentDidMount(){
@@ -98,6 +100,9 @@ class RetailSales extends Component{
 
     barcodeSubmitForSellPrice = (client)=>async (e)=>{
         e.preventDefault();
+        this.setState({
+            barcodeSubmitLoading:true
+        })
         const res = await client.query({
             query:PRODUCT_SELLPRICE_QUERY,
             variables:{
@@ -120,7 +125,8 @@ class RetailSales extends Component{
                     this.setState((state)=>{
                         state.receipt.push(receiptObject);
                         return{
-                            barcode:''
+                            barcode:'',
+                            barcodeSubmitLoading:false
                         }
                        
                     })
@@ -130,7 +136,8 @@ class RetailSales extends Component{
                     this.setState((state)=>{
                             state.receipt[foundIndex].quantity++;
                             return{
-                                barcode:''
+                                barcode:'',
+                                barcodeSubmitLoading:false
                             }
                         
                     })
@@ -140,7 +147,8 @@ class RetailSales extends Component{
                 this.setState({
                     snackbarOpen:true,
                     snackbarMessage:"The stock doesnot exist",
-                    barcode:''
+                    barcode:'',
+                    barcodeSubmitLoading:false
                 })
                 this.inputFieldRef.current.focus();
             }
@@ -149,7 +157,8 @@ class RetailSales extends Component{
                 this.setState({
                     snackbarOpen:true,
                     snackbarMessage:"The Product doesnot exist",
-                    barcode:''
+                    barcode:'',
+                    barcodeSubmitLoading:false
                 });
                 this.inputFieldRef.current.focus();
         }
@@ -203,6 +212,7 @@ class RetailSales extends Component{
             snackbarOpen,
             edit_quantity,
             discount,
+            barcodeSubmitLoading,
             snackbarMessage,
             productQuantityDialogOpen
         } = this.state;
@@ -216,6 +226,11 @@ class RetailSales extends Component{
             <ApolloConsumer>
                 {
                     (client)=>{
+                        if(barcodeSubmitLoading){
+                            return(
+                                <CircularProgress size={45} />
+                            )
+                        }
                         return(
                             <form onSubmit={this.barcodeSubmitForSellPrice(client)}>
                                 <div className={styles.mainfirst}>
