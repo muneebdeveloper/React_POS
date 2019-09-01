@@ -80,7 +80,7 @@ class Login extends Component{
                                 <CurrentUser
                                     onCompleted={
                                         (data)=>{
-                                            if(data.currentUser){
+                                            if(data.currentUser && Router.pathname==='/login'){
                                                 Router.push('/');
                                             }
                                     }

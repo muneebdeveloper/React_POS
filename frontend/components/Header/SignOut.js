@@ -22,11 +22,6 @@ const SignOut = (props)=>{
         <Mutation 
             awaitRefetchQueries
             mutation={SIGNOUT_MUTATION}
-            onCompleted={
-                ()=>{
-                    Router.push('/login');
-                }
-            }
             refetchQueries={[
                 {query:CURRENT_USER_QUERY}
             ]}

@@ -147,3 +147,11 @@ tbody tr:hover{
     align-items:center;
     justify-content:space-between;
 }
+
+.MuiListItem-root{
+    padding:8px 16px !important;
+    color:white !important;
+}
+.MuiListItemIcon-root{
+    color:white !important;
+}
