@@ -41,6 +41,7 @@ type Product{
   name: String!
   sellPrice: Float
   wholesalePrice: Float
+  noofpieces: Int @default(value:0)
   category:Category!
   stock:[StockItem!]!
 }
@@ -83,4 +84,16 @@ type Expense{
   createdAt: DateTime! @createdAt
   description: String!
   amount: Float!
+}
+
+type Notification{
+  id: ID! @id
+  type: String!
+  info: String!
+}
+
+type Barcode{
+  id: ID! @id
+  code: String! @unique
+  name: String!
 }

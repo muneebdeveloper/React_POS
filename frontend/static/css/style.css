@@ -112,12 +112,14 @@ tbody tr:hover{
 .MuiCircularProgress-colorPrimary{
     color:green !important;
 }
-
-.MuiBadge-colorSecondary{
+.MuiBadge-colorPrimary{
+    background-color:green !important;
+}
+/* .MuiBadge-colorSecondary{
     background-color:black !important;
     top:-3px !important;
     right:8px !important;
-}
+} */
 
 .mainFormStyle,.mainLoadingStyle{
     display:flex;
@@ -148,10 +150,19 @@ tbody tr:hover{
     justify-content:space-between;
 }
 
-.MuiListItem-root{
+.drawerMenuColorHandling .MuiListItem-root{
     padding:8px 16px !important;
-    color:white !important;
+    color:#9e9e9e !important;
 }
 .MuiListItemIcon-root{
+    color:#9e9e9e !important;
+}
+
+.drawerLinkActive .MuiListItem-root {
+    color:white !important;
+    border-left:5px solid white !important;
+}
+
+.drawerLinkActive .MuiListItemIcon-root{
     color:white !important;
 }

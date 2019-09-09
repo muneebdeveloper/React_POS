@@ -15,6 +15,7 @@ const Mutation = {
     createExpense:forwardTo('db'),
     updateExpense:forwardTo('db'),
     deleteExpense:forwardTo('db'),
+    createBarcode:forwardTo('db'),
 
     async signin(parent,args,ctx,info){
         let {username,password} = args.data;
@@ -50,22 +51,27 @@ const Mutation = {
         return {message:"Successfully signed out"};
     },
 
-    createStockItem(parent,args,ctx,info){
+    async createStockItem(parent,args,ctx,info){
 
-        const {data:{sellPrice,wholesalePrice,product:{connect:{id}}}} = args;
-        ctx.db.mutation.updateProduct({data:{sellPrice,wholesalePrice},where:{id}});
+        const {data:{sellPrice,wholesalePrice,noofpieces,product:{connect:{id}}}} = args;
+        let product = await ctx.db.query.product({where:{id}},`{noofpieces}`);
+        product.noofpieces += noofpieces;
+        ctx.db.mutation.updateProduct({data:{sellPrice,wholesalePrice,noofpieces:product.noofpieces},where:{id}});
 
         return ctx.db.mutation.createStockItem({data:args.data},info);
     },
     async deleteStockItem(parent,args,ctx,info){
-        const productID = await ctx.db.query.stockItem({where:{id:args.where.id}},`{product{id}}`);
+        const stockItem = await ctx.db.query.stockItem({where:{id:args.where.id}},`{noofpieces product{id}}`);
         const productRemove = await ctx.db.mutation.deleteStockItem({where:{id:args.where.id}},info);
-        const stockItem = await ctx.db.query.stockItem({where:{id:args.where.id}},`{product{id stock{sellPrice}}}`);
-        if(stockItem){
-            let requiredObject = stockItem.product.stock.pop();
-            ctx.db.mutation.updateProduct({data:{sellPrice:requiredObject.sellPrice,wholesalePrice:requiredObject.wholesalePrice},where:{id:user.product.id}});
+        let product = await ctx.db.query.product({where:{id:stockItem.product.id}},`{noofpieces stock{sellPrice}}`);
+        product.noofpieces -= stockItem.noofpieces;
+        if(product.stock.length > 0){
+            let requiredObject = product.stock.pop();
+            ctx.db.mutation.updateProduct({data:{sellPrice:requiredObject.sellPrice,
+                                                wholesalePrice:requiredObject.wholesalePrice,
+                                                noofpieces:product.noofpieces},where:{id:stockItem.product.id}});
         }else{
-            ctx.db.mutation.updateProduct({data:{sellPrice:null,wholesalePrice:null},where:{id:productID.product.id}});
+            ctx.db.mutation.updateProduct({data:{sellPrice:null,wholesalePrice:null,noofpieces:0},where:{id:stockItem.product.id}});
         }
         return productRemove;
 

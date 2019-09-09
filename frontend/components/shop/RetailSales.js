@@ -9,6 +9,10 @@ import Badge from '@material-ui/core/Badge';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -21,12 +25,32 @@ import ShoppingCart from '@material-ui/icons/ShoppingCart'
 import styles from './RetailSales.css';
 import RetailSales_Table from './RetailSales_Table';
 
+const BARCODE_CREATE_MUTATION = gql`
+    mutation BARCODE_CREATE_MUTATION($code:String!,$name:String!){
+        createBarcode(data:{code:$code,name:$name}){
+            code
+        }
+    }
+`;
+
 const PRODUCT_SELLPRICE_QUERY = gql`
     query PRODUCT_SELLPRICE_QUERY($barcode:String!){
         product(where:{barcode:$barcode}){
             id
             name
             sellPrice
+            noofpieces
+        }
+    }
+`;
+
+const PRODUCT_WHOLESALEPRICE_QUERY = gql`
+    query PRODUCT_WHOLESALEPRICE_QUERY($barcode:String!){
+        product(where:{barcode:$barcode}){
+            id
+            name
+            wholesalePrice
+            noofpieces
         }
     }
 `;
@@ -70,15 +94,17 @@ class RetailSales extends Component{
     }
 
     state={
+        sale_type:'retailsale',
         barcode:'',
         receipt:[],
         snackbarOpen:false,
         edit_quantity:'',
+        quantity_error:false,
         snackbarMessage:'',
         subTotal:function(){
             let totalValue=0;
             this.receipt.map((t)=>{
-                totalValue = totalValue + t.value();
+                totalValue += t.value();
             });
             return totalValue;
         },
@@ -98,20 +124,56 @@ class RetailSales extends Component{
         });
     }
 
+
+    quantityChangeHandler = (e)=>{
+        const {receipt,edit_index} = this.state;
+        console.log("no of pieces left are",receipt[edit_index].noofpiecesleft)
+        if(receipt[edit_index].noofpiecesleft<e.target.value){
+            this.setState({
+                quantity_error:true,
+                [e.target.name]:e.target.value
+            });
+        }else{
+            this.setState({
+                quantity_error:false,
+                [e.target.name]:e.target.value
+            });
+        }
+    }
+
+    
+
     barcodeSubmitForSellPrice = (client)=>async (e)=>{
         e.preventDefault();
         this.setState({
             barcodeSubmitLoading:true
         })
-        const res = await client.query({
-            query:PRODUCT_SELLPRICE_QUERY,
-            variables:{
-                barcode:this.state.barcode
-            }
-        });
+       
+        let res;
+        if(this.state.sale_type === 'retailsale'){
+           res = await client.query({
+                query:PRODUCT_SELLPRICE_QUERY,
+                variables:{
+                    barcode:this.state.barcode
+                },
+                fetchPolicy:'network-only'
+            });
+            
+        }else{
+          res = await client.query({
+                query:PRODUCT_WHOLESALEPRICE_QUERY,
+                variables:{
+                    barcode:this.state.barcode
+                },
+                fetchPolicy:'network-only'
+            });
+            res.data.product.sellPrice = res.data.product.wholesalePrice;
+            
+        }
+        
         if(res.data.product){
-            const {id,name,sellPrice} = res.data.product;
-            if(sellPrice){
+            const {id,name,sellPrice,noofpieces} = res.data.product;
+            if(sellPrice && noofpieces > 0){
                 let foundIndex,receiptObject;
                 foundIndex = this.state.receipt.findIndex((arr)=>id===arr.id);
                 if(foundIndex==-1){
@@ -120,8 +182,10 @@ class RetailSales extends Component{
                         product:name,
                         price:sellPrice,
                         quantity:1,
+                        noofpiecesleft:noofpieces-1,
                         value:function(){return this.quantity*this.price}
                     }
+                    
                     this.setState((state)=>{
                         state.receipt.push(receiptObject);
                         return{
@@ -133,14 +197,24 @@ class RetailSales extends Component{
                     this.inputFieldRef.current.focus();
                 }
                 else{
-                    this.setState((state)=>{
+                    
+                    if(this.state.receipt[foundIndex].noofpiecesleft>0){
+                        this.setState((state)=>{
                             state.receipt[foundIndex].quantity++;
+                            state.receipt[foundIndex].noofpiecesleft--;
                             return{
                                 barcode:'',
                                 barcodeSubmitLoading:false
-                            }
-                        
-                    })
+                            }   
+                        })
+                    }else{
+                        this.setState({
+                            snackbarOpen:true,
+                            snackbarMessage:"The stock doesnot have enough quantity",
+                            barcode:'',
+                            barcodeSubmitLoading:false
+                        })
+                    }
                     this.inputFieldRef.current.focus();
                 }
             }else{
@@ -177,6 +251,7 @@ class RetailSales extends Component{
         let {receipt,edit_index,edit_quantity} = this.state;
         let productObject = receipt[edit_index];
         productObject.quantity=edit_quantity;
+        productObject.noofpiecesleft=(productObject.noofpiecesleft - edit_quantity) + 1;
         this.setState((state)=>{
             state.receipt[state.edit_index]=productObject;
             return{
@@ -207,11 +282,13 @@ class RetailSales extends Component{
 
     render(){
         const {
+            sale_type,
             barcode,
             receipt,
             snackbarOpen,
             edit_quantity,
             discount,
+            quantity_error,
             barcodeSubmitLoading,
             snackbarMessage,
             productQuantityDialogOpen
@@ -220,8 +297,25 @@ class RetailSales extends Component{
         return(
             <>
             <Intro>
-                Retail Sales
+                {sale_type==='retailsale'?"Retail Sales":"WholeSale"}
             </Intro>
+            <div className={styles.saleSelectDivStyles}>
+                <h3 style={{color:"#423c3c",marginRight:"24px"}}>Select your Sale Type:</h3>
+                <FormControl
+                    className={styles.saleSelectStyles}
+                    disabled={receipt.length>0?true:false}
+                >
+                    <InputLabel>Select Sale</InputLabel>
+                    <Select
+                        value={sale_type}
+                        name="sale_type"
+                        onChange={this.inputChangeHandler}
+                    >
+                        <MenuItem value="retailsale">Retail Sales</MenuItem>
+                        <MenuItem value="wholesale">WholeSale</MenuItem>
+                    </Select>
+                </FormControl>
+            </div>
             <div className={`gutterbottom ${styles.maintoolbar}`}>
             <ApolloConsumer>
                 {
@@ -264,7 +358,7 @@ class RetailSales extends Component{
                         <Search className={styles.marginRight} />
                         Search Product
                     </Button>
-                    <Button
+                    {/* <Button
                     variant="contained"
                     >
                         <PanTool className={styles.marginRight} />
@@ -282,7 +376,7 @@ class RetailSales extends Component{
                        
                            
                         Holded Receipt
-                    </Button>
+                    </Button> */}
 
                     <Button
                     variant="contained"
@@ -393,18 +487,22 @@ class RetailSales extends Component{
                         <TextField
                             name="edit_quantity"
                             variant="outlined"
+                            type="number"
                             label="Quantity"
                             value={edit_quantity}
-                            onChange={this.inputChangeHandler}
+                            onChange={this.quantityChangeHandler}
                             required
                             autoFocus
-                            fullWidth 
+                            fullWidth
+                            error={quantity_error}
+                            {...(quantity_error && {helperText:"Stocks donot have enough quantity"})}
                         />
                     </DialogContent>
                     <DialogActions>
                         <Button
                             variant="contained"
                             type="submit"
+                            disabled={quantity_error}
                         >
                             Submit
                         </Button>
@@ -412,14 +510,6 @@ class RetailSales extends Component{
                     </form>
 
                 </Dialog>
-
-
-
-
-
-            
-
-
 
             <SnackBar snackbarValue={snackbarOpen} snackbarClose={()=>this.setState({snackbarOpen:false})} failed>
                 {snackbarMessage}

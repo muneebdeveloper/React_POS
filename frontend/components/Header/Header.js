@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
-import Link from 'next/link';
+import Link from '../../lib/ActiveLink';
 import Router from 'next/router';
 import Drawer from '@material-ui/core/Drawer';
 import Typography from '@material-ui/core/Typography';
 import Badge from '@material-ui/core/Badge';
+
+import BarcodeNotify from './BarcodeNotify';
 
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
@@ -11,6 +13,12 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuIcon from '@material-ui/icons/Menu';
+import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import DirectionsBusIcon from '@material-ui/icons/DirectionsBus';
+import CashIcon from '@material-ui/icons/AttachMoney';
+import ExpenseIcon from '@material-ui/icons/Assessment';
+import BarcodeIcon from '@material-ui/icons/ViewWeek';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
 
@@ -49,29 +57,36 @@ class Header extends Component{
         });
     }
 
-    sideList = side => (
+    sideList = side =>{
+      let navItems = ['shop','stock','suppliers','sales','expense','notifications','barcodes'];
+      let navIcons = [<ShoppingBasketIcon />,<DashboardIcon />,<DirectionsBusIcon />,<CashIcon />,<ExpenseIcon />,<NotificationsIcon />,<BarcodeIcon />];
+      return (
         <div
           style={{width:"250px"}}
           role="presentation"
+          className="drawerMenuColorHandling"
           onClick={this.toggleDrawer(side, false)}
           onKeyDown={this.toggleDrawer(side, false)}
         >
           <List>
-            <Link href="/stock">
-              <a>
-                <ListItem button>
-                  <ListItemIcon><NotificationsIcon /></ListItemIcon>
-                  <ListItemText primary="Stock" />
-                </ListItem>
-              </a>
-            </Link>
-              <ListItem button>
-                <ListItemIcon><NotificationsIcon /></ListItemIcon>
-                <ListItemText primary="Suppliers" />
-              </ListItem>
+          {
+            navItems.map((item,index)=>{
+              return(
+                  <Link activeClassName="drawerLinkActive" href={item==='shop'?'/':`/${item}`} key={index}>
+                    <a style={{textDecoration:'none'}}>
+                      <ListItem button>
+                        <ListItemIcon>{navIcons[index]}</ListItemIcon>
+                        <ListItemText primary={item[0].toUpperCase()+item.slice(1)} />
+                      </ListItem>
+                    </a>
+                  </Link>
+              )   
+            })
+          }
           </List>
        </div>
         );
+    } 
 
    render(){
         return(
@@ -82,9 +97,20 @@ class Header extends Component{
 
 
                     <div>
-                        <IconButton  color="inherit" aria-label="menu" onClick={this.toggleDrawer('left',true)}>
-                            <MenuIcon />
-                        </IconButton>
+                    <CurrentUser>
+                      {
+                        ({data})=>{
+                          if(data.currentUser){
+                            return(
+                              <IconButton  color="inherit" aria-label="menu" onClick={this.toggleDrawer('left',true)}>
+                                <MenuIcon />
+                              </IconButton>
+                            )
+                          }
+                          return null;
+                        }
+                      }
+                    </CurrentUser>
                     </div>
                     
                     <div>
@@ -95,17 +121,20 @@ class Header extends Component{
                     
                     <CurrentUser>
                       {
-                        ({data:{currentUser}})=>{
-                          if(currentUser){
+                        ({data})=>{
+                          
+                          if(data.currentUser){
                           return(
                             <>
-                              <IconButton  color="inherit" aria-label="menu">
-                                  <Badge badgeContent={11} color="primary">
-                                  <NotificationsIcon />
+                              <IconButton  color="inherit" aria-label="menu" className={styles.marginRightButton}>
+                                  <Badge badgeContent={0} color="primary">
+                                    <NotificationsIcon />
                                   </Badge>
                               </IconButton>
+
+                             <BarcodeNotify /> 
                         
-                              <Typography variant="button">Hi, {currentUser.username}</Typography>
+                              <Typography variant="button">Hi, {data.currentUser.username}</Typography>
                               <SignOut />
                             </>
                            )

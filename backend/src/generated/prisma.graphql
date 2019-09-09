@@ -1,5 +1,9 @@
 # source: https://eu1.prisma.sh/muhammad-muneeb-akhlaq/backend/dev
-# timestamp: Mon Aug 26 2019 17:03:37 GMT+0500 (Pakistan Standard Time)
+# timestamp: Sun Sep 08 2019 20:41:37 GMT+0500 (Pakistan Standard Time)
+
+type AggregateBarcode {
+  count: Int!
+}
 
 type AggregateCategory {
   count: Int!
@@ -10,6 +14,10 @@ type AggregateExpense {
 }
 
 type AggregateLineItem {
+  count: Int!
+}
+
+type AggregateNotification {
   count: Int!
 }
 
@@ -39,6 +47,235 @@ type AggregateSupplier {
 
 type AggregateUser {
   count: Int!
+}
+
+type Barcode implements Node {
+  id: ID!
+  code: String!
+  name: String!
+}
+
+"""A connection to a list of items."""
+type BarcodeConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [BarcodeEdge]!
+  aggregate: AggregateBarcode!
+}
+
+input BarcodeCreateInput {
+  id: ID
+  code: String!
+  name: String!
+}
+
+"""An edge in a connection."""
+type BarcodeEdge {
+  """The item at the end of the edge."""
+  node: Barcode!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum BarcodeOrderByInput {
+  id_ASC
+  id_DESC
+  code_ASC
+  code_DESC
+  name_ASC
+  name_DESC
+}
+
+type BarcodePreviousValues {
+  id: ID!
+  code: String!
+  name: String!
+}
+
+type BarcodeSubscriptionPayload {
+  mutation: MutationType!
+  node: Barcode
+  updatedFields: [String!]
+  previousValues: BarcodePreviousValues
+}
+
+input BarcodeSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [BarcodeSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [BarcodeSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [BarcodeSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: BarcodeWhereInput
+}
+
+input BarcodeUpdateInput {
+  code: String
+  name: String
+}
+
+input BarcodeUpdateManyMutationInput {
+  code: String
+  name: String
+}
+
+input BarcodeWhereInput {
+  """Logical AND on all given filters."""
+  AND: [BarcodeWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [BarcodeWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [BarcodeWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  code: String
+
+  """All values that are not equal to given value."""
+  code_not: String
+
+  """All values that are contained in given list."""
+  code_in: [String!]
+
+  """All values that are not contained in given list."""
+  code_not_in: [String!]
+
+  """All values less than the given value."""
+  code_lt: String
+
+  """All values less than or equal the given value."""
+  code_lte: String
+
+  """All values greater than the given value."""
+  code_gt: String
+
+  """All values greater than or equal the given value."""
+  code_gte: String
+
+  """All values containing the given string."""
+  code_contains: String
+
+  """All values not containing the given string."""
+  code_not_contains: String
+
+  """All values starting with the given string."""
+  code_starts_with: String
+
+  """All values not starting with the given string."""
+  code_not_starts_with: String
+
+  """All values ending with the given string."""
+  code_ends_with: String
+
+  """All values not ending with the given string."""
+  code_not_ends_with: String
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+}
+
+input BarcodeWhereUniqueInput {
+  id: ID
+  code: String
 }
 
 type BatchPayload {
@@ -707,6 +944,8 @@ type Mutation {
   createSalesItem(data: SalesItemCreateInput!): SalesItem!
   createSalesTicket(data: SalesTicketCreateInput!): SalesTicket!
   createExpense(data: ExpenseCreateInput!): Expense!
+  createNotification(data: NotificationCreateInput!): Notification!
+  createBarcode(data: BarcodeCreateInput!): Barcode!
   createCategory(data: CategoryCreateInput!): Category!
   createProduct(data: ProductCreateInput!): Product!
   createLineItem(data: LineItemCreateInput!): LineItem!
@@ -717,6 +956,8 @@ type Mutation {
   updateSalesItem(data: SalesItemUpdateInput!, where: SalesItemWhereUniqueInput!): SalesItem
   updateSalesTicket(data: SalesTicketUpdateInput!, where: SalesTicketWhereUniqueInput!): SalesTicket
   updateExpense(data: ExpenseUpdateInput!, where: ExpenseWhereUniqueInput!): Expense
+  updateNotification(data: NotificationUpdateInput!, where: NotificationWhereUniqueInput!): Notification
+  updateBarcode(data: BarcodeUpdateInput!, where: BarcodeWhereUniqueInput!): Barcode
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
   updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
   updateLineItem(data: LineItemUpdateInput!, where: LineItemWhereUniqueInput!): LineItem
@@ -727,6 +968,8 @@ type Mutation {
   deleteSalesItem(where: SalesItemWhereUniqueInput!): SalesItem
   deleteSalesTicket(where: SalesTicketWhereUniqueInput!): SalesTicket
   deleteExpense(where: ExpenseWhereUniqueInput!): Expense
+  deleteNotification(where: NotificationWhereUniqueInput!): Notification
+  deleteBarcode(where: BarcodeWhereUniqueInput!): Barcode
   deleteCategory(where: CategoryWhereUniqueInput!): Category
   deleteProduct(where: ProductWhereUniqueInput!): Product
   deleteLineItem(where: LineItemWhereUniqueInput!): LineItem
@@ -737,6 +980,8 @@ type Mutation {
   upsertSalesItem(where: SalesItemWhereUniqueInput!, create: SalesItemCreateInput!, update: SalesItemUpdateInput!): SalesItem!
   upsertSalesTicket(where: SalesTicketWhereUniqueInput!, create: SalesTicketCreateInput!, update: SalesTicketUpdateInput!): SalesTicket!
   upsertExpense(where: ExpenseWhereUniqueInput!, create: ExpenseCreateInput!, update: ExpenseUpdateInput!): Expense!
+  upsertNotification(where: NotificationWhereUniqueInput!, create: NotificationCreateInput!, update: NotificationUpdateInput!): Notification!
+  upsertBarcode(where: BarcodeWhereUniqueInput!, create: BarcodeCreateInput!, update: BarcodeUpdateInput!): Barcode!
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
   upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
   upsertLineItem(where: LineItemWhereUniqueInput!, create: LineItemCreateInput!, update: LineItemUpdateInput!): LineItem!
@@ -747,6 +992,8 @@ type Mutation {
   updateManySalesItems(data: SalesItemUpdateManyMutationInput!, where: SalesItemWhereInput): BatchPayload!
   updateManySalesTickets(data: SalesTicketUpdateManyMutationInput!, where: SalesTicketWhereInput): BatchPayload!
   updateManyExpenses(data: ExpenseUpdateManyMutationInput!, where: ExpenseWhereInput): BatchPayload!
+  updateManyNotifications(data: NotificationUpdateManyMutationInput!, where: NotificationWhereInput): BatchPayload!
+  updateManyBarcodes(data: BarcodeUpdateManyMutationInput!, where: BarcodeWhereInput): BatchPayload!
   updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
   updateManyProducts(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): BatchPayload!
   updateManyLineItems(data: LineItemUpdateManyMutationInput!, where: LineItemWhereInput): BatchPayload!
@@ -757,6 +1004,8 @@ type Mutation {
   deleteManySalesItems(where: SalesItemWhereInput): BatchPayload!
   deleteManySalesTickets(where: SalesTicketWhereInput): BatchPayload!
   deleteManyExpenses(where: ExpenseWhereInput): BatchPayload!
+  deleteManyNotifications(where: NotificationWhereInput): BatchPayload!
+  deleteManyBarcodes(where: BarcodeWhereInput): BatchPayload!
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
   deleteManyProducts(where: ProductWhereInput): BatchPayload!
   deleteManyLineItems(where: LineItemWhereInput): BatchPayload!
@@ -773,6 +1022,234 @@ enum MutationType {
 interface Node {
   """The id of the object."""
   id: ID!
+}
+
+type Notification implements Node {
+  id: ID!
+  type: String!
+  info: String!
+}
+
+"""A connection to a list of items."""
+type NotificationConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [NotificationEdge]!
+  aggregate: AggregateNotification!
+}
+
+input NotificationCreateInput {
+  id: ID
+  type: String!
+  info: String!
+}
+
+"""An edge in a connection."""
+type NotificationEdge {
+  """The item at the end of the edge."""
+  node: Notification!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum NotificationOrderByInput {
+  id_ASC
+  id_DESC
+  type_ASC
+  type_DESC
+  info_ASC
+  info_DESC
+}
+
+type NotificationPreviousValues {
+  id: ID!
+  type: String!
+  info: String!
+}
+
+type NotificationSubscriptionPayload {
+  mutation: MutationType!
+  node: Notification
+  updatedFields: [String!]
+  previousValues: NotificationPreviousValues
+}
+
+input NotificationSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [NotificationSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [NotificationSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [NotificationSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: NotificationWhereInput
+}
+
+input NotificationUpdateInput {
+  type: String
+  info: String
+}
+
+input NotificationUpdateManyMutationInput {
+  type: String
+  info: String
+}
+
+input NotificationWhereInput {
+  """Logical AND on all given filters."""
+  AND: [NotificationWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [NotificationWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [NotificationWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  type: String
+
+  """All values that are not equal to given value."""
+  type_not: String
+
+  """All values that are contained in given list."""
+  type_in: [String!]
+
+  """All values that are not contained in given list."""
+  type_not_in: [String!]
+
+  """All values less than the given value."""
+  type_lt: String
+
+  """All values less than or equal the given value."""
+  type_lte: String
+
+  """All values greater than the given value."""
+  type_gt: String
+
+  """All values greater than or equal the given value."""
+  type_gte: String
+
+  """All values containing the given string."""
+  type_contains: String
+
+  """All values not containing the given string."""
+  type_not_contains: String
+
+  """All values starting with the given string."""
+  type_starts_with: String
+
+  """All values not starting with the given string."""
+  type_not_starts_with: String
+
+  """All values ending with the given string."""
+  type_ends_with: String
+
+  """All values not ending with the given string."""
+  type_not_ends_with: String
+  info: String
+
+  """All values that are not equal to given value."""
+  info_not: String
+
+  """All values that are contained in given list."""
+  info_in: [String!]
+
+  """All values that are not contained in given list."""
+  info_not_in: [String!]
+
+  """All values less than the given value."""
+  info_lt: String
+
+  """All values less than or equal the given value."""
+  info_lte: String
+
+  """All values greater than the given value."""
+  info_gt: String
+
+  """All values greater than or equal the given value."""
+  info_gte: String
+
+  """All values containing the given string."""
+  info_contains: String
+
+  """All values not containing the given string."""
+  info_not_contains: String
+
+  """All values starting with the given string."""
+  info_starts_with: String
+
+  """All values not starting with the given string."""
+  info_not_starts_with: String
+
+  """All values ending with the given string."""
+  info_ends_with: String
+
+  """All values not ending with the given string."""
+  info_not_ends_with: String
+}
+
+input NotificationWhereUniqueInput {
+  id: ID
 }
 
 """Information about pagination in a connection."""
@@ -1274,6 +1751,7 @@ type Product implements Node {
   name: String!
   sellPrice: Float
   wholesalePrice: Float
+  noofpieces: Int
   category: Category!
   stock(where: StockItemWhereInput, orderBy: StockItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [StockItem!]
 }
@@ -1294,6 +1772,7 @@ input ProductCreateInput {
   name: String!
   sellPrice: Float
   wholesalePrice: Float
+  noofpieces: Int
   category: CategoryCreateOneInput!
   stock: StockItemCreateManyWithoutProductInput
 }
@@ -1314,6 +1793,7 @@ input ProductCreateWithoutStockInput {
   name: String!
   sellPrice: Float
   wholesalePrice: Float
+  noofpieces: Int
   category: CategoryCreateOneInput!
 }
 
@@ -1337,6 +1817,8 @@ enum ProductOrderByInput {
   sellPrice_DESC
   wholesalePrice_ASC
   wholesalePrice_DESC
+  noofpieces_ASC
+  noofpieces_DESC
 }
 
 type ProductPreviousValues {
@@ -1345,6 +1827,7 @@ type ProductPreviousValues {
   name: String!
   sellPrice: Float
   wholesalePrice: Float
+  noofpieces: Int
 }
 
 type ProductSubscriptionPayload {
@@ -1389,6 +1872,7 @@ input ProductUpdateDataInput {
   name: String
   sellPrice: Float
   wholesalePrice: Float
+  noofpieces: Int
   category: CategoryUpdateOneRequiredInput
   stock: StockItemUpdateManyWithoutProductInput
 }
@@ -1398,6 +1882,7 @@ input ProductUpdateInput {
   name: String
   sellPrice: Float
   wholesalePrice: Float
+  noofpieces: Int
   category: CategoryUpdateOneRequiredInput
   stock: StockItemUpdateManyWithoutProductInput
 }
@@ -1407,6 +1892,7 @@ input ProductUpdateManyMutationInput {
   name: String
   sellPrice: Float
   wholesalePrice: Float
+  noofpieces: Int
 }
 
 input ProductUpdateOneRequiredInput {
@@ -1428,6 +1914,7 @@ input ProductUpdateWithoutStockDataInput {
   name: String
   sellPrice: Float
   wholesalePrice: Float
+  noofpieces: Int
   category: CategoryUpdateOneRequiredInput
 }
 
@@ -1614,6 +2101,28 @@ input ProductWhereInput {
 
   """All values greater than or equal the given value."""
   wholesalePrice_gte: Float
+  noofpieces: Int
+
+  """All values that are not equal to given value."""
+  noofpieces_not: Int
+
+  """All values that are contained in given list."""
+  noofpieces_in: [Int!]
+
+  """All values that are not contained in given list."""
+  noofpieces_not_in: [Int!]
+
+  """All values less than the given value."""
+  noofpieces_lt: Int
+
+  """All values less than or equal the given value."""
+  noofpieces_lte: Int
+
+  """All values greater than the given value."""
+  noofpieces_gt: Int
+
+  """All values greater than or equal the given value."""
+  noofpieces_gte: Int
   category: CategoryWhereInput
   stock_every: StockItemWhereInput
   stock_some: StockItemWhereInput
@@ -1632,6 +2141,8 @@ type Query {
   salesItems(where: SalesItemWhereInput, orderBy: SalesItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SalesItem]!
   salesTickets(where: SalesTicketWhereInput, orderBy: SalesTicketOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SalesTicket]!
   expenses(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expense]!
+  notifications(where: NotificationWhereInput, orderBy: NotificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Notification]!
+  barcodes(where: BarcodeWhereInput, orderBy: BarcodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Barcode]!
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
   products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
   lineItems(where: LineItemWhereInput, orderBy: LineItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [LineItem]!
@@ -1642,6 +2153,8 @@ type Query {
   salesItem(where: SalesItemWhereUniqueInput!): SalesItem
   salesTicket(where: SalesTicketWhereUniqueInput!): SalesTicket
   expense(where: ExpenseWhereUniqueInput!): Expense
+  notification(where: NotificationWhereUniqueInput!): Notification
+  barcode(where: BarcodeWhereUniqueInput!): Barcode
   category(where: CategoryWhereUniqueInput!): Category
   product(where: ProductWhereUniqueInput!): Product
   lineItem(where: LineItemWhereUniqueInput!): LineItem
@@ -1652,6 +2165,8 @@ type Query {
   salesItemsConnection(where: SalesItemWhereInput, orderBy: SalesItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SalesItemConnection!
   salesTicketsConnection(where: SalesTicketWhereInput, orderBy: SalesTicketOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SalesTicketConnection!
   expensesConnection(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExpenseConnection!
+  notificationsConnection(where: NotificationWhereInput, orderBy: NotificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): NotificationConnection!
+  barcodesConnection(where: BarcodeWhereInput, orderBy: BarcodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BarcodeConnection!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
   productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
   lineItemsConnection(where: LineItemWhereInput, orderBy: LineItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LineItemConnection!
@@ -3119,6 +3634,8 @@ type Subscription {
   salesItem(where: SalesItemSubscriptionWhereInput): SalesItemSubscriptionPayload
   salesTicket(where: SalesTicketSubscriptionWhereInput): SalesTicketSubscriptionPayload
   expense(where: ExpenseSubscriptionWhereInput): ExpenseSubscriptionPayload
+  notification(where: NotificationSubscriptionWhereInput): NotificationSubscriptionPayload
+  barcode(where: BarcodeSubscriptionWhereInput): BarcodeSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
   product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
   lineItem(where: LineItemSubscriptionWhereInput): LineItemSubscriptionPayload

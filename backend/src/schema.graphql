@@ -25,6 +25,7 @@ type Mutation{
     createCategory(data: CategoryCreateInput!): Category!
     updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
     deleteCategory(where: CategoryWhereUniqueInput!): Category
+    createBarcode(data: BarcodeCreateInput!): Barcode!
     createProduct(data: ProductCreateInput!): Product!
     updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
     deleteProduct(where: ProductWhereUniqueInput!): Product
@@ -43,6 +44,10 @@ type Mutation{
     deleteSalesItem(where: SalesItemWhereUniqueInput!): SalesItem
     createSalesTicket: SalesTicket!
      
+}
+
+type Subscription{
+    barcode(where: BarcodeSubscriptionWhereInput): BarcodeSubscriptionPayload
 }
 
 input SignInUserInput {

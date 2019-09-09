@@ -17,7 +17,11 @@
 
 .mainsecond{
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-end;
+}
+
+.mainsecond>*:not(:last-child){
+    margin-right:10px !important;
 }
 
 .buttonsetting{
@@ -45,4 +49,16 @@
 
 .delete{
     color:#e21e1e !important;
+}
+
+.saleSelectDivStyles{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:-20px;
+    margin-bottom:20px;
+    align-items: flex-end;
+}
+
+.saleSelectStyles{
+    min-width:500px !important;
 }

@@ -11,7 +11,7 @@ class StockPage extends Component{
     render(){
 
         return(
-            <div class="mainpage">
+            <div className="mainpage">
                 <PleaseSignIn>
                     <DefineStock />
                     <AddStock />

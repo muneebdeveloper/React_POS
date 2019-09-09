@@ -99,7 +99,7 @@ class Login extends Component{
                                                 return(
                                                     <form method="post" onSubmit={this.signinSubmitHandler(signin)}>
                                                     <div className="mainFormStyle">
-                                                        <img src="static/logo.png"  />
+                                                        
                                                         <h1 style={{fontSize:"42px",textAlign:"center"}}>Login</h1>
                                                         <TextField 
                                                             label="username"
