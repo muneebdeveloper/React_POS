@@ -14,6 +14,26 @@ body{
     font-family: 'Nunito', sans-serif;
 }
 
+@font-face {
+    font-family: 'Nunito';
+    src:  url('Nunito-Light.ttf'),
+          url('Nunito-Regular.ttf'),
+          url('Nunito-SemiBold.ttf'),
+          url('Nunito-Black.ttf'),
+          url('Nunito-Bold.ttf');
+  }
+ 
+  @font-face {
+    font-family: 'Roboto';
+    src:  url('Roboto-SemiBold.ttf'),
+          url('Roboto-Bold.ttf'),
+          url('Roboto-Regular.ttf'),
+          url('Roboto-BlackItalic.ttf'),
+          url('Roboto-Black.ttf'),   
+          url('Roboto-Light.ttf'),
+          url('Roboto-Medium.ttf');
+  }
+
 .container{
     display:grid;
     grid-template-columns:1fr repeat(8,minmax(min-content,8.9062rem)) 1fr;
@@ -165,4 +185,8 @@ tbody tr:hover{
 
 .drawerLinkActive .MuiListItemIcon-root{
     color:white !important;
+}
+
+.MuiLinearProgress-bar{
+    background-color:#379237 !important;
 }

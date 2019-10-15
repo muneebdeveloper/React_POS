@@ -1,28 +1,34 @@
 import React,{Component} from 'react';
-import {ApolloConsumer,Query,Mutation} from 'react-apollo';
+import {ApolloConsumer} from 'react-apollo';
 import gql from 'graphql-tag';
 
-import ErrorDialog from '../../../misc/ErrorDialog';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import DialogActions from '@material-ui/core/DialogActions';
 
+import CancelIcon from '@material-ui/icons/cancel';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
+import ErrorDialog from '../../../misc/ErrorDialog';
 import ProductSummaryTable from './ProductSummaryTable';
-import { CircularProgress } from '@material-ui/core';
+import ProductNameDialog from './ProductNameDialog';
+import EditDialog from './EditDialog';
+import RemoveDialog from './RemoveDialog';
 
 
+import styles from '../../../main.css';
 
 const PRODUCT_DETAILS_FETCH_QUERY = gql`
     query PRODUCT_DETAILS_FETCH_QUERY($barcode:String!){
         product(where:{barcode:$barcode}){
+            id
             name
-            category{
-                name
-                lineitem{
-                    name
-                }
-            }
-            stock{
+            stock(orderBy:createdAt_ASC){
                 id
                 createdAt
                 badgeNumber
@@ -36,14 +42,30 @@ const PRODUCT_DETAILS_FETCH_QUERY = gql`
     }
 `;
 
+const PRODUCT_REMOVE_MUTATION = gql`
+    mutation PRODUCT_REMOVE_MUTATION($barcode:String!){
+        deleteProduct(where:{barcode:$barcode}){
+            id
+        }
+    }
+`;
+
+
 
 class ProductSummaryMain extends Component{
 
     state={
         barcode:'',
         productname:'',
-        lineitem:'Select',
-        category:'Select',
+        productNameDialog:false,
+        editDialog:false,
+        removeDialog:false,
+        removeID:'',
+        editDialogData:{},
+        errorDialog:false,
+        errorMessage:'',
+        productRemoveDialog:false,
+        productRemoveLoading:false,
         stockList:[],
         barcodeSubmitLoadingBar:false
     }
@@ -58,37 +80,80 @@ class ProductSummaryMain extends Component{
     }
 
     barcodeSubmitHandler=client=>async e =>{
+        
         this.setState({
             barcodeSubmitLoadingBar:true
         });
-        e.preventDefault();
-        const res=await client.query({
-            query:PRODUCT_DETAILS_FETCH_QUERY,
-            variables:{
-                barcode:this.state.barcode
+
+        if(e){
+            e.preventDefault();
+        }
+        
+        try{
+            const res=await client.query({
+                query:PRODUCT_DETAILS_FETCH_QUERY,
+                variables:{
+                    barcode:this.state.barcode
+                },
+                fetchPolicy:'network-only'
+            });
+            
+            const {data:{product}}=res;
+            
+            if(product){
+                this.setState({
+                    productname:product.name,
+                    productID:product.id,
+                    stockList:[...product.stock],
+                    barcodeSubmitLoadingBar:false
+                });
+            }else{
+                this.setState({
+                    barcodeSubmitLoadingBar:false,
+                    errorDialog:true,
+                    errorMessage:"Product does not exist",
+                    barcode:''
+                })
             }
-        });
-
-        const {data:{product}}=res;
-
-        this.setState({
-            productname:product.name,
-            lineitem:product.category.lineitem.name,
-            category:product.category.name,
-            stockList:[...product.stock],
-            barcodeSubmitLoadingBar:false
-        });
+            
+            
+        }catch(err){
+            this.setState({
+                barcodeSubmitLoadingBar:false,
+                errorDialog:true,
+                errorMessage:"Something went wrong",
+                barcode:''
+            })
+        }
+        
+        
     }
 
-    
+    dialogHandlerEdit = (index)=>{
+
+        this.setState((state)=>({
+            editDialog:true,
+            editDialogData:{...state.stockList[index]}
+        }));
+
+    }
 
     render(){
         const {
                 barcodeSubmitLoadingBar,
                 productname,
-                lineitem,
-                category,
-                stockList
+                barcode,
+                productNameDialog,
+                productID,
+                errorDialog,
+                errorMessage,
+                editDialog,
+                removeDialog,
+                productRemoveDialog,
+                productRemoveLoading,
+                removeID,
+                stockList,
+                editDialogData
              } = this.state;
 
             if(barcodeSubmitLoadingBar){
@@ -114,6 +179,7 @@ class ProductSummaryMain extends Component{
                                                 variant="outlined"
                                                 type="text" 
                                                 name="barcode"
+                                                value={barcode}
                                                 onChange={this.changeHandler}
                                                 
                                             />
@@ -131,29 +197,29 @@ class ProductSummaryMain extends Component{
                 <h1 style={{textAlign:"center",color:"#736464",marginTop:"30px"}}>Details</h1>
 
                 <div className="detailArea">
+                    {productname && (
+                            <h2>
+                                Name: {productname} 
+                                <IconButton 
+                                    size="small"
+                                    onClick={()=>this.setState({productNameDialog:true})}
+                                >
+                                    <EditIcon className={styles.edit} />
+                                </IconButton>
 
-                    <label> Name
-                    <input type="text" name="productname" value={productname}  onChange={this.changeHandler} />
-                    </label>
-                    
-                    <label>Line Item
-                    <select name="lineitem" onChange={this.changeHandler} >
-                        <option>{lineitem}</option>
-                    </select>
-                    </label>
-
-                    <label>Category
-                    <select name="category" onChange={this.changeHandler} >
-                        <option>{category}</option>
-                    </select>
-                    </label>
-                    
-
+                                {/* <IconButton 
+                                    size="small"
+                                    onClick={()=>this.setState({productRemoveDialog:true})}
+                                >
+                                    <DeleteIcon className={styles.delete} />
+                                </IconButton> */}
+                            </h2>        
+                        )}           
                 </div>
 
                 <h1 style={{textAlign:"center",color:"#736464",marginTop:"30px"}}>Stock Details</h1>
 
-                <table>
+                <table className="gutterbottom">
                     <thead>
                         <tr>
                             <th>Sr#</th>
@@ -164,6 +230,7 @@ class ProductSummaryMain extends Component{
                             <th>Sell Price</th>
                             <th>WholeSale Price</th>
                             <th>Expiry</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -174,6 +241,7 @@ class ProductSummaryMain extends Component{
                                     <ProductSummaryTable
                                         key = {id}
                                         id = {id}
+                                        index={index}
                                         sr = {index+1}
                                         createdAt = {createdAt.split("T").shift().split("-").reverse().join("-")}
                                         badgeNumber = {badgeNumber}
@@ -181,13 +249,127 @@ class ProductSummaryMain extends Component{
                                         buyPrice = {buyPrice}
                                         sellPrice = {sellPrice}
                                         wholeSalePrice = {wholesalePrice}
-                                        expiry = {expiry.split("T").shift().split("-").reverse().join("-")}
+                                        {...(expiry && {expiry : expiry.split("T").shift().split("-").reverse().join("-")})}
+                                        dialogHandlerEdit={this.dialogHandlerEdit}
+                                        dialogHandlerRemove={(id)=>this.setState({removeDialog:true,removeID:id})}
                                     />
                                 )
                             })
                         }
                     </tbody>
                 </table>
+
+{/* Dialog Starts Here */}
+
+            {/* Product Name Dialog */}
+
+                <Dialog open={productNameDialog} onClose={()=>this.setState({productNameDialog:false})}>
+                    <div className="dialogTitleStyle">
+                                <h2>Edit Stock</h2>
+                                <IconButton onClick={()=>this.setState({productNameDialog:false})}>
+                                        <CancelIcon className={styles.delete} />
+                                </IconButton>
+                    </div>
+                    <DialogContent>
+                        <ProductNameDialog 
+                            name={productname}
+                            id={productID}
+                            dialogClose={()=>{
+                                this.setState({productNameDialog:false});
+                                this.barcodeSubmitHandler(client)();
+                            }}
+                        />
+                    </DialogContent>
+                </Dialog> 
+
+            {/* Remove Product Dialog */}
+
+                <Dialog open={productRemoveDialog} onClose={()=>this.setState({productRemoveDialog:false})}>
+
+                    <div className="dialogTitleStyle">
+                            <h2>Are you sure, you want to remove this Product?</h2>
+                            <IconButton onClick={()=>this.setState({productRemoveDialog:false})}>
+                                    <CancelIcon className={styles.delete} />
+                            </IconButton>
+                    </div>
+                    { productRemoveLoading ?
+                        (
+                            <div className="dialogLoadingStyle">
+                                <CircularProgress size={70} />
+                            </div>
+                            )
+                    :(
+                        <DialogActions>
+        
+                          
+                            <Button 
+                                variant="contained"
+                                size="large"
+                                onClick={()=>dialogSubmitHandler(client,props.id,props.dialogClose,setLoading)}
+                            >
+                                yes
+                            </Button>
+                            
+                        </DialogActions>
+                    
+                    )}
+                </Dialog>
+
+            {/* Edit Dialog */}
+
+                <Dialog open={editDialog} onClose={()=>this.setState({editDialog:false})}>
+                    <div className="dialogTitleStyle">
+                            <h2>Edit Stock</h2>
+                            <IconButton onClick={()=>this.setState({editDialog:false})}>
+                                    <CancelIcon className={styles.delete} />
+                            </IconButton>
+                    </div>
+                    <DialogContent>
+                        <EditDialog
+                            id={editDialogData.id}
+                            badge={editDialogData.badgeNumber}
+                            buyprice={editDialogData.buyPrice}
+                            sellprice={editDialogData.sellPrice}
+                            wholesaleprice={editDialogData.wholesalePrice}
+                            noofpieces={editDialogData.noofpieces}
+                            expiry={editDialogData.expiry}
+                            dialogClose={()=>{
+                                    this.setState({editDialog:false});
+                                    this.barcodeSubmitHandler(client)();
+                                }}
+                        />
+                    </DialogContent>
+                </Dialog>
+
+            {/* Remove Dilaog */}
+                <Dialog open={removeDialog} onClose={()=>this.setState({removeDialog:false})}>
+
+                    <div className="dialogTitleStyle">
+                            <h2>Are you sure, you want to remove this stock item?</h2>
+                            <IconButton onClick={()=>this.setState({removeDialog:false})}>
+                                    <CancelIcon className={styles.delete} />
+                            </IconButton>
+                    </div>
+                    <RemoveDialog 
+                        id={removeID}
+                        dialogClose={(action)=>{
+                            this.setState({removeDialog:false});
+                            this.barcodeSubmitHandler(client)();
+                           
+                        }
+                        }
+                    />
+                    
+
+                </Dialog>
+
+            {/* Error Dialog */}
+                <ErrorDialog 
+                    dialogValue={errorDialog}
+                    dialogClose={()=>this.setState({errorDialog:false})}
+                >
+                    {errorMessage}
+                </ErrorDialog>
 
             </>
                         )
@@ -199,3 +381,4 @@ class ProductSummaryMain extends Component{
 }
 
 export default ProductSummaryMain;
+export {PRODUCT_DETAILS_FETCH_QUERY};

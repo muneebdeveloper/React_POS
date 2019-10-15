@@ -22,8 +22,11 @@ class EditDialog extends Component{
         expiry
       } = this.props;
 
-      expiry= expiry.split("T").shift();
-      console.log(expiry);
+      if(expiry){
+        expiry= expiry.split("T").shift();
+      }
+      
+      
 
         return(
        <form className={styles.editDialogMargin} onSubmit={editUpdateHandler}>  

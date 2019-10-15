@@ -3,3 +3,18 @@
     justify-content:space-evenly;
 }
 
+.formMargin>*{
+    margin-bottom:20px !important;
+}
+
+.edit{
+    color:#379237 !important;
+}
+
+.delete{
+    color:#e21e1e !important;
+}
+
+.deleteButton{
+    background-color:#e21e1e !important;
+}

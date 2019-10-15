@@ -14,6 +14,7 @@ const RetailSales_Table = (props)=>{
         product,
         price,
         quantity,
+        actualQuantity,
         value,
         productQuantityDialogHandler,
         productRemoveHandler
@@ -26,7 +27,7 @@ const RetailSales_Table = (props)=>{
             <td>{quantity}</td>
             <td>{value}</td>
             <td style={{textAlign:"center"}}>
-                <IconButton size="small"  onClick={productQuantityDialogHandler.bind(this,index)} >
+                <IconButton size="small"  onClick={productQuantityDialogHandler.bind(this,index,actualQuantity)} >
                     <Edit className={styles.edit} />
                 </IconButton>
 

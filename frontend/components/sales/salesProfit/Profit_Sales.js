@@ -67,8 +67,8 @@ const SALESITEM_BY_DATE_QUERY_PRODUCT = gql`
             ]
         }){
             noofpieces
-            buyPrice
-            sellPrice
+            priceSold
+            type
             profit
             product{
                 name
@@ -339,20 +339,23 @@ class Profit_Sales extends Component{
                         
             }
             
-            let calcBuyPrice=0,calcSellPrice=0,calcSale=0,calcQuantity=0,calcProfit=0;
+            let calcBuyPrice=0,calcpriceSold=0,calcSale=0,calcQuantity=0,calcProfit=0;
             res.data.salesItems.map((item)=>{
-                calcBuyPrice = calcBuyPrice + item.buyPrice;
-                calcSellPrice = calcSellPrice + item.sellPrice;
-                calcProfit = calcProfit + item.profit;
-                calcQuantity = calcQuantity + item.noofpieces;
-                item.sale = item.noofpieces * item.sellPrice;
-                calcSale = calcSale + item.sale;
+                // calcBuyPrice = calcBuyPrice + item.buyPrice;
+                if(item.noofpieces>0){
+                    calcpriceSold = calcpriceSold + item.priceSold;
+                    calcProfit = calcProfit + item.profit;
+                    calcQuantity = calcQuantity + item.noofpieces;
+                    item.sale = item.noofpieces * item.priceSold;
+                    calcSale = calcSale + item.sale;
+                }
+                
             });
             this.setState({
                 salesResult:[...res.data.salesItems],
                 salesResultLoading:false,
                 totalBuyPrice:calcBuyPrice,
-                totalSellPrice:calcSellPrice,
+                totalSellPrice:calcpriceSold,
                 totalProfit:calcProfit,
                 totalQuantity:calcQuantity,
                 totalSale:calcSale
@@ -488,8 +491,8 @@ class Profit_Sales extends Component{
                     <tr>
                         <th>sr</th>
                         <th>Name</th>
-                        <th>Buy Price</th>
-                        <th>Sell Price</th>
+                        <th>Type</th>
+                        <th>Price</th>
                         <th>Quantity</th>
                         <th>Sale</th>
                         <th>Profit</th>
@@ -498,26 +501,29 @@ class Profit_Sales extends Component{
                 <tbody>
                     {
                         salesResult.map((item,index)=>{
-                            const {noofpieces,sellPrice,buyPrice,sale,profit,product:{name}} = item;
-                            return(
-                                <tr>
-                                    <td>{index+1}</td>
-                                    <td>{name}</td>
-                                    <td>{buyPrice}</td>
-                                    <td>{sellPrice}</td>
-                                    <td>{noofpieces}</td>
-                                    <td>{sale}</td>
-                                    <td>{profit}</td>
-                                </tr>
-                            )
+                            const {noofpieces,type,priceSold,sale,profit,product:{name}} = item;
+                            if(noofpieces>0){
+                                return(
+                                    <tr key={index}>
+                                        <td>{index+1}</td>
+                                        <td>{name}</td>
+                                        <td>{type}</td>
+                                        <td>{priceSold}</td>
+                                        <td>{noofpieces}</td>
+                                        <td>{sale}</td>
+                                        <td>{profit}</td>
+                                    </tr>
+                                )
+                            }
+                            return;
                         })
                     }
                 </tbody>
                 <tfoot >
                                 <tr className={styles.tableFoot}>
-                                    <td ></td>
-                                    <td className={styles.totalRow}>Total</td>
-                                    <td>{totalBuyPrice}</td>
+                                    {/* <td ></td> */}
+                                    <td colSpan={3} className={styles.totalRow}>Total</td>
+                                    {/* <td>{totalBuyPrice}</td> */}
                                     <td>{totalSellPrice}</td>
                                     <td>{totalQuantity}</td>
                                     <td>{totalSale}</td>

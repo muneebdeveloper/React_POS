@@ -49,9 +49,10 @@ const PRODUCT_FIND_QUERY = gql`
 `;
 
 const CREATE_STOCKITEM_MUTATION = gql`
-    mutation CREATE_STOCKITEM_MUTATION($badgeNumber:String!,$noofpieces:Int!,$buyPrice:Float!,$sellPrice:Float!,$wholesalePrice:Float!,$expiry:DateTime,$id:ID!,$ID:ID!){
+    mutation CREATE_STOCKITEM_MUTATION($createdAt:DateTime!,$badgeNumber:String!,$noofpieces:Int!,$buyPrice:Float!,$sellPrice:Float!,$wholesalePrice:Float!,$expiry:DateTime,$id:ID!){
         createStockItem(
             data:{
+                createdAt:$createdAt,
                 badgeNumber:$badgeNumber,
                 noofpieces:$noofpieces,
                 buyPrice:$buyPrice,
@@ -61,11 +62,6 @@ const CREATE_STOCKITEM_MUTATION = gql`
                 product:{
                     connect:{
                         id:$id
-                    }
-                },
-                supplier:{
-                    connect:{
-                        id:$ID
                     }
                 }
             }
@@ -235,7 +231,6 @@ class ProductAddMain extends Component{
             },
             fetchPolicy:'network-only'
         });
-
         const {data:{product}}=res;
         if(product){
         this.setState({
@@ -466,7 +461,7 @@ class ProductAddMain extends Component{
                 submitDisabled,
                 submitStockLoading
               } = this.state;
-   
+              let dateFor = new Date();
         return(
             <>
             <h2 style={{color:"#736464",marginBottom:"30px"}}> Supplier Name: {supplier_name}</h2>
@@ -592,14 +587,14 @@ class ProductAddMain extends Component{
                          <Mutation 
                             mutation={CREATE_STOCKITEM_MUTATION} 
                             variables={{
+                             createdAt:dateFor.toISOString(),
                              badgeNumber:badge,
                              noofpieces:Number(noofpieces),
                              buyPrice:Number(buyprice),
                              sellPrice:Number(sellprice),
                              wholesalePrice:Number(wholesaleprice),
                              expiry:expiry || null,
-                             id:productID,
-                             ID:supplier_id
+                             id:productID
                             }}
                             onCompleted={
                                 ()=>{
@@ -698,7 +693,7 @@ class ProductAddMain extends Component{
                                                         sellprice={sellprice}
                                                         wholesaleprice={wholesaleprice}
                                                         noofpieces={noofpieces}
-                                                        expiry={expiry.split("T").shift().split("-").reverse().join("-")}
+                                                        expiry={expiry?expiry.split("T").shift().split("-").reverse().join("-"):null}
                                                         dialogHandlerEdit={this.editDialogQueryHandler(client)}
                                                         dialogHandlerRemove={(id,index)=>this.setState({dialogRemoveOpen:true,stockitem_edit_id:id,stockitem_edit_index:index})}
                                                     />
@@ -1017,3 +1012,4 @@ class ProductAddMain extends Component{
 }
 
 export default ProductAddMain;
+export {STOCKITEM_UPDATE_MUTATION,STOCKITEM_REMOVE_MUTATION};

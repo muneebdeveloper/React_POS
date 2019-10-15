@@ -1,6 +1,6 @@
-.tableFoot>:first-child{
+/* .tableFoot>:first-child{
     border:none;
-}
+} */
 
 .tableFoot>*:not(:first-child):not(.totalRow){
     font-size: 20px;

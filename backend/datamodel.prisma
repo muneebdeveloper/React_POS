@@ -39,16 +39,13 @@ type Product{
   id: ID! @id
   barcode: String! @unique
   name: String!
-  sellPrice: Float
-  wholesalePrice: Float
-  noofpieces: Int @default(value:0)
   category:Category!
   stock:[StockItem!]!
 }
 
 type StockItem{
   id: ID! @id
-  createdAt: DateTime! @createdAt
+  createdAt: DateTime!
   badgeNumber: String
   noofpieces: Int!
   buyPrice: Float!
@@ -56,20 +53,30 @@ type StockItem{
   wholesalePrice: Float!
   expiry: DateTime
   product: Product!
-  supplier:Supplier!
 }
 
 type SalesItem{
   id: ID! @id
   createdAt:DateTime! @createdAt
   noofpieces:Int!
-  buyPrice:Float
-  sellPrice:Float
-  wholesalePrice:Float
+  type:String!
+  priceSold:Float!
   profit:Float
+  refundCriteria:[refundObject!]
   product:Product!
-  supplier:Supplier
   salesTicket:SalesTicket!
+}
+
+type refundObject{
+  id: ID! @id
+  stockID:String!
+  createdAt: DateTime!
+  badgeNumber: String
+  noofpieces: Int!
+  buyPrice: Float!
+  sellPrice: Float!
+  wholesalePrice: Float!
+  expiry: DateTime
 }
 
 type SalesTicket{
@@ -86,14 +93,19 @@ type Expense{
   amount: Float!
 }
 
-type Notification{
-  id: ID! @id
-  type: String!
-  info: String!
-}
-
 type Barcode{
   id: ID! @id
-  code: String! @unique
-  name: String!
+  productID:String!
+}
+
+type Expiry{
+  id: ID! @id
+  description:String!
+  productID:String!
+}
+
+type Setting{
+  id:ID! @id
+  symbol:String! @unique
+  expiryTime : Int!
 }

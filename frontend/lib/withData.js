@@ -5,6 +5,7 @@ import { withClientState } from 'apollo-link-state';
 import withApollo from 'next-with-apollo';
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
+// import ApolloClient from 'apollo-boost';
 
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
@@ -18,7 +19,7 @@ function createClient({ headers }) {
   // const networkLink = new HttpLink({
   const httpLink = new HttpLink({
     uri: process.env.NODE_ENV === 'development' ? endpoint : prodEndpoint,
-    // credentials: 'include',
+    credentials: 'include',
   });
 
   // Create a WebSocket link:
@@ -41,6 +42,7 @@ function createClient({ headers }) {
   );
 
   const myCache = new InMemoryCache({ IntrospectionFragmentMatcher });
+  
 
   const request = async (operation) => {
     operation.setContext({
@@ -77,7 +79,7 @@ function createClient({ headers }) {
       onError(({ graphQLErrors, networkError }) => {
         if (graphQLErrors) {
           // sendToLoggingService(graphQLErrors);
-          console.log('here is some error');
+          console.log('here is some error',graphQLErrors);
         }
         if (networkError) {
           console.log('there is a network error',networkError);
@@ -88,7 +90,17 @@ function createClient({ headers }) {
       networkLink,
     ]),
     cache: myCache,
-    ssrMode: true,
+    defaultOptions: {
+      watchQuery: {
+         fetchPolicy: 'network-only',
+         errorPolicy: 'ignore',
+      },
+      query: {
+         fetchPolicy: 'network-only',
+         errorPolicy: 'all',
+      },
+    },
+    // ssrMode: true,
   });
 }
 

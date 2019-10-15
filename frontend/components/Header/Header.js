@@ -20,6 +20,7 @@ import CashIcon from '@material-ui/icons/AttachMoney';
 import ExpenseIcon from '@material-ui/icons/Assessment';
 import BarcodeIcon from '@material-ui/icons/ViewWeek';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import InputIcon from '@material-ui/icons/Input';
 
 
 import SignOut from './SignOut';
@@ -58,8 +59,8 @@ class Header extends Component{
     }
 
     sideList = side =>{
-      let navItems = ['shop','stock','suppliers','sales','expense','notifications','barcodes'];
-      let navIcons = [<ShoppingBasketIcon />,<DashboardIcon />,<DirectionsBusIcon />,<CashIcon />,<ExpenseIcon />,<NotificationsIcon />,<BarcodeIcon />];
+      let navItems = ['shop','stock','refund','suppliers','sales','expense','notifications','barcodes'];
+      let navIcons = [<ShoppingBasketIcon />,<DashboardIcon />,<InputIcon />,<DirectionsBusIcon />,<CashIcon />,<ExpenseIcon />,<NotificationsIcon />,<BarcodeIcon />];
       return (
         <div
           style={{width:"250px"}}

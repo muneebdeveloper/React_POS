@@ -1,0 +1,24 @@
+.tableStyles{
+    width:95%;
+    font-size:13px;
+}
+
+.tableStyles thead tr th{
+    border-top:2px dotted;
+    border-bottom:2px dotted;
+   
+}
+.tableStyles tfoot tr td{
+    border-bottom:2px dotted;
+}
+
+.tableStyles th{
+    background-color:white;
+    color:black;
+ 
+}
+.tableStyles td{
+    padding:0px;
+    padding-top:5px;
+    border:none
+}

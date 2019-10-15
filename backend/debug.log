@@ -1,0 +1,12 @@
+[1006/224215.542:ERROR:file_io.cc(89)] ReadExactly: expected 672, observed 0
+[1006/224215.544:ERROR:crash_report_database_win.cc(445)] failed to read records
+[1007/114652.063:ERROR:file_io.cc(89)] ReadExactly: expected 672, observed 0
+[1007/114652.065:ERROR:crash_report_database_win.cc(445)] failed to read records
+[1007/115652.073:ERROR:file_io.cc(89)] ReadExactly: expected 672, observed 0
+[1007/115652.074:ERROR:crash_report_database_win.cc(445)] failed to read records
+[1007/115652.076:ERROR:file_io.cc(89)] ReadExactly: expected 672, observed 0
+[1007/115652.076:ERROR:crash_report_database_win.cc(445)] failed to read records
+[1007/120152.068:ERROR:file_io.cc(89)] ReadExactly: expected 672, observed 0
+[1007/120152.069:ERROR:crash_report_database_win.cc(445)] failed to read records
+[1007/121652.080:ERROR:file_io.cc(89)] ReadExactly: expected 672, observed 0
+[1007/121652.080:ERROR:crash_report_database_win.cc(445)] failed to read records

@@ -5,8 +5,11 @@ type Query{
     currentUser:User
     product(where: ProductWhereUniqueInput!): Product
     stockItem(where: StockItemWhereUniqueInput!): StockItem
+    priceDetails(where:PriceDetailsInput!):PriceDetails
     supplier(where: SupplierWhereUniqueInput!): Supplier
     expense(where: ExpenseWhereUniqueInput!): Expense
+    salesTicket(where: SalesTicketWhereUniqueInput!): SalesTicket
+    barcodes(where: BarcodeWhereInput, orderBy: BarcodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Barcode]!
     expenses(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expense]!
     categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
     products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
@@ -14,11 +17,15 @@ type Query{
     salesItems(where: SalesItemWhereInput, orderBy: SalesItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SalesItem]!
     suppliers(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Supplier]!
     paidDetails(where: PaidDetailWhereInput, orderBy: PaidDetailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PaidDetail]!
+    barcodesConnection(where: BarcodeWhereInput, orderBy: BarcodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BarcodeConnection!
+    AllBarcodesData:[BarcodeData]!
+    checkExpiry:Message
 }
 
 type Mutation{
     signin(data:SignInUserInput!):User!
     signout:Message
+    refundItems(data:RefundItemsInput!):Message
     createLineItem(data: LineItemCreateInput!): LineItem!
     updateLineItem(data: LineItemUpdateInput!, where: LineItemWhereUniqueInput!): LineItem
     deleteLineItem(where: LineItemWhereUniqueInput!): LineItem
@@ -43,6 +50,7 @@ type Mutation{
     updateSalesItem(data: SalesItemUpdateInput!, where: SalesItemWhereUniqueInput!): SalesItem
     deleteSalesItem(where: SalesItemWhereUniqueInput!): SalesItem
     createSalesTicket: SalesTicket!
+    deleteBarcode(where: BarcodeWhereUniqueInput!): Barcode
      
 }
 
@@ -57,4 +65,30 @@ input SignInUserInput {
 
 type Message{
     message:String!
+}
+
+input PriceDetailsInput{
+    barcode:String!,
+    type:String!
+}
+
+
+type PriceDetails{
+    productID:String!,
+    name:String!,
+    price:Float,
+    quantity:Int!
+}
+
+input RefundItemsInput{
+    salesitemID:String!,
+    noofpieces:Int!
+}
+
+type BarcodeData{
+    barcodeID:String!
+    name:String!
+    sellPrice:Float
+    wholesalePrice:Float
+    barcode:String!
 }

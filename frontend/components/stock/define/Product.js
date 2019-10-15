@@ -29,6 +29,7 @@ const CATEGORY_ITEMS_QUERY = gql`
     mutation PRODUCT_CREATE_MUTATION($barcode:String!,$name:String!,$id:ID!){
         createProduct(data:{barcode:$barcode,name:$name,category:{connect:{id:$id}}}){
             id
+            barcode
         }
     }
  `;
@@ -41,12 +42,21 @@ const CATEGORY_ITEMS_QUERY = gql`
     }
  `;
 
+ const CREATE_BARCODE_MUTATION = gql`
+    mutation CREATE_BARCODE_MUTATION($productID:String!){
+        createBarcode(data:{productID:$productID}){
+            id
+        }
+    }
+ `;
+
 
 class Product extends Component{
 
     state={
         name:'',
         barcode:'',
+        generated_barcode:'',
         lineitemID:'',
         loadingID:false,
         errorDialogOpen:false,
@@ -93,17 +103,32 @@ class Product extends Component{
         });
     }
 
-    formSubmitHandler=createProduct=>async e=>{
+    formSubmitHandler=(createProduct,client)=>async e=>{
         e.preventDefault();
-        await createProduct();
-        this.setState({
-            name:'',
-            barcode:'',
-            lineitemID:'',
-            loadingID:false,
-            categoryList:[],
-            categoryID:'',
-        });
+        try{
+            let res = await createProduct();
+
+            if(res.data.createProduct.barcode==this.state.generated_barcode){
+                await client.mutate({
+                    mutation:CREATE_BARCODE_MUTATION,
+                    variables:{
+                        productID:res.data.createProduct.id
+                    }
+                });
+            }
+                       
+            this.setState({
+                name:'',
+                barcode:'',
+                lineitemID:'',
+                loadingID:false,
+                categoryList:[],
+                categoryID:'',
+            });
+        }catch(err){
+
+        }
+       
     }
 
     barcodeGeneratorHandler =(client)=>async()=>{
@@ -131,6 +156,7 @@ class Product extends Component{
         }
         this.setState({
             barcode:generated_barcode,
+            generated_barcode,
             loadingGenBarcode:false
         })
        
@@ -217,7 +243,7 @@ class Product extends Component{
                                         return(
                                             <>
                                             
-                                            <form onSubmit={this.formSubmitHandler(createProduct)}>
+                                            <form onSubmit={this.formSubmitHandler(createProduct,client)}>
                                                 <div className={isMain ? "mainFormStyle":styles.componentDialogMargin}>
 
                                                     <ApolloConsumer>

@@ -1,5 +1,5 @@
-# source: https://eu1.prisma.sh/muhammad-muneeb-akhlaq/backend/dev
-# timestamp: Sun Sep 08 2019 20:41:37 GMT+0500 (Pakistan Standard Time)
+# source: http://192.168.99.100:4466
+# timestamp: Tue Oct 15 2019 17:21:24 GMT+0500 (Pakistan Standard Time)
 
 type AggregateBarcode {
   count: Int!
@@ -13,11 +13,11 @@ type AggregateExpense {
   count: Int!
 }
 
-type AggregateLineItem {
+type AggregateExpiry {
   count: Int!
 }
 
-type AggregateNotification {
+type AggregateLineItem {
   count: Int!
 }
 
@@ -29,11 +29,19 @@ type AggregateProduct {
   count: Int!
 }
 
+type AggregaterefundObject {
+  count: Int!
+}
+
 type AggregateSalesItem {
   count: Int!
 }
 
 type AggregateSalesTicket {
+  count: Int!
+}
+
+type AggregateSetting {
   count: Int!
 }
 
@@ -51,8 +59,7 @@ type AggregateUser {
 
 type Barcode implements Node {
   id: ID!
-  code: String!
-  name: String!
+  productID: String!
 }
 
 """A connection to a list of items."""
@@ -67,8 +74,7 @@ type BarcodeConnection {
 
 input BarcodeCreateInput {
   id: ID
-  code: String!
-  name: String!
+  productID: String!
 }
 
 """An edge in a connection."""
@@ -83,16 +89,13 @@ type BarcodeEdge {
 enum BarcodeOrderByInput {
   id_ASC
   id_DESC
-  code_ASC
-  code_DESC
-  name_ASC
-  name_DESC
+  productID_ASC
+  productID_DESC
 }
 
 type BarcodePreviousValues {
   id: ID!
-  code: String!
-  name: String!
+  productID: String!
 }
 
 type BarcodeSubscriptionPayload {
@@ -133,13 +136,11 @@ input BarcodeSubscriptionWhereInput {
 }
 
 input BarcodeUpdateInput {
-  code: String
-  name: String
+  productID: String
 }
 
 input BarcodeUpdateManyMutationInput {
-  code: String
-  name: String
+  productID: String
 }
 
 input BarcodeWhereInput {
@@ -191,91 +192,50 @@ input BarcodeWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
-  code: String
+  productID: String
 
   """All values that are not equal to given value."""
-  code_not: String
+  productID_not: String
 
   """All values that are contained in given list."""
-  code_in: [String!]
+  productID_in: [String!]
 
   """All values that are not contained in given list."""
-  code_not_in: [String!]
+  productID_not_in: [String!]
 
   """All values less than the given value."""
-  code_lt: String
+  productID_lt: String
 
   """All values less than or equal the given value."""
-  code_lte: String
+  productID_lte: String
 
   """All values greater than the given value."""
-  code_gt: String
+  productID_gt: String
 
   """All values greater than or equal the given value."""
-  code_gte: String
+  productID_gte: String
 
   """All values containing the given string."""
-  code_contains: String
+  productID_contains: String
 
   """All values not containing the given string."""
-  code_not_contains: String
+  productID_not_contains: String
 
   """All values starting with the given string."""
-  code_starts_with: String
+  productID_starts_with: String
 
   """All values not starting with the given string."""
-  code_not_starts_with: String
+  productID_not_starts_with: String
 
   """All values ending with the given string."""
-  code_ends_with: String
+  productID_ends_with: String
 
   """All values not ending with the given string."""
-  code_not_ends_with: String
-  name: String
-
-  """All values that are not equal to given value."""
-  name_not: String
-
-  """All values that are contained in given list."""
-  name_in: [String!]
-
-  """All values that are not contained in given list."""
-  name_not_in: [String!]
-
-  """All values less than the given value."""
-  name_lt: String
-
-  """All values less than or equal the given value."""
-  name_lte: String
-
-  """All values greater than the given value."""
-  name_gt: String
-
-  """All values greater than or equal the given value."""
-  name_gte: String
-
-  """All values containing the given string."""
-  name_contains: String
-
-  """All values not containing the given string."""
-  name_not_contains: String
-
-  """All values starting with the given string."""
-  name_starts_with: String
-
-  """All values not starting with the given string."""
-  name_not_starts_with: String
-
-  """All values ending with the given string."""
-  name_ends_with: String
-
-  """All values not ending with the given string."""
-  name_not_ends_with: String
+  productID_not_ends_with: String
 }
 
 input BarcodeWhereUniqueInput {
   id: ID
-  code: String
 }
 
 type BatchPayload {
@@ -728,6 +688,237 @@ input ExpenseWhereUniqueInput {
   id: ID
 }
 
+type Expiry implements Node {
+  id: ID!
+  description: String!
+  productID: String!
+}
+
+"""A connection to a list of items."""
+type ExpiryConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ExpiryEdge]!
+  aggregate: AggregateExpiry!
+}
+
+input ExpiryCreateInput {
+  id: ID
+  description: String!
+  productID: String!
+}
+
+"""An edge in a connection."""
+type ExpiryEdge {
+  """The item at the end of the edge."""
+  node: Expiry!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum ExpiryOrderByInput {
+  id_ASC
+  id_DESC
+  description_ASC
+  description_DESC
+  productID_ASC
+  productID_DESC
+}
+
+type ExpiryPreviousValues {
+  id: ID!
+  description: String!
+  productID: String!
+}
+
+type ExpirySubscriptionPayload {
+  mutation: MutationType!
+  node: Expiry
+  updatedFields: [String!]
+  previousValues: ExpiryPreviousValues
+}
+
+input ExpirySubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ExpirySubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ExpirySubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ExpirySubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: ExpiryWhereInput
+}
+
+input ExpiryUpdateInput {
+  description: String
+  productID: String
+}
+
+input ExpiryUpdateManyMutationInput {
+  description: String
+  productID: String
+}
+
+input ExpiryWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ExpiryWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ExpiryWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ExpiryWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  productID: String
+
+  """All values that are not equal to given value."""
+  productID_not: String
+
+  """All values that are contained in given list."""
+  productID_in: [String!]
+
+  """All values that are not contained in given list."""
+  productID_not_in: [String!]
+
+  """All values less than the given value."""
+  productID_lt: String
+
+  """All values less than or equal the given value."""
+  productID_lte: String
+
+  """All values greater than the given value."""
+  productID_gt: String
+
+  """All values greater than or equal the given value."""
+  productID_gte: String
+
+  """All values containing the given string."""
+  productID_contains: String
+
+  """All values not containing the given string."""
+  productID_not_contains: String
+
+  """All values starting with the given string."""
+  productID_starts_with: String
+
+  """All values not starting with the given string."""
+  productID_not_starts_with: String
+
+  """All values ending with the given string."""
+  productID_ends_with: String
+
+  """All values not ending with the given string."""
+  productID_not_ends_with: String
+}
+
+input ExpiryWhereUniqueInput {
+  id: ID
+}
+
+"""Raw JSON value"""
+scalar Json
+
 type LineItem implements Node {
   id: ID!
   name: String!
@@ -939,77 +1130,90 @@ scalar Long
 
 type Mutation {
   createUser(data: UserCreateInput!): User!
+  createSupplier(data: SupplierCreateInput!): Supplier!
   createPaidDetail(data: PaidDetailCreateInput!): PaidDetail!
   createStockItem(data: StockItemCreateInput!): StockItem!
   createSalesItem(data: SalesItemCreateInput!): SalesItem!
   createSalesTicket(data: SalesTicketCreateInput!): SalesTicket!
   createExpense(data: ExpenseCreateInput!): Expense!
-  createNotification(data: NotificationCreateInput!): Notification!
   createBarcode(data: BarcodeCreateInput!): Barcode!
+  createExpiry(data: ExpiryCreateInput!): Expiry!
+  createSetting(data: SettingCreateInput!): Setting!
   createCategory(data: CategoryCreateInput!): Category!
   createProduct(data: ProductCreateInput!): Product!
+  createrefundObject(data: refundObjectCreateInput!): refundObject!
   createLineItem(data: LineItemCreateInput!): LineItem!
-  createSupplier(data: SupplierCreateInput!): Supplier!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateSupplier(data: SupplierUpdateInput!, where: SupplierWhereUniqueInput!): Supplier
   updatePaidDetail(data: PaidDetailUpdateInput!, where: PaidDetailWhereUniqueInput!): PaidDetail
   updateStockItem(data: StockItemUpdateInput!, where: StockItemWhereUniqueInput!): StockItem
   updateSalesItem(data: SalesItemUpdateInput!, where: SalesItemWhereUniqueInput!): SalesItem
   updateSalesTicket(data: SalesTicketUpdateInput!, where: SalesTicketWhereUniqueInput!): SalesTicket
   updateExpense(data: ExpenseUpdateInput!, where: ExpenseWhereUniqueInput!): Expense
-  updateNotification(data: NotificationUpdateInput!, where: NotificationWhereUniqueInput!): Notification
   updateBarcode(data: BarcodeUpdateInput!, where: BarcodeWhereUniqueInput!): Barcode
+  updateExpiry(data: ExpiryUpdateInput!, where: ExpiryWhereUniqueInput!): Expiry
+  updateSetting(data: SettingUpdateInput!, where: SettingWhereUniqueInput!): Setting
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
   updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
+  updaterefundObject(data: refundObjectUpdateInput!, where: refundObjectWhereUniqueInput!): refundObject
   updateLineItem(data: LineItemUpdateInput!, where: LineItemWhereUniqueInput!): LineItem
-  updateSupplier(data: SupplierUpdateInput!, where: SupplierWhereUniqueInput!): Supplier
   deleteUser(where: UserWhereUniqueInput!): User
+  deleteSupplier(where: SupplierWhereUniqueInput!): Supplier
   deletePaidDetail(where: PaidDetailWhereUniqueInput!): PaidDetail
   deleteStockItem(where: StockItemWhereUniqueInput!): StockItem
   deleteSalesItem(where: SalesItemWhereUniqueInput!): SalesItem
   deleteSalesTicket(where: SalesTicketWhereUniqueInput!): SalesTicket
   deleteExpense(where: ExpenseWhereUniqueInput!): Expense
-  deleteNotification(where: NotificationWhereUniqueInput!): Notification
   deleteBarcode(where: BarcodeWhereUniqueInput!): Barcode
+  deleteExpiry(where: ExpiryWhereUniqueInput!): Expiry
+  deleteSetting(where: SettingWhereUniqueInput!): Setting
   deleteCategory(where: CategoryWhereUniqueInput!): Category
   deleteProduct(where: ProductWhereUniqueInput!): Product
+  deleterefundObject(where: refundObjectWhereUniqueInput!): refundObject
   deleteLineItem(where: LineItemWhereUniqueInput!): LineItem
-  deleteSupplier(where: SupplierWhereUniqueInput!): Supplier
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertSupplier(where: SupplierWhereUniqueInput!, create: SupplierCreateInput!, update: SupplierUpdateInput!): Supplier!
   upsertPaidDetail(where: PaidDetailWhereUniqueInput!, create: PaidDetailCreateInput!, update: PaidDetailUpdateInput!): PaidDetail!
   upsertStockItem(where: StockItemWhereUniqueInput!, create: StockItemCreateInput!, update: StockItemUpdateInput!): StockItem!
   upsertSalesItem(where: SalesItemWhereUniqueInput!, create: SalesItemCreateInput!, update: SalesItemUpdateInput!): SalesItem!
   upsertSalesTicket(where: SalesTicketWhereUniqueInput!, create: SalesTicketCreateInput!, update: SalesTicketUpdateInput!): SalesTicket!
   upsertExpense(where: ExpenseWhereUniqueInput!, create: ExpenseCreateInput!, update: ExpenseUpdateInput!): Expense!
-  upsertNotification(where: NotificationWhereUniqueInput!, create: NotificationCreateInput!, update: NotificationUpdateInput!): Notification!
   upsertBarcode(where: BarcodeWhereUniqueInput!, create: BarcodeCreateInput!, update: BarcodeUpdateInput!): Barcode!
+  upsertExpiry(where: ExpiryWhereUniqueInput!, create: ExpiryCreateInput!, update: ExpiryUpdateInput!): Expiry!
+  upsertSetting(where: SettingWhereUniqueInput!, create: SettingCreateInput!, update: SettingUpdateInput!): Setting!
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
   upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
+  upsertrefundObject(where: refundObjectWhereUniqueInput!, create: refundObjectCreateInput!, update: refundObjectUpdateInput!): refundObject!
   upsertLineItem(where: LineItemWhereUniqueInput!, create: LineItemCreateInput!, update: LineItemUpdateInput!): LineItem!
-  upsertSupplier(where: SupplierWhereUniqueInput!, create: SupplierCreateInput!, update: SupplierUpdateInput!): Supplier!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  updateManySuppliers(data: SupplierUpdateManyMutationInput!, where: SupplierWhereInput): BatchPayload!
   updateManyPaidDetails(data: PaidDetailUpdateManyMutationInput!, where: PaidDetailWhereInput): BatchPayload!
   updateManyStockItems(data: StockItemUpdateManyMutationInput!, where: StockItemWhereInput): BatchPayload!
   updateManySalesItems(data: SalesItemUpdateManyMutationInput!, where: SalesItemWhereInput): BatchPayload!
   updateManySalesTickets(data: SalesTicketUpdateManyMutationInput!, where: SalesTicketWhereInput): BatchPayload!
   updateManyExpenses(data: ExpenseUpdateManyMutationInput!, where: ExpenseWhereInput): BatchPayload!
-  updateManyNotifications(data: NotificationUpdateManyMutationInput!, where: NotificationWhereInput): BatchPayload!
   updateManyBarcodes(data: BarcodeUpdateManyMutationInput!, where: BarcodeWhereInput): BatchPayload!
+  updateManyExpiries(data: ExpiryUpdateManyMutationInput!, where: ExpiryWhereInput): BatchPayload!
+  updateManySettings(data: SettingUpdateManyMutationInput!, where: SettingWhereInput): BatchPayload!
   updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
   updateManyProducts(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): BatchPayload!
+  updateManyRefundObjects(data: refundObjectUpdateManyMutationInput!, where: refundObjectWhereInput): BatchPayload!
   updateManyLineItems(data: LineItemUpdateManyMutationInput!, where: LineItemWhereInput): BatchPayload!
-  updateManySuppliers(data: SupplierUpdateManyMutationInput!, where: SupplierWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  deleteManySuppliers(where: SupplierWhereInput): BatchPayload!
   deleteManyPaidDetails(where: PaidDetailWhereInput): BatchPayload!
   deleteManyStockItems(where: StockItemWhereInput): BatchPayload!
   deleteManySalesItems(where: SalesItemWhereInput): BatchPayload!
   deleteManySalesTickets(where: SalesTicketWhereInput): BatchPayload!
   deleteManyExpenses(where: ExpenseWhereInput): BatchPayload!
-  deleteManyNotifications(where: NotificationWhereInput): BatchPayload!
   deleteManyBarcodes(where: BarcodeWhereInput): BatchPayload!
+  deleteManyExpiries(where: ExpiryWhereInput): BatchPayload!
+  deleteManySettings(where: SettingWhereInput): BatchPayload!
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
   deleteManyProducts(where: ProductWhereInput): BatchPayload!
+  deleteManyRefundObjects(where: refundObjectWhereInput): BatchPayload!
   deleteManyLineItems(where: LineItemWhereInput): BatchPayload!
-  deleteManySuppliers(where: SupplierWhereInput): BatchPayload!
+  executeRaw(database: PrismaDatabase, query: String!): Json!
 }
 
 enum MutationType {
@@ -1022,234 +1226,6 @@ enum MutationType {
 interface Node {
   """The id of the object."""
   id: ID!
-}
-
-type Notification implements Node {
-  id: ID!
-  type: String!
-  info: String!
-}
-
-"""A connection to a list of items."""
-type NotificationConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [NotificationEdge]!
-  aggregate: AggregateNotification!
-}
-
-input NotificationCreateInput {
-  id: ID
-  type: String!
-  info: String!
-}
-
-"""An edge in a connection."""
-type NotificationEdge {
-  """The item at the end of the edge."""
-  node: Notification!
-
-  """A cursor for use in pagination."""
-  cursor: String!
-}
-
-enum NotificationOrderByInput {
-  id_ASC
-  id_DESC
-  type_ASC
-  type_DESC
-  info_ASC
-  info_DESC
-}
-
-type NotificationPreviousValues {
-  id: ID!
-  type: String!
-  info: String!
-}
-
-type NotificationSubscriptionPayload {
-  mutation: MutationType!
-  node: Notification
-  updatedFields: [String!]
-  previousValues: NotificationPreviousValues
-}
-
-input NotificationSubscriptionWhereInput {
-  """Logical AND on all given filters."""
-  AND: [NotificationSubscriptionWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [NotificationSubscriptionWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [NotificationSubscriptionWhereInput!]
-
-  """The subscription event gets dispatched when it's listed in mutation_in"""
-  mutation_in: [MutationType!]
-
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: NotificationWhereInput
-}
-
-input NotificationUpdateInput {
-  type: String
-  info: String
-}
-
-input NotificationUpdateManyMutationInput {
-  type: String
-  info: String
-}
-
-input NotificationWhereInput {
-  """Logical AND on all given filters."""
-  AND: [NotificationWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [NotificationWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [NotificationWhereInput!]
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  type: String
-
-  """All values that are not equal to given value."""
-  type_not: String
-
-  """All values that are contained in given list."""
-  type_in: [String!]
-
-  """All values that are not contained in given list."""
-  type_not_in: [String!]
-
-  """All values less than the given value."""
-  type_lt: String
-
-  """All values less than or equal the given value."""
-  type_lte: String
-
-  """All values greater than the given value."""
-  type_gt: String
-
-  """All values greater than or equal the given value."""
-  type_gte: String
-
-  """All values containing the given string."""
-  type_contains: String
-
-  """All values not containing the given string."""
-  type_not_contains: String
-
-  """All values starting with the given string."""
-  type_starts_with: String
-
-  """All values not starting with the given string."""
-  type_not_starts_with: String
-
-  """All values ending with the given string."""
-  type_ends_with: String
-
-  """All values not ending with the given string."""
-  type_not_ends_with: String
-  info: String
-
-  """All values that are not equal to given value."""
-  info_not: String
-
-  """All values that are contained in given list."""
-  info_in: [String!]
-
-  """All values that are not contained in given list."""
-  info_not_in: [String!]
-
-  """All values less than the given value."""
-  info_lt: String
-
-  """All values less than or equal the given value."""
-  info_lte: String
-
-  """All values greater than the given value."""
-  info_gt: String
-
-  """All values greater than or equal the given value."""
-  info_gte: String
-
-  """All values containing the given string."""
-  info_contains: String
-
-  """All values not containing the given string."""
-  info_not_contains: String
-
-  """All values starting with the given string."""
-  info_starts_with: String
-
-  """All values not starting with the given string."""
-  info_not_starts_with: String
-
-  """All values ending with the given string."""
-  info_ends_with: String
-
-  """All values not ending with the given string."""
-  info_not_ends_with: String
-}
-
-input NotificationWhereUniqueInput {
-  id: ID
 }
 
 """Information about pagination in a connection."""
@@ -1745,13 +1721,14 @@ input PaidDetailWhereUniqueInput {
   id: ID
 }
 
+enum PrismaDatabase {
+  default
+}
+
 type Product implements Node {
   id: ID!
   barcode: String!
   name: String!
-  sellPrice: Float
-  wholesalePrice: Float
-  noofpieces: Int
   category: Category!
   stock(where: StockItemWhereInput, orderBy: StockItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [StockItem!]
 }
@@ -1770,9 +1747,6 @@ input ProductCreateInput {
   id: ID
   barcode: String!
   name: String!
-  sellPrice: Float
-  wholesalePrice: Float
-  noofpieces: Int
   category: CategoryCreateOneInput!
   stock: StockItemCreateManyWithoutProductInput
 }
@@ -1791,9 +1765,6 @@ input ProductCreateWithoutStockInput {
   id: ID
   barcode: String!
   name: String!
-  sellPrice: Float
-  wholesalePrice: Float
-  noofpieces: Int
   category: CategoryCreateOneInput!
 }
 
@@ -1813,21 +1784,12 @@ enum ProductOrderByInput {
   barcode_DESC
   name_ASC
   name_DESC
-  sellPrice_ASC
-  sellPrice_DESC
-  wholesalePrice_ASC
-  wholesalePrice_DESC
-  noofpieces_ASC
-  noofpieces_DESC
 }
 
 type ProductPreviousValues {
   id: ID!
   barcode: String!
   name: String!
-  sellPrice: Float
-  wholesalePrice: Float
-  noofpieces: Int
 }
 
 type ProductSubscriptionPayload {
@@ -1870,9 +1832,6 @@ input ProductSubscriptionWhereInput {
 input ProductUpdateDataInput {
   barcode: String
   name: String
-  sellPrice: Float
-  wholesalePrice: Float
-  noofpieces: Int
   category: CategoryUpdateOneRequiredInput
   stock: StockItemUpdateManyWithoutProductInput
 }
@@ -1880,9 +1839,6 @@ input ProductUpdateDataInput {
 input ProductUpdateInput {
   barcode: String
   name: String
-  sellPrice: Float
-  wholesalePrice: Float
-  noofpieces: Int
   category: CategoryUpdateOneRequiredInput
   stock: StockItemUpdateManyWithoutProductInput
 }
@@ -1890,9 +1846,6 @@ input ProductUpdateInput {
 input ProductUpdateManyMutationInput {
   barcode: String
   name: String
-  sellPrice: Float
-  wholesalePrice: Float
-  noofpieces: Int
 }
 
 input ProductUpdateOneRequiredInput {
@@ -1912,9 +1865,6 @@ input ProductUpdateOneRequiredWithoutStockInput {
 input ProductUpdateWithoutStockDataInput {
   barcode: String
   name: String
-  sellPrice: Float
-  wholesalePrice: Float
-  noofpieces: Int
   category: CategoryUpdateOneRequiredInput
 }
 
@@ -2057,6 +2007,344 @@ input ProductWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
+  category: CategoryWhereInput
+  stock_every: StockItemWhereInput
+  stock_some: StockItemWhereInput
+  stock_none: StockItemWhereInput
+}
+
+input ProductWhereUniqueInput {
+  id: ID
+  barcode: String
+}
+
+type Query {
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  suppliers(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Supplier]!
+  paidDetails(where: PaidDetailWhereInput, orderBy: PaidDetailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PaidDetail]!
+  stockItems(where: StockItemWhereInput, orderBy: StockItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [StockItem]!
+  salesItems(where: SalesItemWhereInput, orderBy: SalesItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SalesItem]!
+  salesTickets(where: SalesTicketWhereInput, orderBy: SalesTicketOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SalesTicket]!
+  expenses(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expense]!
+  barcodes(where: BarcodeWhereInput, orderBy: BarcodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Barcode]!
+  expiries(where: ExpiryWhereInput, orderBy: ExpiryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expiry]!
+  settings(where: SettingWhereInput, orderBy: SettingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Setting]!
+  categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
+  products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
+  refundObjects(where: refundObjectWhereInput, orderBy: refundObjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [refundObject]!
+  lineItems(where: LineItemWhereInput, orderBy: LineItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [LineItem]!
+  user(where: UserWhereUniqueInput!): User
+  supplier(where: SupplierWhereUniqueInput!): Supplier
+  paidDetail(where: PaidDetailWhereUniqueInput!): PaidDetail
+  stockItem(where: StockItemWhereUniqueInput!): StockItem
+  salesItem(where: SalesItemWhereUniqueInput!): SalesItem
+  salesTicket(where: SalesTicketWhereUniqueInput!): SalesTicket
+  expense(where: ExpenseWhereUniqueInput!): Expense
+  barcode(where: BarcodeWhereUniqueInput!): Barcode
+  expiry(where: ExpiryWhereUniqueInput!): Expiry
+  setting(where: SettingWhereUniqueInput!): Setting
+  category(where: CategoryWhereUniqueInput!): Category
+  product(where: ProductWhereUniqueInput!): Product
+  refundObject(where: refundObjectWhereUniqueInput!): refundObject
+  lineItem(where: LineItemWhereUniqueInput!): LineItem
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  suppliersConnection(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SupplierConnection!
+  paidDetailsConnection(where: PaidDetailWhereInput, orderBy: PaidDetailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PaidDetailConnection!
+  stockItemsConnection(where: StockItemWhereInput, orderBy: StockItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StockItemConnection!
+  salesItemsConnection(where: SalesItemWhereInput, orderBy: SalesItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SalesItemConnection!
+  salesTicketsConnection(where: SalesTicketWhereInput, orderBy: SalesTicketOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SalesTicketConnection!
+  expensesConnection(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExpenseConnection!
+  barcodesConnection(where: BarcodeWhereInput, orderBy: BarcodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BarcodeConnection!
+  expiriesConnection(where: ExpiryWhereInput, orderBy: ExpiryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExpiryConnection!
+  settingsConnection(where: SettingWhereInput, orderBy: SettingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SettingConnection!
+  categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
+  productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
+  refundObjectsConnection(where: refundObjectWhereInput, orderBy: refundObjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): refundObjectConnection!
+  lineItemsConnection(where: LineItemWhereInput, orderBy: LineItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LineItemConnection!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}
+
+type refundObject implements Node {
+  id: ID!
+  stockID: String!
+  createdAt: DateTime!
+  badgeNumber: String
+  noofpieces: Int!
+  buyPrice: Float!
+  sellPrice: Float!
+  wholesalePrice: Float!
+  expiry: DateTime
+}
+
+"""A connection to a list of items."""
+type refundObjectConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [refundObjectEdge]!
+  aggregate: AggregaterefundObject!
+}
+
+input refundObjectCreateInput {
+  id: ID
+  stockID: String!
+  createdAt: DateTime!
+  badgeNumber: String
+  noofpieces: Int!
+  buyPrice: Float!
+  sellPrice: Float!
+  wholesalePrice: Float!
+  expiry: DateTime
+}
+
+input refundObjectCreateManyInput {
+  create: [refundObjectCreateInput!]
+  connect: [refundObjectWhereUniqueInput!]
+}
+
+"""An edge in a connection."""
+type refundObjectEdge {
+  """The item at the end of the edge."""
+  node: refundObject!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum refundObjectOrderByInput {
+  id_ASC
+  id_DESC
+  stockID_ASC
+  stockID_DESC
+  createdAt_ASC
+  createdAt_DESC
+  badgeNumber_ASC
+  badgeNumber_DESC
+  noofpieces_ASC
+  noofpieces_DESC
+  buyPrice_ASC
+  buyPrice_DESC
+  sellPrice_ASC
+  sellPrice_DESC
+  wholesalePrice_ASC
+  wholesalePrice_DESC
+  expiry_ASC
+  expiry_DESC
+}
+
+type refundObjectPreviousValues {
+  id: ID!
+  stockID: String!
+  createdAt: DateTime!
+  badgeNumber: String
+  noofpieces: Int!
+  buyPrice: Float!
+  sellPrice: Float!
+  wholesalePrice: Float!
+  expiry: DateTime
+}
+
+input refundObjectScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [refundObjectScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [refundObjectScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [refundObjectScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  stockID: String
+
+  """All values that are not equal to given value."""
+  stockID_not: String
+
+  """All values that are contained in given list."""
+  stockID_in: [String!]
+
+  """All values that are not contained in given list."""
+  stockID_not_in: [String!]
+
+  """All values less than the given value."""
+  stockID_lt: String
+
+  """All values less than or equal the given value."""
+  stockID_lte: String
+
+  """All values greater than the given value."""
+  stockID_gt: String
+
+  """All values greater than or equal the given value."""
+  stockID_gte: String
+
+  """All values containing the given string."""
+  stockID_contains: String
+
+  """All values not containing the given string."""
+  stockID_not_contains: String
+
+  """All values starting with the given string."""
+  stockID_starts_with: String
+
+  """All values not starting with the given string."""
+  stockID_not_starts_with: String
+
+  """All values ending with the given string."""
+  stockID_ends_with: String
+
+  """All values not ending with the given string."""
+  stockID_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  badgeNumber: String
+
+  """All values that are not equal to given value."""
+  badgeNumber_not: String
+
+  """All values that are contained in given list."""
+  badgeNumber_in: [String!]
+
+  """All values that are not contained in given list."""
+  badgeNumber_not_in: [String!]
+
+  """All values less than the given value."""
+  badgeNumber_lt: String
+
+  """All values less than or equal the given value."""
+  badgeNumber_lte: String
+
+  """All values greater than the given value."""
+  badgeNumber_gt: String
+
+  """All values greater than or equal the given value."""
+  badgeNumber_gte: String
+
+  """All values containing the given string."""
+  badgeNumber_contains: String
+
+  """All values not containing the given string."""
+  badgeNumber_not_contains: String
+
+  """All values starting with the given string."""
+  badgeNumber_starts_with: String
+
+  """All values not starting with the given string."""
+  badgeNumber_not_starts_with: String
+
+  """All values ending with the given string."""
+  badgeNumber_ends_with: String
+
+  """All values not ending with the given string."""
+  badgeNumber_not_ends_with: String
+  noofpieces: Int
+
+  """All values that are not equal to given value."""
+  noofpieces_not: Int
+
+  """All values that are contained in given list."""
+  noofpieces_in: [Int!]
+
+  """All values that are not contained in given list."""
+  noofpieces_not_in: [Int!]
+
+  """All values less than the given value."""
+  noofpieces_lt: Int
+
+  """All values less than or equal the given value."""
+  noofpieces_lte: Int
+
+  """All values greater than the given value."""
+  noofpieces_gt: Int
+
+  """All values greater than or equal the given value."""
+  noofpieces_gte: Int
+  buyPrice: Float
+
+  """All values that are not equal to given value."""
+  buyPrice_not: Float
+
+  """All values that are contained in given list."""
+  buyPrice_in: [Float!]
+
+  """All values that are not contained in given list."""
+  buyPrice_not_in: [Float!]
+
+  """All values less than the given value."""
+  buyPrice_lt: Float
+
+  """All values less than or equal the given value."""
+  buyPrice_lte: Float
+
+  """All values greater than the given value."""
+  buyPrice_gt: Float
+
+  """All values greater than or equal the given value."""
+  buyPrice_gte: Float
   sellPrice: Float
 
   """All values that are not equal to given value."""
@@ -2101,6 +2389,290 @@ input ProductWhereInput {
 
   """All values greater than or equal the given value."""
   wholesalePrice_gte: Float
+  expiry: DateTime
+
+  """All values that are not equal to given value."""
+  expiry_not: DateTime
+
+  """All values that are contained in given list."""
+  expiry_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  expiry_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  expiry_lt: DateTime
+
+  """All values less than or equal the given value."""
+  expiry_lte: DateTime
+
+  """All values greater than the given value."""
+  expiry_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  expiry_gte: DateTime
+}
+
+type refundObjectSubscriptionPayload {
+  mutation: MutationType!
+  node: refundObject
+  updatedFields: [String!]
+  previousValues: refundObjectPreviousValues
+}
+
+input refundObjectSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [refundObjectSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [refundObjectSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [refundObjectSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: refundObjectWhereInput
+}
+
+input refundObjectUpdateDataInput {
+  stockID: String
+  createdAt: DateTime
+  badgeNumber: String
+  noofpieces: Int
+  buyPrice: Float
+  sellPrice: Float
+  wholesalePrice: Float
+  expiry: DateTime
+}
+
+input refundObjectUpdateInput {
+  stockID: String
+  createdAt: DateTime
+  badgeNumber: String
+  noofpieces: Int
+  buyPrice: Float
+  sellPrice: Float
+  wholesalePrice: Float
+  expiry: DateTime
+}
+
+input refundObjectUpdateManyDataInput {
+  stockID: String
+  createdAt: DateTime
+  badgeNumber: String
+  noofpieces: Int
+  buyPrice: Float
+  sellPrice: Float
+  wholesalePrice: Float
+  expiry: DateTime
+}
+
+input refundObjectUpdateManyInput {
+  create: [refundObjectCreateInput!]
+  connect: [refundObjectWhereUniqueInput!]
+  set: [refundObjectWhereUniqueInput!]
+  disconnect: [refundObjectWhereUniqueInput!]
+  delete: [refundObjectWhereUniqueInput!]
+  update: [refundObjectUpdateWithWhereUniqueNestedInput!]
+  updateMany: [refundObjectUpdateManyWithWhereNestedInput!]
+  deleteMany: [refundObjectScalarWhereInput!]
+  upsert: [refundObjectUpsertWithWhereUniqueNestedInput!]
+}
+
+input refundObjectUpdateManyMutationInput {
+  stockID: String
+  createdAt: DateTime
+  badgeNumber: String
+  noofpieces: Int
+  buyPrice: Float
+  sellPrice: Float
+  wholesalePrice: Float
+  expiry: DateTime
+}
+
+input refundObjectUpdateManyWithWhereNestedInput {
+  where: refundObjectScalarWhereInput!
+  data: refundObjectUpdateManyDataInput!
+}
+
+input refundObjectUpdateWithWhereUniqueNestedInput {
+  where: refundObjectWhereUniqueInput!
+  data: refundObjectUpdateDataInput!
+}
+
+input refundObjectUpsertWithWhereUniqueNestedInput {
+  where: refundObjectWhereUniqueInput!
+  update: refundObjectUpdateDataInput!
+  create: refundObjectCreateInput!
+}
+
+input refundObjectWhereInput {
+  """Logical AND on all given filters."""
+  AND: [refundObjectWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [refundObjectWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [refundObjectWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  stockID: String
+
+  """All values that are not equal to given value."""
+  stockID_not: String
+
+  """All values that are contained in given list."""
+  stockID_in: [String!]
+
+  """All values that are not contained in given list."""
+  stockID_not_in: [String!]
+
+  """All values less than the given value."""
+  stockID_lt: String
+
+  """All values less than or equal the given value."""
+  stockID_lte: String
+
+  """All values greater than the given value."""
+  stockID_gt: String
+
+  """All values greater than or equal the given value."""
+  stockID_gte: String
+
+  """All values containing the given string."""
+  stockID_contains: String
+
+  """All values not containing the given string."""
+  stockID_not_contains: String
+
+  """All values starting with the given string."""
+  stockID_starts_with: String
+
+  """All values not starting with the given string."""
+  stockID_not_starts_with: String
+
+  """All values ending with the given string."""
+  stockID_ends_with: String
+
+  """All values not ending with the given string."""
+  stockID_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  badgeNumber: String
+
+  """All values that are not equal to given value."""
+  badgeNumber_not: String
+
+  """All values that are contained in given list."""
+  badgeNumber_in: [String!]
+
+  """All values that are not contained in given list."""
+  badgeNumber_not_in: [String!]
+
+  """All values less than the given value."""
+  badgeNumber_lt: String
+
+  """All values less than or equal the given value."""
+  badgeNumber_lte: String
+
+  """All values greater than the given value."""
+  badgeNumber_gt: String
+
+  """All values greater than or equal the given value."""
+  badgeNumber_gte: String
+
+  """All values containing the given string."""
+  badgeNumber_contains: String
+
+  """All values not containing the given string."""
+  badgeNumber_not_contains: String
+
+  """All values starting with the given string."""
+  badgeNumber_starts_with: String
+
+  """All values not starting with the given string."""
+  badgeNumber_not_starts_with: String
+
+  """All values ending with the given string."""
+  badgeNumber_ends_with: String
+
+  """All values not ending with the given string."""
+  badgeNumber_not_ends_with: String
   noofpieces: Int
 
   """All values that are not equal to given value."""
@@ -2123,72 +2695,109 @@ input ProductWhereInput {
 
   """All values greater than or equal the given value."""
   noofpieces_gte: Int
-  category: CategoryWhereInput
-  stock_every: StockItemWhereInput
-  stock_some: StockItemWhereInput
-  stock_none: StockItemWhereInput
+  buyPrice: Float
+
+  """All values that are not equal to given value."""
+  buyPrice_not: Float
+
+  """All values that are contained in given list."""
+  buyPrice_in: [Float!]
+
+  """All values that are not contained in given list."""
+  buyPrice_not_in: [Float!]
+
+  """All values less than the given value."""
+  buyPrice_lt: Float
+
+  """All values less than or equal the given value."""
+  buyPrice_lte: Float
+
+  """All values greater than the given value."""
+  buyPrice_gt: Float
+
+  """All values greater than or equal the given value."""
+  buyPrice_gte: Float
+  sellPrice: Float
+
+  """All values that are not equal to given value."""
+  sellPrice_not: Float
+
+  """All values that are contained in given list."""
+  sellPrice_in: [Float!]
+
+  """All values that are not contained in given list."""
+  sellPrice_not_in: [Float!]
+
+  """All values less than the given value."""
+  sellPrice_lt: Float
+
+  """All values less than or equal the given value."""
+  sellPrice_lte: Float
+
+  """All values greater than the given value."""
+  sellPrice_gt: Float
+
+  """All values greater than or equal the given value."""
+  sellPrice_gte: Float
+  wholesalePrice: Float
+
+  """All values that are not equal to given value."""
+  wholesalePrice_not: Float
+
+  """All values that are contained in given list."""
+  wholesalePrice_in: [Float!]
+
+  """All values that are not contained in given list."""
+  wholesalePrice_not_in: [Float!]
+
+  """All values less than the given value."""
+  wholesalePrice_lt: Float
+
+  """All values less than or equal the given value."""
+  wholesalePrice_lte: Float
+
+  """All values greater than the given value."""
+  wholesalePrice_gt: Float
+
+  """All values greater than or equal the given value."""
+  wholesalePrice_gte: Float
+  expiry: DateTime
+
+  """All values that are not equal to given value."""
+  expiry_not: DateTime
+
+  """All values that are contained in given list."""
+  expiry_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  expiry_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  expiry_lt: DateTime
+
+  """All values less than or equal the given value."""
+  expiry_lte: DateTime
+
+  """All values greater than the given value."""
+  expiry_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  expiry_gte: DateTime
 }
 
-input ProductWhereUniqueInput {
+input refundObjectWhereUniqueInput {
   id: ID
-  barcode: String
-}
-
-type Query {
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  paidDetails(where: PaidDetailWhereInput, orderBy: PaidDetailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PaidDetail]!
-  stockItems(where: StockItemWhereInput, orderBy: StockItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [StockItem]!
-  salesItems(where: SalesItemWhereInput, orderBy: SalesItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SalesItem]!
-  salesTickets(where: SalesTicketWhereInput, orderBy: SalesTicketOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SalesTicket]!
-  expenses(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expense]!
-  notifications(where: NotificationWhereInput, orderBy: NotificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Notification]!
-  barcodes(where: BarcodeWhereInput, orderBy: BarcodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Barcode]!
-  categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
-  products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
-  lineItems(where: LineItemWhereInput, orderBy: LineItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [LineItem]!
-  suppliers(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Supplier]!
-  user(where: UserWhereUniqueInput!): User
-  paidDetail(where: PaidDetailWhereUniqueInput!): PaidDetail
-  stockItem(where: StockItemWhereUniqueInput!): StockItem
-  salesItem(where: SalesItemWhereUniqueInput!): SalesItem
-  salesTicket(where: SalesTicketWhereUniqueInput!): SalesTicket
-  expense(where: ExpenseWhereUniqueInput!): Expense
-  notification(where: NotificationWhereUniqueInput!): Notification
-  barcode(where: BarcodeWhereUniqueInput!): Barcode
-  category(where: CategoryWhereUniqueInput!): Category
-  product(where: ProductWhereUniqueInput!): Product
-  lineItem(where: LineItemWhereUniqueInput!): LineItem
-  supplier(where: SupplierWhereUniqueInput!): Supplier
-  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-  paidDetailsConnection(where: PaidDetailWhereInput, orderBy: PaidDetailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PaidDetailConnection!
-  stockItemsConnection(where: StockItemWhereInput, orderBy: StockItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StockItemConnection!
-  salesItemsConnection(where: SalesItemWhereInput, orderBy: SalesItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SalesItemConnection!
-  salesTicketsConnection(where: SalesTicketWhereInput, orderBy: SalesTicketOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SalesTicketConnection!
-  expensesConnection(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExpenseConnection!
-  notificationsConnection(where: NotificationWhereInput, orderBy: NotificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): NotificationConnection!
-  barcodesConnection(where: BarcodeWhereInput, orderBy: BarcodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BarcodeConnection!
-  categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
-  productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
-  lineItemsConnection(where: LineItemWhereInput, orderBy: LineItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LineItemConnection!
-  suppliersConnection(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SupplierConnection!
-
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
 }
 
 type SalesItem implements Node {
   id: ID!
   createdAt: DateTime!
   noofpieces: Int!
-  buyPrice: Float
-  sellPrice: Float
-  wholesalePrice: Float
+  type: String!
+  priceSold: Float!
   profit: Float
+  refundCriteria(where: refundObjectWhereInput, orderBy: refundObjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [refundObject!]
   product: Product!
-  supplier: Supplier
   salesTicket: SalesTicket!
 }
 
@@ -2205,12 +2814,11 @@ type SalesItemConnection {
 input SalesItemCreateInput {
   id: ID
   noofpieces: Int!
-  buyPrice: Float
-  sellPrice: Float
-  wholesalePrice: Float
+  type: String!
+  priceSold: Float!
   profit: Float
+  refundCriteria: refundObjectCreateManyInput
   product: ProductCreateOneInput!
-  supplier: SupplierCreateOneInput
   salesTicket: SalesTicketCreateOneWithoutSalesInput!
 }
 
@@ -2222,12 +2830,11 @@ input SalesItemCreateManyWithoutSalesTicketInput {
 input SalesItemCreateWithoutSalesTicketInput {
   id: ID
   noofpieces: Int!
-  buyPrice: Float
-  sellPrice: Float
-  wholesalePrice: Float
+  type: String!
+  priceSold: Float!
   profit: Float
+  refundCriteria: refundObjectCreateManyInput
   product: ProductCreateOneInput!
-  supplier: SupplierCreateOneInput
 }
 
 """An edge in a connection."""
@@ -2246,12 +2853,10 @@ enum SalesItemOrderByInput {
   createdAt_DESC
   noofpieces_ASC
   noofpieces_DESC
-  buyPrice_ASC
-  buyPrice_DESC
-  sellPrice_ASC
-  sellPrice_DESC
-  wholesalePrice_ASC
-  wholesalePrice_DESC
+  type_ASC
+  type_DESC
+  priceSold_ASC
+  priceSold_DESC
   profit_ASC
   profit_DESC
 }
@@ -2260,9 +2865,8 @@ type SalesItemPreviousValues {
   id: ID!
   createdAt: DateTime!
   noofpieces: Int!
-  buyPrice: Float
-  sellPrice: Float
-  wholesalePrice: Float
+  type: String!
+  priceSold: Float!
   profit: Float
 }
 
@@ -2359,72 +2963,68 @@ input SalesItemScalarWhereInput {
 
   """All values greater than or equal the given value."""
   noofpieces_gte: Int
-  buyPrice: Float
+  type: String
 
   """All values that are not equal to given value."""
-  buyPrice_not: Float
+  type_not: String
 
   """All values that are contained in given list."""
-  buyPrice_in: [Float!]
+  type_in: [String!]
 
   """All values that are not contained in given list."""
-  buyPrice_not_in: [Float!]
+  type_not_in: [String!]
 
   """All values less than the given value."""
-  buyPrice_lt: Float
+  type_lt: String
 
   """All values less than or equal the given value."""
-  buyPrice_lte: Float
+  type_lte: String
 
   """All values greater than the given value."""
-  buyPrice_gt: Float
+  type_gt: String
 
   """All values greater than or equal the given value."""
-  buyPrice_gte: Float
-  sellPrice: Float
+  type_gte: String
+
+  """All values containing the given string."""
+  type_contains: String
+
+  """All values not containing the given string."""
+  type_not_contains: String
+
+  """All values starting with the given string."""
+  type_starts_with: String
+
+  """All values not starting with the given string."""
+  type_not_starts_with: String
+
+  """All values ending with the given string."""
+  type_ends_with: String
+
+  """All values not ending with the given string."""
+  type_not_ends_with: String
+  priceSold: Float
 
   """All values that are not equal to given value."""
-  sellPrice_not: Float
+  priceSold_not: Float
 
   """All values that are contained in given list."""
-  sellPrice_in: [Float!]
+  priceSold_in: [Float!]
 
   """All values that are not contained in given list."""
-  sellPrice_not_in: [Float!]
+  priceSold_not_in: [Float!]
 
   """All values less than the given value."""
-  sellPrice_lt: Float
+  priceSold_lt: Float
 
   """All values less than or equal the given value."""
-  sellPrice_lte: Float
+  priceSold_lte: Float
 
   """All values greater than the given value."""
-  sellPrice_gt: Float
+  priceSold_gt: Float
 
   """All values greater than or equal the given value."""
-  sellPrice_gte: Float
-  wholesalePrice: Float
-
-  """All values that are not equal to given value."""
-  wholesalePrice_not: Float
-
-  """All values that are contained in given list."""
-  wholesalePrice_in: [Float!]
-
-  """All values that are not contained in given list."""
-  wholesalePrice_not_in: [Float!]
-
-  """All values less than the given value."""
-  wholesalePrice_lt: Float
-
-  """All values less than or equal the given value."""
-  wholesalePrice_lte: Float
-
-  """All values greater than the given value."""
-  wholesalePrice_gt: Float
-
-  """All values greater than or equal the given value."""
-  wholesalePrice_gte: Float
+  priceSold_gte: Float
   profit: Float
 
   """All values that are not equal to given value."""
@@ -2488,28 +3088,25 @@ input SalesItemSubscriptionWhereInput {
 
 input SalesItemUpdateInput {
   noofpieces: Int
-  buyPrice: Float
-  sellPrice: Float
-  wholesalePrice: Float
+  type: String
+  priceSold: Float
   profit: Float
+  refundCriteria: refundObjectUpdateManyInput
   product: ProductUpdateOneRequiredInput
-  supplier: SupplierUpdateOneInput
   salesTicket: SalesTicketUpdateOneRequiredWithoutSalesInput
 }
 
 input SalesItemUpdateManyDataInput {
   noofpieces: Int
-  buyPrice: Float
-  sellPrice: Float
-  wholesalePrice: Float
+  type: String
+  priceSold: Float
   profit: Float
 }
 
 input SalesItemUpdateManyMutationInput {
   noofpieces: Int
-  buyPrice: Float
-  sellPrice: Float
-  wholesalePrice: Float
+  type: String
+  priceSold: Float
   profit: Float
 }
 
@@ -2532,12 +3129,11 @@ input SalesItemUpdateManyWithWhereNestedInput {
 
 input SalesItemUpdateWithoutSalesTicketDataInput {
   noofpieces: Int
-  buyPrice: Float
-  sellPrice: Float
-  wholesalePrice: Float
+  type: String
+  priceSold: Float
   profit: Float
+  refundCriteria: refundObjectUpdateManyInput
   product: ProductUpdateOneRequiredInput
-  supplier: SupplierUpdateOneInput
 }
 
 input SalesItemUpdateWithWhereUniqueWithoutSalesTicketInput {
@@ -2644,72 +3240,68 @@ input SalesItemWhereInput {
 
   """All values greater than or equal the given value."""
   noofpieces_gte: Int
-  buyPrice: Float
+  type: String
 
   """All values that are not equal to given value."""
-  buyPrice_not: Float
+  type_not: String
 
   """All values that are contained in given list."""
-  buyPrice_in: [Float!]
+  type_in: [String!]
 
   """All values that are not contained in given list."""
-  buyPrice_not_in: [Float!]
+  type_not_in: [String!]
 
   """All values less than the given value."""
-  buyPrice_lt: Float
+  type_lt: String
 
   """All values less than or equal the given value."""
-  buyPrice_lte: Float
+  type_lte: String
 
   """All values greater than the given value."""
-  buyPrice_gt: Float
+  type_gt: String
 
   """All values greater than or equal the given value."""
-  buyPrice_gte: Float
-  sellPrice: Float
+  type_gte: String
+
+  """All values containing the given string."""
+  type_contains: String
+
+  """All values not containing the given string."""
+  type_not_contains: String
+
+  """All values starting with the given string."""
+  type_starts_with: String
+
+  """All values not starting with the given string."""
+  type_not_starts_with: String
+
+  """All values ending with the given string."""
+  type_ends_with: String
+
+  """All values not ending with the given string."""
+  type_not_ends_with: String
+  priceSold: Float
 
   """All values that are not equal to given value."""
-  sellPrice_not: Float
+  priceSold_not: Float
 
   """All values that are contained in given list."""
-  sellPrice_in: [Float!]
+  priceSold_in: [Float!]
 
   """All values that are not contained in given list."""
-  sellPrice_not_in: [Float!]
+  priceSold_not_in: [Float!]
 
   """All values less than the given value."""
-  sellPrice_lt: Float
+  priceSold_lt: Float
 
   """All values less than or equal the given value."""
-  sellPrice_lte: Float
+  priceSold_lte: Float
 
   """All values greater than the given value."""
-  sellPrice_gt: Float
+  priceSold_gt: Float
 
   """All values greater than or equal the given value."""
-  sellPrice_gte: Float
-  wholesalePrice: Float
-
-  """All values that are not equal to given value."""
-  wholesalePrice_not: Float
-
-  """All values that are contained in given list."""
-  wholesalePrice_in: [Float!]
-
-  """All values that are not contained in given list."""
-  wholesalePrice_not_in: [Float!]
-
-  """All values less than the given value."""
-  wholesalePrice_lt: Float
-
-  """All values less than or equal the given value."""
-  wholesalePrice_lte: Float
-
-  """All values greater than the given value."""
-  wholesalePrice_gt: Float
-
-  """All values greater than or equal the given value."""
-  wholesalePrice_gte: Float
+  priceSold_gte: Float
   profit: Float
 
   """All values that are not equal to given value."""
@@ -2732,8 +3324,10 @@ input SalesItemWhereInput {
 
   """All values greater than or equal the given value."""
   profit_gte: Float
+  refundCriteria_every: refundObjectWhereInput
+  refundCriteria_some: refundObjectWhereInput
+  refundCriteria_none: refundObjectWhereInput
   product: ProductWhereInput
-  supplier: SupplierWhereInput
   salesTicket: SalesTicketWhereInput
 }
 
@@ -2981,6 +3575,217 @@ input SalesTicketWhereUniqueInput {
   receipt: String
 }
 
+type Setting implements Node {
+  id: ID!
+  symbol: String!
+  expiryTime: Int!
+}
+
+"""A connection to a list of items."""
+type SettingConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [SettingEdge]!
+  aggregate: AggregateSetting!
+}
+
+input SettingCreateInput {
+  id: ID
+  symbol: String!
+  expiryTime: Int!
+}
+
+"""An edge in a connection."""
+type SettingEdge {
+  """The item at the end of the edge."""
+  node: Setting!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum SettingOrderByInput {
+  id_ASC
+  id_DESC
+  symbol_ASC
+  symbol_DESC
+  expiryTime_ASC
+  expiryTime_DESC
+}
+
+type SettingPreviousValues {
+  id: ID!
+  symbol: String!
+  expiryTime: Int!
+}
+
+type SettingSubscriptionPayload {
+  mutation: MutationType!
+  node: Setting
+  updatedFields: [String!]
+  previousValues: SettingPreviousValues
+}
+
+input SettingSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [SettingSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [SettingSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [SettingSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: SettingWhereInput
+}
+
+input SettingUpdateInput {
+  symbol: String
+  expiryTime: Int
+}
+
+input SettingUpdateManyMutationInput {
+  symbol: String
+  expiryTime: Int
+}
+
+input SettingWhereInput {
+  """Logical AND on all given filters."""
+  AND: [SettingWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [SettingWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [SettingWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  symbol: String
+
+  """All values that are not equal to given value."""
+  symbol_not: String
+
+  """All values that are contained in given list."""
+  symbol_in: [String!]
+
+  """All values that are not contained in given list."""
+  symbol_not_in: [String!]
+
+  """All values less than the given value."""
+  symbol_lt: String
+
+  """All values less than or equal the given value."""
+  symbol_lte: String
+
+  """All values greater than the given value."""
+  symbol_gt: String
+
+  """All values greater than or equal the given value."""
+  symbol_gte: String
+
+  """All values containing the given string."""
+  symbol_contains: String
+
+  """All values not containing the given string."""
+  symbol_not_contains: String
+
+  """All values starting with the given string."""
+  symbol_starts_with: String
+
+  """All values not starting with the given string."""
+  symbol_not_starts_with: String
+
+  """All values ending with the given string."""
+  symbol_ends_with: String
+
+  """All values not ending with the given string."""
+  symbol_not_ends_with: String
+  expiryTime: Int
+
+  """All values that are not equal to given value."""
+  expiryTime_not: Int
+
+  """All values that are contained in given list."""
+  expiryTime_in: [Int!]
+
+  """All values that are not contained in given list."""
+  expiryTime_not_in: [Int!]
+
+  """All values less than the given value."""
+  expiryTime_lt: Int
+
+  """All values less than or equal the given value."""
+  expiryTime_lte: Int
+
+  """All values greater than the given value."""
+  expiryTime_gt: Int
+
+  """All values greater than or equal the given value."""
+  expiryTime_gte: Int
+}
+
+input SettingWhereUniqueInput {
+  id: ID
+  symbol: String
+}
+
 type StockItem implements Node {
   id: ID!
   createdAt: DateTime!
@@ -2991,7 +3796,6 @@ type StockItem implements Node {
   wholesalePrice: Float!
   expiry: DateTime
   product: Product!
-  supplier: Supplier!
 }
 
 """A connection to a list of items."""
@@ -3006,6 +3810,7 @@ type StockItemConnection {
 
 input StockItemCreateInput {
   id: ID
+  createdAt: DateTime!
   badgeNumber: String
   noofpieces: Int!
   buyPrice: Float!
@@ -3013,7 +3818,6 @@ input StockItemCreateInput {
   wholesalePrice: Float!
   expiry: DateTime
   product: ProductCreateOneWithoutStockInput!
-  supplier: SupplierCreateOneInput!
 }
 
 input StockItemCreateManyWithoutProductInput {
@@ -3023,13 +3827,13 @@ input StockItemCreateManyWithoutProductInput {
 
 input StockItemCreateWithoutProductInput {
   id: ID
+  createdAt: DateTime!
   badgeNumber: String
   noofpieces: Int!
   buyPrice: Float!
   sellPrice: Float!
   wholesalePrice: Float!
   expiry: DateTime
-  supplier: SupplierCreateOneInput!
 }
 
 """An edge in a connection."""
@@ -3332,6 +4136,7 @@ input StockItemSubscriptionWhereInput {
 }
 
 input StockItemUpdateInput {
+  createdAt: DateTime
   badgeNumber: String
   noofpieces: Int
   buyPrice: Float
@@ -3339,10 +4144,10 @@ input StockItemUpdateInput {
   wholesalePrice: Float
   expiry: DateTime
   product: ProductUpdateOneRequiredWithoutStockInput
-  supplier: SupplierUpdateOneRequiredInput
 }
 
 input StockItemUpdateManyDataInput {
+  createdAt: DateTime
   badgeNumber: String
   noofpieces: Int
   buyPrice: Float
@@ -3352,6 +4157,7 @@ input StockItemUpdateManyDataInput {
 }
 
 input StockItemUpdateManyMutationInput {
+  createdAt: DateTime
   badgeNumber: String
   noofpieces: Int
   buyPrice: Float
@@ -3378,13 +4184,13 @@ input StockItemUpdateManyWithWhereNestedInput {
 }
 
 input StockItemUpdateWithoutProductDataInput {
+  createdAt: DateTime
   badgeNumber: String
   noofpieces: Int
   buyPrice: Float
   sellPrice: Float
   wholesalePrice: Float
   expiry: DateTime
-  supplier: SupplierUpdateOneRequiredInput
 }
 
 input StockItemUpdateWithWhereUniqueWithoutProductInput {
@@ -3620,7 +4426,6 @@ input StockItemWhereInput {
   """All values greater than or equal the given value."""
   expiry_gte: DateTime
   product: ProductWhereInput
-  supplier: SupplierWhereInput
 }
 
 input StockItemWhereUniqueInput {
@@ -3629,17 +4434,19 @@ input StockItemWhereUniqueInput {
 
 type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  supplier(where: SupplierSubscriptionWhereInput): SupplierSubscriptionPayload
   paidDetail(where: PaidDetailSubscriptionWhereInput): PaidDetailSubscriptionPayload
   stockItem(where: StockItemSubscriptionWhereInput): StockItemSubscriptionPayload
   salesItem(where: SalesItemSubscriptionWhereInput): SalesItemSubscriptionPayload
   salesTicket(where: SalesTicketSubscriptionWhereInput): SalesTicketSubscriptionPayload
   expense(where: ExpenseSubscriptionWhereInput): ExpenseSubscriptionPayload
-  notification(where: NotificationSubscriptionWhereInput): NotificationSubscriptionPayload
   barcode(where: BarcodeSubscriptionWhereInput): BarcodeSubscriptionPayload
+  expiry(where: ExpirySubscriptionWhereInput): ExpirySubscriptionPayload
+  setting(where: SettingSubscriptionWhereInput): SettingSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
   product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
+  refundObject(where: refundObjectSubscriptionWhereInput): refundObjectSubscriptionPayload
   lineItem(where: LineItemSubscriptionWhereInput): LineItemSubscriptionPayload
-  supplier(where: SupplierSubscriptionWhereInput): SupplierSubscriptionPayload
 }
 
 type Supplier implements Node {
@@ -3672,11 +4479,6 @@ input SupplierCreateInput {
   amounttotake: Float
   amounttopay: Float
   paid: PaidDetailCreateManyWithoutSupplierInput
-}
-
-input SupplierCreateOneInput {
-  create: SupplierCreateInput
-  connect: SupplierWhereUniqueInput
 }
 
 input SupplierCreateOneWithoutPaidInput {
@@ -3767,16 +4569,6 @@ input SupplierSubscriptionWhereInput {
   node: SupplierWhereInput
 }
 
-input SupplierUpdateDataInput {
-  name: String
-  email: String
-  phone: String
-  address: String
-  amounttotake: Float
-  amounttopay: Float
-  paid: PaidDetailUpdateManyWithoutSupplierInput
-}
-
 input SupplierUpdateInput {
   name: String
   email: String
@@ -3796,22 +4588,6 @@ input SupplierUpdateManyMutationInput {
   amounttopay: Float
 }
 
-input SupplierUpdateOneInput {
-  create: SupplierCreateInput
-  connect: SupplierWhereUniqueInput
-  disconnect: Boolean
-  delete: Boolean
-  update: SupplierUpdateDataInput
-  upsert: SupplierUpsertNestedInput
-}
-
-input SupplierUpdateOneRequiredInput {
-  create: SupplierCreateInput
-  connect: SupplierWhereUniqueInput
-  update: SupplierUpdateDataInput
-  upsert: SupplierUpsertNestedInput
-}
-
 input SupplierUpdateOneRequiredWithoutPaidInput {
   create: SupplierCreateWithoutPaidInput
   connect: SupplierWhereUniqueInput
@@ -3826,11 +4602,6 @@ input SupplierUpdateWithoutPaidDataInput {
   address: String
   amounttotake: Float
   amounttopay: Float
-}
-
-input SupplierUpsertNestedInput {
-  update: SupplierUpdateDataInput!
-  create: SupplierCreateInput!
 }
 
 input SupplierUpsertWithoutPaidInput {

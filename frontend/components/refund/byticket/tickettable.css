@@ -1,0 +1,8 @@
+.buttonstyle{
+    display:flex;
+    justify-content: center;
+}
+
+.buttonstyle>*{
+    margin-left:10px !important;
+}
