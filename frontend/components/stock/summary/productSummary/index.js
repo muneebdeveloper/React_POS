@@ -14,6 +14,7 @@ import CancelIcon from '@material-ui/icons/cancel';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
+import SnackBar from '../../../misc/SnackBar';
 import ErrorDialog from '../../../misc/ErrorDialog';
 import ProductSummaryTable from './ProductSummaryTable';
 import ProductNameDialog from './ProductNameDialog';
@@ -61,6 +62,8 @@ class ProductSummaryMain extends Component{
         editDialog:false,
         removeDialog:false,
         removeID:'',
+        snackbar:false,
+        snackbarMessage:"",
         editDialogData:{},
         errorDialog:false,
         errorMessage:'',
@@ -138,6 +141,52 @@ class ProductSummaryMain extends Component{
 
     }
 
+    productRemoveHandler = async (client)=>{
+        this.setState({
+            productRemoveLoading:true
+        })
+        try{
+            await client.mutate({
+                mutation:PRODUCT_REMOVE_MUTATION,
+                variables:{
+                    barcode:this.state.barcode
+                }
+            });
+            this.setState({
+                snackbar:true,
+                snackbarMessage:"Product is successfully removed"
+            });
+            this.InititalState();
+        }catch(err){
+            this.setState({
+                errorDialog:true,
+                errorMessage:"Product can not be deleted",
+                productRemoveDialog:false,
+                productRemoveLoading:false
+            })
+        }
+    }
+
+    InititalState = ()=>{
+
+        this.setState({
+            barcode:'',
+            productname:'',
+            productNameDialog:false,
+            editDialog:false,
+            removeDialog:false,
+            removeID:'',
+            editDialogData:{},
+            errorDialog:false,
+            errorMessage:'',
+            productRemoveDialog:false,
+            productRemoveLoading:false,
+            stockList:[],
+            barcodeSubmitLoadingBar:false
+        });    
+
+    }
+
     render(){
         const {
                 barcodeSubmitLoadingBar,
@@ -145,6 +194,8 @@ class ProductSummaryMain extends Component{
                 barcode,
                 productNameDialog,
                 productID,
+                snackbar,
+                snackbarMessage,
                 errorDialog,
                 errorMessage,
                 editDialog,
@@ -207,12 +258,12 @@ class ProductSummaryMain extends Component{
                                     <EditIcon className={styles.edit} />
                                 </IconButton>
 
-                                {/* <IconButton 
+                                <IconButton 
                                     size="small"
                                     onClick={()=>this.setState({productRemoveDialog:true})}
                                 >
                                     <DeleteIcon className={styles.delete} />
-                                </IconButton> */}
+                                </IconButton>
                             </h2>        
                         )}           
                 </div>
@@ -305,7 +356,7 @@ class ProductSummaryMain extends Component{
                             <Button 
                                 variant="contained"
                                 size="large"
-                                onClick={()=>dialogSubmitHandler(client,props.id,props.dialogClose,setLoading)}
+                                onClick={()=>this.productRemoveHandler(client)}
                             >
                                 yes
                             </Button>
@@ -371,6 +422,10 @@ class ProductSummaryMain extends Component{
                     {errorMessage}
                 </ErrorDialog>
 
+            {/* SnackBar Notifier */}
+                <SnackBar snackbarValue={snackbar} snackbarClose={()=>this.setState({snackbar:false})}>
+                    {snackbarMessage}
+                </SnackBar>
             </>
                         )
                     }
