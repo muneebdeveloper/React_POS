@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Badge from '@material-ui/core/Badge';
 
 import BarcodeNotify from './BarcodeNotify';
+import ExpiryNotify from './ExpiryNotify';
 
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
@@ -127,12 +128,8 @@ class Header extends Component{
                           if(data.currentUser){
                           return(
                             <>
-                              <IconButton  color="inherit" aria-label="menu" className={styles.marginRightButton}>
-                                  <Badge badgeContent={0} color="primary">
-                                    <NotificationsIcon />
-                                  </Badge>
-                              </IconButton>
-
+                             
+                             <ExpiryNotify />
                              <BarcodeNotify /> 
                         
                               <Typography variant="button">Hi, {data.currentUser.username}</Typography>

@@ -18,8 +18,10 @@ type Query{
     suppliers(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Supplier]!
     paidDetails(where: PaidDetailWhereInput, orderBy: PaidDetailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PaidDetail]!
     barcodesConnection(where: BarcodeWhereInput, orderBy: BarcodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BarcodeConnection!
+    expiriesConnection(where: ExpiryWhereInput, orderBy: ExpiryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExpiryConnection!
     AllBarcodesData:[BarcodeData]!
-    checkExpiry:Message
+    AllExpiriesData:[ExpiryData]!
+    checkExpiry(days:Int!):Message
 }
 
 type Mutation{
@@ -51,11 +53,12 @@ type Mutation{
     deleteSalesItem(where: SalesItemWhereUniqueInput!): SalesItem
     createSalesTicket: SalesTicket!
     deleteBarcode(where: BarcodeWhereUniqueInput!): Barcode
-     
+    deleteExpiry(where: ExpiryWhereUniqueInput!): Expiry
 }
 
 type Subscription{
     barcode(where: BarcodeSubscriptionWhereInput): BarcodeSubscriptionPayload
+    expiry(where: ExpirySubscriptionWhereInput): ExpirySubscriptionPayload
 }
 
 input SignInUserInput {
@@ -92,3 +95,10 @@ type BarcodeData{
     wholesalePrice:Float
     barcode:String!
 }
+
+type ExpiryData{
+    expiryID:String!
+    name:String!
+    barcode:String!
+    description:String!
+} 

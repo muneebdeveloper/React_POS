@@ -5,6 +5,11 @@ const Subscription = {
         subscribe(parent,args,ctx,info){
             return ctx.db.subscription.barcode({where:{...args.where}},info);
         }
+    },
+    expiry:{
+        subscribe(parent,args,ctx,info){
+            return ctx.db.subscription.expiry({where:{...args.where}},info);
+        }
     }
 }
 

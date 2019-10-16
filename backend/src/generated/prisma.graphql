@@ -1,5 +1,5 @@
 # source: http://192.168.99.100:4466
-# timestamp: Tue Oct 15 2019 17:21:24 GMT+0500 (Pakistan Standard Time)
+# timestamp: Tue Oct 15 2019 18:51:55 GMT+0500 (Pakistan Standard Time)
 
 type AggregateBarcode {
   count: Int!
@@ -38,10 +38,6 @@ type AggregateSalesItem {
 }
 
 type AggregateSalesTicket {
-  count: Int!
-}
-
-type AggregateSetting {
   count: Int!
 }
 
@@ -914,6 +910,7 @@ input ExpiryWhereInput {
 
 input ExpiryWhereUniqueInput {
   id: ID
+  productID: String
 }
 
 """Raw JSON value"""
@@ -1138,7 +1135,6 @@ type Mutation {
   createExpense(data: ExpenseCreateInput!): Expense!
   createBarcode(data: BarcodeCreateInput!): Barcode!
   createExpiry(data: ExpiryCreateInput!): Expiry!
-  createSetting(data: SettingCreateInput!): Setting!
   createCategory(data: CategoryCreateInput!): Category!
   createProduct(data: ProductCreateInput!): Product!
   createrefundObject(data: refundObjectCreateInput!): refundObject!
@@ -1152,7 +1148,6 @@ type Mutation {
   updateExpense(data: ExpenseUpdateInput!, where: ExpenseWhereUniqueInput!): Expense
   updateBarcode(data: BarcodeUpdateInput!, where: BarcodeWhereUniqueInput!): Barcode
   updateExpiry(data: ExpiryUpdateInput!, where: ExpiryWhereUniqueInput!): Expiry
-  updateSetting(data: SettingUpdateInput!, where: SettingWhereUniqueInput!): Setting
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
   updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
   updaterefundObject(data: refundObjectUpdateInput!, where: refundObjectWhereUniqueInput!): refundObject
@@ -1166,7 +1161,6 @@ type Mutation {
   deleteExpense(where: ExpenseWhereUniqueInput!): Expense
   deleteBarcode(where: BarcodeWhereUniqueInput!): Barcode
   deleteExpiry(where: ExpiryWhereUniqueInput!): Expiry
-  deleteSetting(where: SettingWhereUniqueInput!): Setting
   deleteCategory(where: CategoryWhereUniqueInput!): Category
   deleteProduct(where: ProductWhereUniqueInput!): Product
   deleterefundObject(where: refundObjectWhereUniqueInput!): refundObject
@@ -1180,7 +1174,6 @@ type Mutation {
   upsertExpense(where: ExpenseWhereUniqueInput!, create: ExpenseCreateInput!, update: ExpenseUpdateInput!): Expense!
   upsertBarcode(where: BarcodeWhereUniqueInput!, create: BarcodeCreateInput!, update: BarcodeUpdateInput!): Barcode!
   upsertExpiry(where: ExpiryWhereUniqueInput!, create: ExpiryCreateInput!, update: ExpiryUpdateInput!): Expiry!
-  upsertSetting(where: SettingWhereUniqueInput!, create: SettingCreateInput!, update: SettingUpdateInput!): Setting!
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
   upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
   upsertrefundObject(where: refundObjectWhereUniqueInput!, create: refundObjectCreateInput!, update: refundObjectUpdateInput!): refundObject!
@@ -1194,7 +1187,6 @@ type Mutation {
   updateManyExpenses(data: ExpenseUpdateManyMutationInput!, where: ExpenseWhereInput): BatchPayload!
   updateManyBarcodes(data: BarcodeUpdateManyMutationInput!, where: BarcodeWhereInput): BatchPayload!
   updateManyExpiries(data: ExpiryUpdateManyMutationInput!, where: ExpiryWhereInput): BatchPayload!
-  updateManySettings(data: SettingUpdateManyMutationInput!, where: SettingWhereInput): BatchPayload!
   updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
   updateManyProducts(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): BatchPayload!
   updateManyRefundObjects(data: refundObjectUpdateManyMutationInput!, where: refundObjectWhereInput): BatchPayload!
@@ -1208,7 +1200,6 @@ type Mutation {
   deleteManyExpenses(where: ExpenseWhereInput): BatchPayload!
   deleteManyBarcodes(where: BarcodeWhereInput): BatchPayload!
   deleteManyExpiries(where: ExpiryWhereInput): BatchPayload!
-  deleteManySettings(where: SettingWhereInput): BatchPayload!
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
   deleteManyProducts(where: ProductWhereInput): BatchPayload!
   deleteManyRefundObjects(where: refundObjectWhereInput): BatchPayload!
@@ -2028,7 +2019,6 @@ type Query {
   expenses(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expense]!
   barcodes(where: BarcodeWhereInput, orderBy: BarcodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Barcode]!
   expiries(where: ExpiryWhereInput, orderBy: ExpiryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expiry]!
-  settings(where: SettingWhereInput, orderBy: SettingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Setting]!
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
   products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
   refundObjects(where: refundObjectWhereInput, orderBy: refundObjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [refundObject]!
@@ -2042,7 +2032,6 @@ type Query {
   expense(where: ExpenseWhereUniqueInput!): Expense
   barcode(where: BarcodeWhereUniqueInput!): Barcode
   expiry(where: ExpiryWhereUniqueInput!): Expiry
-  setting(where: SettingWhereUniqueInput!): Setting
   category(where: CategoryWhereUniqueInput!): Category
   product(where: ProductWhereUniqueInput!): Product
   refundObject(where: refundObjectWhereUniqueInput!): refundObject
@@ -2056,7 +2045,6 @@ type Query {
   expensesConnection(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExpenseConnection!
   barcodesConnection(where: BarcodeWhereInput, orderBy: BarcodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BarcodeConnection!
   expiriesConnection(where: ExpiryWhereInput, orderBy: ExpiryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExpiryConnection!
-  settingsConnection(where: SettingWhereInput, orderBy: SettingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SettingConnection!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
   productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
   refundObjectsConnection(where: refundObjectWhereInput, orderBy: refundObjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): refundObjectConnection!
@@ -3575,217 +3563,6 @@ input SalesTicketWhereUniqueInput {
   receipt: String
 }
 
-type Setting implements Node {
-  id: ID!
-  symbol: String!
-  expiryTime: Int!
-}
-
-"""A connection to a list of items."""
-type SettingConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [SettingEdge]!
-  aggregate: AggregateSetting!
-}
-
-input SettingCreateInput {
-  id: ID
-  symbol: String!
-  expiryTime: Int!
-}
-
-"""An edge in a connection."""
-type SettingEdge {
-  """The item at the end of the edge."""
-  node: Setting!
-
-  """A cursor for use in pagination."""
-  cursor: String!
-}
-
-enum SettingOrderByInput {
-  id_ASC
-  id_DESC
-  symbol_ASC
-  symbol_DESC
-  expiryTime_ASC
-  expiryTime_DESC
-}
-
-type SettingPreviousValues {
-  id: ID!
-  symbol: String!
-  expiryTime: Int!
-}
-
-type SettingSubscriptionPayload {
-  mutation: MutationType!
-  node: Setting
-  updatedFields: [String!]
-  previousValues: SettingPreviousValues
-}
-
-input SettingSubscriptionWhereInput {
-  """Logical AND on all given filters."""
-  AND: [SettingSubscriptionWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [SettingSubscriptionWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [SettingSubscriptionWhereInput!]
-
-  """The subscription event gets dispatched when it's listed in mutation_in"""
-  mutation_in: [MutationType!]
-
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: SettingWhereInput
-}
-
-input SettingUpdateInput {
-  symbol: String
-  expiryTime: Int
-}
-
-input SettingUpdateManyMutationInput {
-  symbol: String
-  expiryTime: Int
-}
-
-input SettingWhereInput {
-  """Logical AND on all given filters."""
-  AND: [SettingWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [SettingWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [SettingWhereInput!]
-  id: ID
-
-  """All values that are not equal to given value."""
-  id_not: ID
-
-  """All values that are contained in given list."""
-  id_in: [ID!]
-
-  """All values that are not contained in given list."""
-  id_not_in: [ID!]
-
-  """All values less than the given value."""
-  id_lt: ID
-
-  """All values less than or equal the given value."""
-  id_lte: ID
-
-  """All values greater than the given value."""
-  id_gt: ID
-
-  """All values greater than or equal the given value."""
-  id_gte: ID
-
-  """All values containing the given string."""
-  id_contains: ID
-
-  """All values not containing the given string."""
-  id_not_contains: ID
-
-  """All values starting with the given string."""
-  id_starts_with: ID
-
-  """All values not starting with the given string."""
-  id_not_starts_with: ID
-
-  """All values ending with the given string."""
-  id_ends_with: ID
-
-  """All values not ending with the given string."""
-  id_not_ends_with: ID
-  symbol: String
-
-  """All values that are not equal to given value."""
-  symbol_not: String
-
-  """All values that are contained in given list."""
-  symbol_in: [String!]
-
-  """All values that are not contained in given list."""
-  symbol_not_in: [String!]
-
-  """All values less than the given value."""
-  symbol_lt: String
-
-  """All values less than or equal the given value."""
-  symbol_lte: String
-
-  """All values greater than the given value."""
-  symbol_gt: String
-
-  """All values greater than or equal the given value."""
-  symbol_gte: String
-
-  """All values containing the given string."""
-  symbol_contains: String
-
-  """All values not containing the given string."""
-  symbol_not_contains: String
-
-  """All values starting with the given string."""
-  symbol_starts_with: String
-
-  """All values not starting with the given string."""
-  symbol_not_starts_with: String
-
-  """All values ending with the given string."""
-  symbol_ends_with: String
-
-  """All values not ending with the given string."""
-  symbol_not_ends_with: String
-  expiryTime: Int
-
-  """All values that are not equal to given value."""
-  expiryTime_not: Int
-
-  """All values that are contained in given list."""
-  expiryTime_in: [Int!]
-
-  """All values that are not contained in given list."""
-  expiryTime_not_in: [Int!]
-
-  """All values less than the given value."""
-  expiryTime_lt: Int
-
-  """All values less than or equal the given value."""
-  expiryTime_lte: Int
-
-  """All values greater than the given value."""
-  expiryTime_gt: Int
-
-  """All values greater than or equal the given value."""
-  expiryTime_gte: Int
-}
-
-input SettingWhereUniqueInput {
-  id: ID
-  symbol: String
-}
-
 type StockItem implements Node {
   id: ID!
   createdAt: DateTime!
@@ -4442,7 +4219,6 @@ type Subscription {
   expense(where: ExpenseSubscriptionWhereInput): ExpenseSubscriptionPayload
   barcode(where: BarcodeSubscriptionWhereInput): BarcodeSubscriptionPayload
   expiry(where: ExpirySubscriptionWhereInput): ExpirySubscriptionPayload
-  setting(where: SettingSubscriptionWhereInput): SettingSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
   product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
   refundObject(where: refundObjectSubscriptionWhereInput): refundObjectSubscriptionPayload

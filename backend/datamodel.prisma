@@ -101,11 +101,5 @@ type Barcode{
 type Expiry{
   id: ID! @id
   description:String!
-  productID:String!
-}
-
-type Setting{
-  id:ID! @id
-  symbol:String! @unique
-  expiryTime : Int!
+  productID:String! @unique
 }

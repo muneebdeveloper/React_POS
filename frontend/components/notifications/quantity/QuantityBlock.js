@@ -2,22 +2,26 @@ import React from 'react';
 
 import styles from '../../main.css';
 
+
 import Intro from '../../misc/Intro';
 import Block from '../../misc/Block';
 
 
-const ExpiryAdd = ()=>{
+const QuantityBlock = ()=>{
+
     return(
         <div className="gutterbottom">
-            <Intro>Add</Intro>
+            <Intro>
+                Product Quantity Notifications
+            </Intro>
             <div className={styles.boxFlex}>
-                <Block LinkTo="/add_expiry">
+                <Block LinkTo="/quantity_notifications">
                     <span>Icon</span>
-                    Add expiry
+                    Quantity Details
                 </Block>
             </div>
         </div>
-    );
+    )
 }
 
-export default ExpiryAdd;
+export default QuantityBlock;

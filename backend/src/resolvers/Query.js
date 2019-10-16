@@ -74,8 +74,8 @@ const Query = {
     },
     async checkExpiry(parent,args,ctx,info){
 
-        // let days = await ctx.db.query.setting({where:{symbol:"main"}},`{expiryTime}`);
-        let days = 50;
+        
+        let days = args.days;
 // 
         let products = await ctx.db.query.products(undefined,`{id name stock{expiry}}`);
 
@@ -84,11 +84,15 @@ const Query = {
         for(let i in products){
             for(let j in products[i].stock){
                 if(products[i].stock[j].expiry){
+                    let res = await ctx.db.query.expiry({where:{productID:products[i].id}},`{id}`);
+                    if(res){
+                        break;
+                    }
                     let expiryDate = new Date(products[i].stock[j].expiry);
-                    if(getNumberOfDays(expiryDate,currentDate)<0 ){
+                    if(getNumberOfDays(expiryDate,currentDate)<=0 ){
                         ctx.db.mutation.createExpiry({data:{productID:products[i].id,description:"Product is expired"}},`{id}`);
                         break;
-                    }else if(getNumberOfDays(expiryDate,currentDate)<days ){
+                    }else if(getNumberOfDays(expiryDate,currentDate)<=days ){
                         ctx.db.mutation.createExpiry({data:{productID:products[i].id,description:"Product is going to expire"}},`{id}`);
                         break;
                     }
@@ -99,6 +103,26 @@ const Query = {
         }
         return {message:"All expiries checked successfully"};
         
+    },
+    async AllExpiriesData(parent,args,ctx,info){
+        let expiriesInfoArray=[];
+
+        let expiries = await ctx.db.query.expiries();
+
+        for(let i in expiries){
+            
+            let product = await ctx.db.query.product({where:{id:expiries[i].productID}},`{name barcode}`);
+            
+            if(product){
+                let {name,barcode} = product;
+                expiriesInfoArray = [...expiriesInfoArray,{expiryID:expiries[i].id,name,barcode,description:expiries[i].description}];
+            }else{
+                ctx.db.mutation.deleteExpiry({where:{id:expiries[i].id}},`{id}`);
+            }
+            
+        }
+
+        return [...expiriesInfoArray];
     },
     product:forwardTo('db'),
     products:forwardTo('db'),
@@ -114,7 +138,8 @@ const Query = {
     salesItems:forwardTo('db'),
     expense:forwardTo('db'),
     expenses:forwardTo('db'),
-    barcodesConnection:forwardTo('db')
+    barcodesConnection:forwardTo('db'),
+    expiriesConnection:forwardTo('db')
 }
 
 module.exports = Query;
