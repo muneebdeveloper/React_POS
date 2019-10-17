@@ -9,6 +9,7 @@ const Mutation = {
     createProduct:forwardTo('db'),
     updateProduct:forwardTo('db'),
     updateStockItem:forwardTo('db'),
+    updateLineItem:forwardTo('db'),
     createSupplier:forwardTo('db'),
     updateSupplier:forwardTo('db'),
     deleteSupplier:forwardTo('db'),
@@ -22,6 +23,7 @@ const Mutation = {
     deleteBarcode:forwardTo('db'),
     deleteExpiry:forwardTo('db'),
     deleteProduct:forwardTo('db'),
+    deleteLineItem:forwardTo('db'),
     async signin(parent,args,ctx,info){
         let {username,password} = args.data;
         username = username.toLowerCase();
