@@ -8,7 +8,7 @@ const Block = (props)=>{
         <Link href={props.LinkTo}>
         <a className={styles.blockahref}>
             <div className={styles.block}>
-                {props.children}
+                <h3>{props.children}</h3>
             </div>
         </a>
         </Link>

@@ -3,7 +3,7 @@ import Meta from './Meta';
 import Router from 'next/router';
 import Header from './Header/Header';
 import NProgress from 'nprogress';
-
+import PleaseSignIn from './PleaseSignIn';
 Router.onRouteChangeStart = ()=>{
   NProgress.start();
 }
@@ -31,7 +31,9 @@ class Page extends Component{
                 <Meta />
                 <div className="container">
                     <Header />
+                    <PleaseSignIn>
                         {this.props.children}
+                    </PleaseSignIn>
                 </div>
             </React.Fragment>
         );

@@ -14,8 +14,7 @@ const AddStock = ()=>{
 
         <div className={styles.boxFlex}>
             <Block LinkTo="/productadd">
-                <span>icon</span>
-                Add inventory
+                Add Inventory
             </Block>
         </div>
     </div>

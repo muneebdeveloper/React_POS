@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {ApolloConsumer,Query,Mutation} from 'react-apollo';
 import gql from 'graphql-tag';
+import Router from 'next/router';
 
 import ErrorDialog from '../../../misc/ErrorDialog';
 import SnackBar from '../../../misc/SnackBar';
@@ -199,7 +200,8 @@ class ProductAddMain extends Component{
         supplier_previous_amount:0,
         submitStockDialogOpen:false,
         submitDisabled:true,
-        submitStockLoading:false
+        submitStockLoading:false,
+        addMoreInventoryDialog:false
     }
 
    
@@ -405,7 +407,7 @@ class ProductAddMain extends Component{
             productDetail:[],
             supplier_id:'',
             supplier_name:'',
-            supplierDialog:true,
+            addMoreInventoryDialog:true,
             submitDisabled:true
         })
         }
@@ -419,6 +421,53 @@ class ProductAddMain extends Component{
         }
     }
 
+    stateInitial = ()=>{
+        this.setState(
+            {
+                productID:'',
+                productname:'',
+                barcode:'',
+                badge:'',
+                buyprice:'',
+                sellprice:'',
+                wholesaleprice:'',
+                noofpieces:'',
+                supplier_id:'',
+                supplier_name:'',
+                expiry:'',
+                productDetail:[],
+                loadingBar:false,
+                supplierDialog:true,
+                productCreateDialogOpen:false,
+                errorDialogOpen:false,
+                errorMessage:'',
+                snackbarMessage:'',
+                snackbarOpen:false,
+                dialogEditOpen:false,
+                dialogRemoveOpen:false,
+                stockitem_edit_id:'',
+                stockitem_edit_index:'',
+                editDialogLoading:false,
+                editbadge:'',
+                editbuyprice:'',
+                editsellprice:'',
+                editwholesaleprice:'',
+                editnoofpieces:'',
+                editexpiry:'',
+                totalBuyPrice:0,
+                totalSellPrice:0,
+                totalWholeSalePrice:0,
+                totalNoOfPieces:0,
+                supplier_description:'',
+                supplier_amountpaid:'',
+                supplier_previous_amount:0,
+                submitStockDialogOpen:false,
+                submitDisabled:true,
+                submitStockLoading:false,
+                addMoreInventoryDialog:false
+            }
+        );
+    }
 
     render(){
         const { barcode,
@@ -459,7 +508,8 @@ class ProductAddMain extends Component{
                 supplier_amountpaid,
                 submitStockDialogOpen,
                 submitDisabled,
-                submitStockLoading
+                submitStockLoading,
+                addMoreInventoryDialog
               } = this.state;
               let dateFor = new Date();
         return(
@@ -1006,6 +1056,33 @@ class ProductAddMain extends Component{
                     }
                 }
             </ApolloConsumer>
+
+            <Dialog open={addMoreInventoryDialog} onClose={()=>this.setState({addMoreInventoryDialog:false})}>
+
+                <div style={{padding:"16px 24px"}}>
+                    <h2>Do you want to add more inventory?</h2>
+                </div>
+
+                <DialogActions>
+                    <Button 
+                                                    variant="contained"
+                                                    size="large"
+                                                    onClick={()=>Router.push('/')}
+                                                    className={styles2.deleteButton}
+                                                >
+                                                    No
+                                                </Button>
+
+                                                <Button 
+                                                    variant="contained"
+                                                    size="large"
+                                                    onClick={()=>this.stateInitial()}
+                                                >
+                                                    yes
+                                                </Button>
+
+                                             </DialogActions>
+            </Dialog>
             </>
             );
     }

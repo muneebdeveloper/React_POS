@@ -103,3 +103,15 @@ type Expiry{
   description:String!
   productID:String! @unique
 }
+
+type Quantity{
+  id: ID! @id
+  productID: String! @unique
+}
+
+type Settings{
+  id: ID! @id
+  name: String! @unique
+  quantityDays: Int!
+  expiryDays: Int!
+}

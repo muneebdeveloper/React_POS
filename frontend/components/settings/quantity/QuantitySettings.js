@@ -7,20 +7,21 @@ import Intro from '../../misc/Intro';
 import Block from '../../misc/Block';
 
 
-const QuantityBlock = ()=>{
+const QuantitySettings = ()=>{
 
     return(
         <div className="gutterbottom">
             <Intro>
-                Product Quantity Notifications
+                Quantity Settings
             </Intro>
             <div className={styles.boxFlex}>
-                <Block LinkTo="/quantity_notifications">
-                    Quantity Notifications
+                <Block LinkTo="/quantity_settings">
+                    <span>Icon</span>
+                    Quantity Settings
                 </Block>
             </div>
         </div>
     )
 }
 
-export default QuantityBlock;
+export default QuantitySettings;

@@ -16,8 +16,7 @@ const ExpiryBlock = ()=>{
             </Intro>
             <div className={styles.boxFlex}>
                 <Block LinkTo="/expiry_notifications">
-                    <span>Icon</span>
-                    Expiry Details
+                    Expiry Notifications
                 </Block>
             </div>
         </div>

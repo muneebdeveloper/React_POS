@@ -18,18 +18,15 @@ class DefineStock extends Component{
                 <div className={styles.boxFlex}>
        
                     <Block LinkTo="/lineitem">
-                        <span>icon</span>
                         LineItem
                      </Block>
                         
                      <Block LinkTo="/category">
-                        <span>icon</span>
-                        LineItem
+                        Category
                     </Block>
 
                      <Block LinkTo="/product">
-                        <span>icon</span>
-                        LineItem
+                        Product
                     </Block>
                 </div>
            

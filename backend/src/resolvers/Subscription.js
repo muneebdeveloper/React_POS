@@ -10,6 +10,11 @@ const Subscription = {
         subscribe(parent,args,ctx,info){
             return ctx.db.subscription.expiry({where:{...args.where}},info);
         }
+    },
+    quantity:{
+        subscribe(parent,args,ctx,info){
+            return ctx.db.subscription.quantity({where:{...args.where}},info);
+        }
     }
 }
 

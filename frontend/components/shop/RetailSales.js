@@ -5,7 +5,7 @@ import ReactToPrint from 'react-to-print';
 
 import Search from './Search';
 import Ticket from './Ticket';
-
+import CurrentUser from '../CurrentUser';
 
 import Intro from '../misc/Intro';
 import SnackBar from '../misc/SnackBar';
@@ -134,9 +134,20 @@ class RetailSales extends Component{
         });
     }
 
-    barcodeSubmitForSellPrice = (client)=>async (e)=>{
+    searchHandler=async (client,barcode)=>{
+        await this.setState({
+            barcode,
+            searchDialogOpen:false
+        });
+        
+        this.barcodeSubmitForSellPrice(client)();
+    }
 
-        e.preventDefault();
+    barcodeSubmitForSellPrice = (client)=>async (e)=>{
+        if(e){
+            e.preventDefault();
+        }
+        console.log(this.state.barcode);
         this.setState({
             barcodeSubmitLoading:true
         });
@@ -332,23 +343,34 @@ class RetailSales extends Component{
             <Intro>
                 {sale_type==='retailsale'?"Retail Sales":"WholeSale"}
             </Intro>
-            <div className={styles.saleSelectDivStyles}>
-                <h3 style={{color:"#423c3c",marginRight:"24px"}}>Select your Sale Type:</h3>
-                <FormControl
-                    className={styles.saleSelectStyles}
-                    disabled={receipt.length>0?true:false}
-                >
-                    <InputLabel>Select Sale</InputLabel>
-                    <Select
-                        value={sale_type}
-                        name="sale_type"
-                        onChange={this.inputChangeHandler}
-                    >
-                        <MenuItem value="retailsale">Retail Sales</MenuItem>
-                        <MenuItem value="wholesale">WholeSale</MenuItem>
-                    </Select>
-                </FormControl>
-            </div>
+            <CurrentUser>
+                {
+                    ({data})=>{
+                        if(data.currentUser && data.currentUser.username=="admin")
+                        return(
+                            <div className={styles.saleSelectDivStyles}>
+                                <h3 style={{color:"#423c3c",marginRight:"24px"}}>Select your Sale Type:</h3>
+                                <FormControl
+                                    className={styles.saleSelectStyles}
+                                    disabled={receipt.length>0?true:false}
+                                >
+                                    <InputLabel>Select Sale</InputLabel>
+                                    <Select
+                                        value={sale_type}
+                                        name="sale_type"
+                                        onChange={this.inputChangeHandler}
+                                    >
+                                        <MenuItem value="retailsale">Retail Sales</MenuItem>
+                                        <MenuItem value="wholesale">WholeSale</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </div>
+                        );
+                        return null;
+                    }
+                }
+            </CurrentUser>
+            
             <div className={`gutterbottom ${styles.maintoolbar}`}>
             <ApolloConsumer>
                 {
@@ -390,7 +412,10 @@ class RetailSales extends Component{
                     variant="contained"
                     onClick={()=>this.setState({searchDialogOpen:true})}
                     >
-                        <SearchIcon className={styles.marginRight} />
+                        <SearchIcon 
+                            className={styles.marginRight}
+                           
+                         />
                         Search Product
                     </Button>
                     {/* <Button
@@ -477,17 +502,31 @@ class RetailSales extends Component{
                     <h2>{this.state.subTotal()}</h2>
                 </div>
 
-                <div style={{marginRight:"100px",marginLeft:"100px"}} className={styles.aligncenter}>
-                    <h1 style={{color:"red"}}>Discount</h1>
-                    <input 
-                        type="number"
-                        name="discount"
-                        value={discount}
-                        disabled={receipt.length<=0}
-                        onChange={this.inputChangeHandler}
-                        style={{width:"130px",fontSize:"25px",textAlign:"center"}} 
-                    />
-                </div>
+                <CurrentUser>
+                    {
+                        ({data})=>{
+                            if(data.currentUser && data.currentUser.username=="admin"){
+                                return(
+                                    <div style={{marginRight:"100px",marginLeft:"100px"}} className={styles.aligncenter}>
+                                    <h1 style={{color:"red"}}>Discount</h1>
+                                    <input 
+                                        type="number"
+                                        name="discount"
+                                        value={discount}
+                                        disabled={receipt.length<=0}
+                                        onChange={this.inputChangeHandler}
+                                        style={{width:"130px",fontSize:"25px",textAlign:"center"}} 
+                                    />
+                                </div>                                    
+                                );
+                            }
+                            return (
+                                <div style={{marginRight:"100px",marginLeft:"100px"}} className={styles.aligncenter}></div>
+                            );
+                        }
+                    }
+                </CurrentUser>
+               
 
                 <div className={styles.aligncenter}>
                     <h1 >Total</h1>
@@ -590,8 +629,16 @@ class RetailSales extends Component{
                     </div>
 
                     <DialogContent>
-
-                       <Search />
+                    <ApolloConsumer>
+                        {
+                            (client)=>{
+                                return(
+                                    <Search  searchHandler={(barcode)=>{
+                                        this.searchHandler(client,barcode);}} />
+                                )
+                            }
+                        }
+                    </ApolloConsumer>
 
                     </DialogContent>
 

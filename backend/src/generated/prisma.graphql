@@ -1,5 +1,5 @@
 # source: http://192.168.99.100:4466
-# timestamp: Tue Oct 15 2019 18:51:55 GMT+0500 (Pakistan Standard Time)
+# timestamp: Sat Oct 19 2019 20:02:07 GMT+0500 (Pakistan Standard Time)
 
 type AggregateBarcode {
   count: Int!
@@ -29,6 +29,10 @@ type AggregateProduct {
   count: Int!
 }
 
+type AggregateQuantity {
+  count: Int!
+}
+
 type AggregaterefundObject {
   count: Int!
 }
@@ -38,6 +42,10 @@ type AggregateSalesItem {
 }
 
 type AggregateSalesTicket {
+  count: Int!
+}
+
+type AggregateSettings {
   count: Int!
 }
 
@@ -1135,6 +1143,8 @@ type Mutation {
   createExpense(data: ExpenseCreateInput!): Expense!
   createBarcode(data: BarcodeCreateInput!): Barcode!
   createExpiry(data: ExpiryCreateInput!): Expiry!
+  createQuantity(data: QuantityCreateInput!): Quantity!
+  createSettings(data: SettingsCreateInput!): Settings!
   createCategory(data: CategoryCreateInput!): Category!
   createProduct(data: ProductCreateInput!): Product!
   createrefundObject(data: refundObjectCreateInput!): refundObject!
@@ -1148,6 +1158,8 @@ type Mutation {
   updateExpense(data: ExpenseUpdateInput!, where: ExpenseWhereUniqueInput!): Expense
   updateBarcode(data: BarcodeUpdateInput!, where: BarcodeWhereUniqueInput!): Barcode
   updateExpiry(data: ExpiryUpdateInput!, where: ExpiryWhereUniqueInput!): Expiry
+  updateQuantity(data: QuantityUpdateInput!, where: QuantityWhereUniqueInput!): Quantity
+  updateSettings(data: SettingsUpdateInput!, where: SettingsWhereUniqueInput!): Settings
   updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
   updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
   updaterefundObject(data: refundObjectUpdateInput!, where: refundObjectWhereUniqueInput!): refundObject
@@ -1161,6 +1173,8 @@ type Mutation {
   deleteExpense(where: ExpenseWhereUniqueInput!): Expense
   deleteBarcode(where: BarcodeWhereUniqueInput!): Barcode
   deleteExpiry(where: ExpiryWhereUniqueInput!): Expiry
+  deleteQuantity(where: QuantityWhereUniqueInput!): Quantity
+  deleteSettings(where: SettingsWhereUniqueInput!): Settings
   deleteCategory(where: CategoryWhereUniqueInput!): Category
   deleteProduct(where: ProductWhereUniqueInput!): Product
   deleterefundObject(where: refundObjectWhereUniqueInput!): refundObject
@@ -1174,6 +1188,8 @@ type Mutation {
   upsertExpense(where: ExpenseWhereUniqueInput!, create: ExpenseCreateInput!, update: ExpenseUpdateInput!): Expense!
   upsertBarcode(where: BarcodeWhereUniqueInput!, create: BarcodeCreateInput!, update: BarcodeUpdateInput!): Barcode!
   upsertExpiry(where: ExpiryWhereUniqueInput!, create: ExpiryCreateInput!, update: ExpiryUpdateInput!): Expiry!
+  upsertQuantity(where: QuantityWhereUniqueInput!, create: QuantityCreateInput!, update: QuantityUpdateInput!): Quantity!
+  upsertSettings(where: SettingsWhereUniqueInput!, create: SettingsCreateInput!, update: SettingsUpdateInput!): Settings!
   upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
   upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
   upsertrefundObject(where: refundObjectWhereUniqueInput!, create: refundObjectCreateInput!, update: refundObjectUpdateInput!): refundObject!
@@ -1187,6 +1203,8 @@ type Mutation {
   updateManyExpenses(data: ExpenseUpdateManyMutationInput!, where: ExpenseWhereInput): BatchPayload!
   updateManyBarcodes(data: BarcodeUpdateManyMutationInput!, where: BarcodeWhereInput): BatchPayload!
   updateManyExpiries(data: ExpiryUpdateManyMutationInput!, where: ExpiryWhereInput): BatchPayload!
+  updateManyQuantities(data: QuantityUpdateManyMutationInput!, where: QuantityWhereInput): BatchPayload!
+  updateManySettingses(data: SettingsUpdateManyMutationInput!, where: SettingsWhereInput): BatchPayload!
   updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
   updateManyProducts(data: ProductUpdateManyMutationInput!, where: ProductWhereInput): BatchPayload!
   updateManyRefundObjects(data: refundObjectUpdateManyMutationInput!, where: refundObjectWhereInput): BatchPayload!
@@ -1200,6 +1218,8 @@ type Mutation {
   deleteManyExpenses(where: ExpenseWhereInput): BatchPayload!
   deleteManyBarcodes(where: BarcodeWhereInput): BatchPayload!
   deleteManyExpiries(where: ExpiryWhereInput): BatchPayload!
+  deleteManyQuantities(where: QuantityWhereInput): BatchPayload!
+  deleteManySettingses(where: SettingsWhereInput): BatchPayload!
   deleteManyCategories(where: CategoryWhereInput): BatchPayload!
   deleteManyProducts(where: ProductWhereInput): BatchPayload!
   deleteManyRefundObjects(where: refundObjectWhereInput): BatchPayload!
@@ -2009,6 +2029,188 @@ input ProductWhereUniqueInput {
   barcode: String
 }
 
+type Quantity implements Node {
+  id: ID!
+  productID: String!
+}
+
+"""A connection to a list of items."""
+type QuantityConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [QuantityEdge]!
+  aggregate: AggregateQuantity!
+}
+
+input QuantityCreateInput {
+  id: ID
+  productID: String!
+}
+
+"""An edge in a connection."""
+type QuantityEdge {
+  """The item at the end of the edge."""
+  node: Quantity!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum QuantityOrderByInput {
+  id_ASC
+  id_DESC
+  productID_ASC
+  productID_DESC
+}
+
+type QuantityPreviousValues {
+  id: ID!
+  productID: String!
+}
+
+type QuantitySubscriptionPayload {
+  mutation: MutationType!
+  node: Quantity
+  updatedFields: [String!]
+  previousValues: QuantityPreviousValues
+}
+
+input QuantitySubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [QuantitySubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [QuantitySubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [QuantitySubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: QuantityWhereInput
+}
+
+input QuantityUpdateInput {
+  productID: String
+}
+
+input QuantityUpdateManyMutationInput {
+  productID: String
+}
+
+input QuantityWhereInput {
+  """Logical AND on all given filters."""
+  AND: [QuantityWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [QuantityWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [QuantityWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  productID: String
+
+  """All values that are not equal to given value."""
+  productID_not: String
+
+  """All values that are contained in given list."""
+  productID_in: [String!]
+
+  """All values that are not contained in given list."""
+  productID_not_in: [String!]
+
+  """All values less than the given value."""
+  productID_lt: String
+
+  """All values less than or equal the given value."""
+  productID_lte: String
+
+  """All values greater than the given value."""
+  productID_gt: String
+
+  """All values greater than or equal the given value."""
+  productID_gte: String
+
+  """All values containing the given string."""
+  productID_contains: String
+
+  """All values not containing the given string."""
+  productID_not_contains: String
+
+  """All values starting with the given string."""
+  productID_starts_with: String
+
+  """All values not starting with the given string."""
+  productID_not_starts_with: String
+
+  """All values ending with the given string."""
+  productID_ends_with: String
+
+  """All values not ending with the given string."""
+  productID_not_ends_with: String
+}
+
+input QuantityWhereUniqueInput {
+  id: ID
+  productID: String
+}
+
 type Query {
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   suppliers(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Supplier]!
@@ -2019,6 +2221,8 @@ type Query {
   expenses(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expense]!
   barcodes(where: BarcodeWhereInput, orderBy: BarcodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Barcode]!
   expiries(where: ExpiryWhereInput, orderBy: ExpiryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Expiry]!
+  quantities(where: QuantityWhereInput, orderBy: QuantityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Quantity]!
+  settingses(where: SettingsWhereInput, orderBy: SettingsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Settings]!
   categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
   products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
   refundObjects(where: refundObjectWhereInput, orderBy: refundObjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [refundObject]!
@@ -2032,6 +2236,8 @@ type Query {
   expense(where: ExpenseWhereUniqueInput!): Expense
   barcode(where: BarcodeWhereUniqueInput!): Barcode
   expiry(where: ExpiryWhereUniqueInput!): Expiry
+  quantity(where: QuantityWhereUniqueInput!): Quantity
+  settings(where: SettingsWhereUniqueInput!): Settings
   category(where: CategoryWhereUniqueInput!): Category
   product(where: ProductWhereUniqueInput!): Product
   refundObject(where: refundObjectWhereUniqueInput!): refundObject
@@ -2045,6 +2251,8 @@ type Query {
   expensesConnection(where: ExpenseWhereInput, orderBy: ExpenseOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExpenseConnection!
   barcodesConnection(where: BarcodeWhereInput, orderBy: BarcodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BarcodeConnection!
   expiriesConnection(where: ExpiryWhereInput, orderBy: ExpiryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExpiryConnection!
+  quantitiesConnection(where: QuantityWhereInput, orderBy: QuantityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): QuantityConnection!
+  settingsesConnection(where: SettingsWhereInput, orderBy: SettingsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SettingsConnection!
   categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
   productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
   refundObjectsConnection(where: refundObjectWhereInput, orderBy: refundObjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): refundObjectConnection!
@@ -3563,6 +3771,246 @@ input SalesTicketWhereUniqueInput {
   receipt: String
 }
 
+type Settings implements Node {
+  id: ID!
+  name: String!
+  quantityDays: Int!
+  expiryDays: Int!
+}
+
+"""A connection to a list of items."""
+type SettingsConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [SettingsEdge]!
+  aggregate: AggregateSettings!
+}
+
+input SettingsCreateInput {
+  id: ID
+  name: String!
+  quantityDays: Int!
+  expiryDays: Int!
+}
+
+"""An edge in a connection."""
+type SettingsEdge {
+  """The item at the end of the edge."""
+  node: Settings!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum SettingsOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  quantityDays_ASC
+  quantityDays_DESC
+  expiryDays_ASC
+  expiryDays_DESC
+}
+
+type SettingsPreviousValues {
+  id: ID!
+  name: String!
+  quantityDays: Int!
+  expiryDays: Int!
+}
+
+type SettingsSubscriptionPayload {
+  mutation: MutationType!
+  node: Settings
+  updatedFields: [String!]
+  previousValues: SettingsPreviousValues
+}
+
+input SettingsSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [SettingsSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [SettingsSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [SettingsSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: SettingsWhereInput
+}
+
+input SettingsUpdateInput {
+  name: String
+  quantityDays: Int
+  expiryDays: Int
+}
+
+input SettingsUpdateManyMutationInput {
+  name: String
+  quantityDays: Int
+  expiryDays: Int
+}
+
+input SettingsWhereInput {
+  """Logical AND on all given filters."""
+  AND: [SettingsWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [SettingsWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [SettingsWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  quantityDays: Int
+
+  """All values that are not equal to given value."""
+  quantityDays_not: Int
+
+  """All values that are contained in given list."""
+  quantityDays_in: [Int!]
+
+  """All values that are not contained in given list."""
+  quantityDays_not_in: [Int!]
+
+  """All values less than the given value."""
+  quantityDays_lt: Int
+
+  """All values less than or equal the given value."""
+  quantityDays_lte: Int
+
+  """All values greater than the given value."""
+  quantityDays_gt: Int
+
+  """All values greater than or equal the given value."""
+  quantityDays_gte: Int
+  expiryDays: Int
+
+  """All values that are not equal to given value."""
+  expiryDays_not: Int
+
+  """All values that are contained in given list."""
+  expiryDays_in: [Int!]
+
+  """All values that are not contained in given list."""
+  expiryDays_not_in: [Int!]
+
+  """All values less than the given value."""
+  expiryDays_lt: Int
+
+  """All values less than or equal the given value."""
+  expiryDays_lte: Int
+
+  """All values greater than the given value."""
+  expiryDays_gt: Int
+
+  """All values greater than or equal the given value."""
+  expiryDays_gte: Int
+}
+
+input SettingsWhereUniqueInput {
+  id: ID
+  name: String
+}
+
 type StockItem implements Node {
   id: ID!
   createdAt: DateTime!
@@ -4219,6 +4667,8 @@ type Subscription {
   expense(where: ExpenseSubscriptionWhereInput): ExpenseSubscriptionPayload
   barcode(where: BarcodeSubscriptionWhereInput): BarcodeSubscriptionPayload
   expiry(where: ExpirySubscriptionWhereInput): ExpirySubscriptionPayload
+  quantity(where: QuantitySubscriptionWhereInput): QuantitySubscriptionPayload
+  settings(where: SettingsSubscriptionWhereInput): SettingsSubscriptionPayload
   category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
   product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
   refundObject(where: refundObjectSubscriptionWhereInput): refundObjectSubscriptionPayload

@@ -17,11 +17,14 @@ type Query{
     salesItems(where: SalesItemWhereInput, orderBy: SalesItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [SalesItem]!
     suppliers(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Supplier]!
     paidDetails(where: PaidDetailWhereInput, orderBy: PaidDetailOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PaidDetail]!
+    quantitiesConnection(where: QuantityWhereInput, orderBy: QuantityOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): QuantityConnection!
     barcodesConnection(where: BarcodeWhereInput, orderBy: BarcodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BarcodeConnection!
     expiriesConnection(where: ExpiryWhereInput, orderBy: ExpiryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExpiryConnection!
     AllBarcodesData:[BarcodeData]!
     AllExpiriesData:[ExpiryData]!
-    checkExpiry(days:Int!):Message
+    AllQuantitiesData:[QuantityData]!
+    checkExpiry:Int!
+    checkQuantity:Int!
 }
 
 type Mutation{
@@ -54,11 +57,14 @@ type Mutation{
     createSalesTicket: SalesTicket!
     deleteBarcode(where: BarcodeWhereUniqueInput!): Barcode
     deleteExpiry(where: ExpiryWhereUniqueInput!): Expiry
+    deleteQuantity(where: QuantityWhereUniqueInput!): Quantity
+    updateSettings(data: SettingsUpdateInput!, where: SettingsWhereUniqueInput!): Settings
 }
 
 type Subscription{
     barcode(where: BarcodeSubscriptionWhereInput): BarcodeSubscriptionPayload
     expiry(where: ExpirySubscriptionWhereInput): ExpirySubscriptionPayload
+    quantity(where: QuantitySubscriptionWhereInput): QuantitySubscriptionPayload
 }
 
 input SignInUserInput {
@@ -102,3 +108,9 @@ type ExpiryData{
     barcode:String!
     description:String!
 } 
+
+type QuantityData{
+    quantityID:String!
+    name:String!
+    description:String!
+}

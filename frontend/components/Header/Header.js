@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Badge from '@material-ui/core/Badge';
 
 import BarcodeNotify from './BarcodeNotify';
-import ExpiryNotify from './ExpiryNotify';
+import Notifications from './Notifications';
 
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
@@ -21,6 +21,7 @@ import CashIcon from '@material-ui/icons/AttachMoney';
 import ExpenseIcon from '@material-ui/icons/Assessment';
 import BarcodeIcon from '@material-ui/icons/ViewWeek';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import SettingsIcon from '@material-ui/icons/Settings';
 import InputIcon from '@material-ui/icons/Input';
 
 
@@ -60,8 +61,8 @@ class Header extends Component{
     }
 
     sideList = side =>{
-      let navItems = ['shop','stock','refund','suppliers','sales','expense','notifications','barcodes'];
-      let navIcons = [<ShoppingBasketIcon />,<DashboardIcon />,<InputIcon />,<DirectionsBusIcon />,<CashIcon />,<ExpenseIcon />,<NotificationsIcon />,<BarcodeIcon />];
+      let navItems = ['shop','stock','refund','suppliers','sales','expense','notifications','barcodes','settings'];
+      let navIcons = [<ShoppingBasketIcon />,<DashboardIcon />,<InputIcon />,<DirectionsBusIcon />,<CashIcon />,<ExpenseIcon />,<NotificationsIcon />,<BarcodeIcon />,<SettingsIcon />];
       return (
         <div
           style={{width:"250px"}}
@@ -102,12 +103,14 @@ class Header extends Component{
                     <CurrentUser>
                       {
                         ({data})=>{
-                          if(data.currentUser){
-                            return(
-                              <IconButton  color="inherit" aria-label="menu" onClick={this.toggleDrawer('left',true)}>
-                                <MenuIcon />
-                              </IconButton>
-                            )
+                          if(data.currentUser && data.currentUser.username=="admin"){
+                            
+                              return(
+                                <IconButton  color="inherit" aria-label="menu" onClick={this.toggleDrawer('left',true)}>
+                                  <MenuIcon />
+                                </IconButton>
+                              )
+                            
                           }
                           return null;
                         }
@@ -128,9 +131,20 @@ class Header extends Component{
                           if(data.currentUser){
                           return(
                             <>
+                             {
+                               (data.currentUser && data.currentUser.username=="admin") ? (
+                                 <>
+                                  <Notifications />
+                                  <BarcodeNotify />
+                                 </>
+                               ):(
+                                 <>
+                                  <IconButton></IconButton>
+                                  <IconButton></IconButton>
+                                 </>
+                               )
+                             }
                              
-                             <ExpiryNotify />
-                             <BarcodeNotify /> 
                         
                               <Typography variant="button">Hi, {data.currentUser.username}</Typography>
                               <SignOut />

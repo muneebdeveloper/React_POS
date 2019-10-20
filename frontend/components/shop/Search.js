@@ -40,8 +40,8 @@ class Search extends Component{
 
     };
 
-    checking = (item)=>{
-        console.log(item);
+    submitHandler = (item)=>{
+        this.props.searchHandler(item.value);
     }
 
     render(){
@@ -52,7 +52,7 @@ class Search extends Component{
                         (client)=>{
                             return(
                                 <MuiDownshift
-                                    onChange={this.checking}
+                                    onChange={this.submitHandler}
                                     items={searchResult}
                                     variant="outlined"
                                     getInputProps={()=>({label:"Search Product",autoFocus:true,onFocus:null})}

@@ -75,7 +75,7 @@ const Query = {
     async checkExpiry(parent,args,ctx,info){
 
         
-        let days = args.days;
+        let {expiryDays:days} = await ctx.db.query.settings({where:{name:"main"}});
 // 
         let products = await ctx.db.query.products(undefined,`{id name stock{expiry}}`);
 
@@ -101,7 +101,8 @@ const Query = {
                 
             }
         }
-        return {message:"All expiries checked successfully"};
+        let expiriesConnection = await ctx.db.query.expiriesConnection(undefined,`{aggregate{count}}`)
+        return expiriesConnection.aggregate.count;
         
     },
     async AllExpiriesData(parent,args,ctx,info){
@@ -124,6 +125,57 @@ const Query = {
 
         return [...expiriesInfoArray];
     },
+    async checkQuantity(parent,args,ctx,info){
+        let {quantityDays:quantity} = await ctx.db.query.settings({where:{name:"main"}});
+        let products = await ctx.db.query.products(undefined,`{id name stock{noofpieces}}`);
+
+        
+        for(let i in products){
+            let quantityCount = 0;
+            for(let j in products[i].stock){
+                
+                quantityCount += products[i].stock[j].noofpieces;
+            }
+            
+            if(quantityCount <= quantity ){
+                let res = await ctx.db.query.quantity({where:{productID:products[i].id}});
+                if(!res){
+                    ctx.db.mutation.createQuantity({data:{productID:products[i].id}});
+                }
+            }
+        }
+        let quantitiesConnection = await ctx.db.query.quantitiesConnection(undefined,`{aggregate{count}}`)
+        return quantitiesConnection.aggregate.count;
+    },
+    async AllQuantitiesData(parent,args,ctx,info){
+        let quantitiesInfoArray=[];
+
+        let quantities = await ctx.db.query.quantities();
+        let {quantityDays }= await ctx.db.query.settings({where:{name:"main"}},`{quantityDays}`);
+
+        for(let i in quantities){
+            
+            let product = await ctx.db.query.product({where:{id:quantities[i].productID}},`{name stock{noofpieces}}`);
+            
+            if(product){
+                let noofpieces = 0;
+                for(let i in product.stock){
+                    noofpieces += product.stock[i].noofpieces
+                } 
+                if(noofpieces>quantityDays){
+                    ctx.db.mutation.deleteQuantity({where:{id:quantities[i].id}},`{id}`);
+                }else{
+                let {name} = product;
+                quantitiesInfoArray = [...quantitiesInfoArray,{quantityID:quantities[i].id,name,description:`Number of pieces left are ${noofpieces}`}];
+                }
+            }else{
+                ctx.db.mutation.deleteQuantity({where:{id:quantities[i].id}},`{id}`);
+            }
+            
+        }
+
+        return [...quantitiesInfoArray];
+    },
     product:forwardTo('db'),
     products:forwardTo('db'),
     barcodes:forwardTo('db'),
@@ -139,7 +191,8 @@ const Query = {
     expense:forwardTo('db'),
     expenses:forwardTo('db'),
     barcodesConnection:forwardTo('db'),
-    expiriesConnection:forwardTo('db')
+    expiriesConnection:forwardTo('db'),
+    quantitiesConnection:forwardTo('db')
 }
 
 module.exports = Query;
