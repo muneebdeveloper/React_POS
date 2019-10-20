@@ -16,7 +16,6 @@ const ByTicket = ()=>{
             </Intro>
             <div className={styles.boxFlex}>
                 <Block LinkTo="/refund_by_ticket">
-                    <span>Icon</span>
                     Refund By Ticket
                 </Block>
             </div>

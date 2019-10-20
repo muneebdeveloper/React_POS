@@ -1,6 +1,12 @@
 import React,{Component} from 'react';
 import styles from './Ticket.css';
-
+function titleCase(str) {
+    let string = str.toLowerCase().split(' ');
+    for (var i = 0; i < string.length; i++) {
+      string[i] = string[i].charAt(0).toUpperCase() + string[i].slice(1); 
+    }
+    return string.join(' ');
+  }
 class Ticket extends Component {
 
     render(){
@@ -35,7 +41,7 @@ class Ticket extends Component {
                             this.props.receipt.map((r,index)=>{
                                 return(
                                     <tr key={index}>
-                                        <td>{r.product}</td>
+                                        <td>{titleCase(r.product)}</td>
                                         <td>{r.price}</td>
                                         <td>{r.quantity}</td>
                                         <td>{r.value()}</td>

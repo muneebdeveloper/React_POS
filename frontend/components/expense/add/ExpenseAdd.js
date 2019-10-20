@@ -16,7 +16,6 @@ const ExpenseAdd = ()=>{
             </Intro>
             <div className={styles.boxFlex}>
                 <Block LinkTo="/add_expense">
-                    <span>Icon</span>
                     Add Expense
                 </Block>
             </div>

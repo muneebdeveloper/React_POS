@@ -17,8 +17,10 @@ const PleaseSignIn = (props)=>{
                 ({data,loading})=>{
                     if(loading){
                         return(
-                            <div className="mainLoadingStyle">
-                                <CircularProgress size={70} />
+                            <div className="mainpage">
+                                <div className="mainLoadingStyle">
+                                    <CircularProgress size={70} />
+                                </div>
                             </div>
                         )
                     }

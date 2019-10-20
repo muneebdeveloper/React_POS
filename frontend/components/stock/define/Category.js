@@ -174,6 +174,7 @@ class Category extends Component{
                                             type="submit"
                                             variant="contained"
                                             size="large"
+                                            disabled={lineitemid?false:true}
                                         >
                                             Create
                                         </Button>

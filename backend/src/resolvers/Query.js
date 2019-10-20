@@ -76,7 +76,7 @@ const Query = {
 
         
         let {expiryDays:days} = await ctx.db.query.settings({where:{name:"main"}});
-// 
+
         let products = await ctx.db.query.products(undefined,`{id name stock{expiry}}`);
 
         let currentDate = new Date();
@@ -137,7 +137,7 @@ const Query = {
                 quantityCount += products[i].stock[j].noofpieces;
             }
             
-            if(quantityCount <= quantity ){
+            if(quantityCount <= quantity && products[i].stock.length>0 ){
                 let res = await ctx.db.query.quantity({where:{productID:products[i].id}});
                 if(!res){
                     ctx.db.mutation.createQuantity({data:{productID:products[i].id}});

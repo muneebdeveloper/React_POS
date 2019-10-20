@@ -59,11 +59,12 @@ const CREATE_SALESTICKET_MUTATION = gql`
 `;
 
 const CREATE_SALESITEM_MUTATION = gql`
-    mutation CREATE_SALESITEM_MUTATION($type:String!,$noofpieces:Int!,$priceSold:Float!,$id:ID!,$receipt:String!){
+    mutation CREATE_SALESITEM_MUTATION($type:String!,$noofpieces:Int!,$priceSold:Float!,$discount:Float,,$id:ID!,$receipt:String!){
         createSalesItem(data:{
             type:$type,
             noofpieces:$noofpieces,
             priceSold:$priceSold,
+            discount:$discount,
             product:{
                 connect:{
                     id:$id
@@ -81,6 +82,14 @@ const CREATE_SALESITEM_MUTATION = gql`
 `;
 
 
+function titleCase(str) {
+    let string = str.toLowerCase().split(' ');
+    for (var i = 0; i < string.length; i++) {
+      string[i] = string[i].charAt(0).toUpperCase() + string[i].slice(1); 
+    }
+    return string.join(' ');
+  }
+  
 
 
 class RetailSales extends Component{
@@ -272,6 +281,7 @@ class RetailSales extends Component{
                     ...(this.state.sale_type==='retailsale'?{type:'retail'}:{type:'wholesale'}),
                     noofpieces:Number(quantity),
                     priceSold:Number(price),
+                    discount:this.state.discount/this.state.receipt.length,
                     id:id,
                     receipt:salesTicket
                 }
@@ -477,7 +487,7 @@ class RetailSales extends Component{
                                 id={id}
                                 index={index}
                                 sr={index+1}
-                                product={product}
+                                product={titleCase(product)}
                                 price={price}
                                 quantity={quantity}
                                 value={r.value()}

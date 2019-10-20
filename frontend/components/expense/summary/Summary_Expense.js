@@ -149,3 +149,4 @@ class Summary_Expense extends Component{
 }
 
 export default Summary_Expense;
+export {EXPENSES_BY_DATE_QUERY};

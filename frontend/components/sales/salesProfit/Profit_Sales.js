@@ -14,7 +14,7 @@ import Button from '@material-ui/core/Button';
 import styles from './Profit_Sales.css';
 
 import {FETCH_LINEITEMS_QUERY} from '../../stock/define/Category';
-import {ALL_SUPPLIERS_LIST_QUERY} from '../../suppliers/editandremove/Suppliers_ed';
+import {EXPENSES_BY_DATE_QUERY} from '../../expense/summary/Summary_Expense';
 
 
 const ALL_CATEGORIES_QUERY = gql`
@@ -44,9 +44,10 @@ const SALESITEM_BY_DATE_QUERY_ALL = gql`
             ]
         }){
             noofpieces
-            buyPrice
-            sellPrice
+            priceSold
+            type
             profit
+            discount
             product{
                 name
             }
@@ -70,6 +71,7 @@ const SALESITEM_BY_DATE_QUERY_PRODUCT = gql`
             priceSold
             type
             profit
+            discount
             product{
                 name
             }
@@ -91,9 +93,10 @@ const SALESITEM_BY_DATE_QUERY_CATEGORY = gql`
             ]
         }){
             noofpieces
-            buyPrice
-            sellPrice
+            priceSold
+            type
             profit
+            discount
             product{
                 name
             }
@@ -118,9 +121,10 @@ const SALESITEM_BY_DATE_QUERY_LINEITEM = gql`
             ]
         }){
             noofpieces
-            buyPrice
-            sellPrice
+            priceSold
+            type
             profit
+            discount
             product{
                 name
             }
@@ -128,28 +132,6 @@ const SALESITEM_BY_DATE_QUERY_LINEITEM = gql`
     }
 `;
 
-const SALESITEM_BY_DATE_QUERY_SUPPLIER = gql`
-    query SALESITEM_BY_DATE_QUERY_SUPPLIER($dateStart:DateTime,$dateEnd:DateTime,$id:ID){
-        salesItems(where:{
-            AND:[
-                {createdAt_gte:$dateStart},
-                {createdAt_lte:$dateEnd},
-                {supplier:{
-                    id:$id
-                    }
-                }
-            ]
-        }){
-            noofpieces
-            buyPrice
-            sellPrice
-            profit
-            product{
-                name
-            }
-        }
-    }
-`;
 
 class Profit_Sales extends Component{
 
@@ -167,9 +149,11 @@ class Profit_Sales extends Component{
         disableSubMenu:true,
         totalBuyPrice:0,
         totalSellPrice:0,
+        totalDiscount:0,
         totalProfit:0,
         totalQuantity:0,
         totalSale:0,
+        totalExpense:0
     }
 
     changeHandler = (e)=>{
@@ -249,25 +233,6 @@ class Profit_Sales extends Component{
                     });
                     break;
                 }
-            case "supplier":
-                try{
-                    res = await client.query({
-                        query:ALL_SUPPLIERS_LIST_QUERY
-                    });
-                    this.setState({
-                        subSelect:res.data.suppliers,
-                        mainmenuSelectionLoading:false,
-                        disableSubMenu:false
-                    })
-                    break;
-                }catch(err){
-                    this.setState({
-                        errorDialogOpen:true,
-                        errorMessage:"Something went wrong",
-                        mainmenuSelectionLoading:false
-                    });
-                    break;
-                }
 
         }
     }
@@ -326,39 +291,43 @@ class Profit_Sales extends Component{
                         });
                         break;
 
-                case "supplier":
-                        res = await client.query({
-                        query:SALESITEM_BY_DATE_QUERY_SUPPLIER,
-                        variables:{
-                            dateStart,
-                            dateEnd,
-                            id:submenu
-                        }
-                        });
-                        break;
                         
             }
-            
-            let calcBuyPrice=0,calcpriceSold=0,calcSale=0,calcQuantity=0,calcProfit=0;
+           let calcExpenseAmount = 0;
+           let expenseRes = await client.query({
+                query:EXPENSES_BY_DATE_QUERY,
+                variables:{
+                    start_date:dateStart,
+                    end_date:dateEnd
+                }
+            });
+            expenseRes.data.expenses.map((el)=>{
+                calcExpenseAmount += el.amount;
+            });
+            let calcBuyPrice=0,calcpriceSold=0,calcSale=0,calcQuantity=0,calcProfit=0,calcDiscount=0;
             res.data.salesItems.map((item)=>{
-                // calcBuyPrice = calcBuyPrice + item.buyPrice;
                 if(item.noofpieces>0){
                     calcpriceSold = calcpriceSold + item.priceSold;
                     calcProfit = calcProfit + item.profit;
                     calcQuantity = calcQuantity + item.noofpieces;
                     item.sale = item.noofpieces * item.priceSold;
                     calcSale = calcSale + item.sale;
+                    calcDiscount= calcDiscount + item.discount;
+                    calcProfit = calcProfit - item.discount;
                 }
                 
             });
+            calcProfit -= calcExpenseAmount; 
             this.setState({
                 salesResult:[...res.data.salesItems],
                 salesResultLoading:false,
+                totalDiscount:calcDiscount,
                 totalBuyPrice:calcBuyPrice,
                 totalSellPrice:calcpriceSold,
                 totalProfit:calcProfit,
                 totalQuantity:calcQuantity,
-                totalSale:calcSale
+                totalSale:calcSale,
+                totalExpense:calcExpenseAmount
             })
         }catch(err){
             this.setState({
@@ -382,11 +351,12 @@ class Profit_Sales extends Component{
                 salesResult,
                 errorMessage,
                 errorDialogOpen,
-                totalBuyPrice,
+                totalDiscount,
                 totalSellPrice,
                 totalQuantity,
                 totalSale,
-                totalProfit
+                totalProfit,
+                totalExpense
         } = this.state;
 
         return(
@@ -417,7 +387,6 @@ class Profit_Sales extends Component{
                                 <MenuItem value={'lineitem'}>LineItem</MenuItem>
                                 <MenuItem value={'category'}>Category</MenuItem>
                                 <MenuItem value={'product'}>Product</MenuItem>
-                                <MenuItem value={'supplier'}>Supplier</MenuItem>
                             </Select>
                                               
                         </FormControl>
@@ -520,16 +489,22 @@ class Profit_Sales extends Component{
                     }
                 </tbody>
                 <tfoot >
+                        <tr className={styles.tableFoot}>
+                            <td colSpan={6} className={styles.totalRow}>Expense</td>
+                            <td>{totalExpense==0?totalExpense:`-${totalExpense}`}</td>
+                        </tr>
+                        <tr className={styles.tableFoot}>
+                            <td colSpan={6} className={styles.totalRow}>Discount</td>
+                            <td>{totalDiscount==0?totalDiscount:`-${totalDiscount}`}</td>
+                        </tr>
                                 <tr className={styles.tableFoot}>
-                                    {/* <td ></td> */}
                                     <td colSpan={3} className={styles.totalRow}>Total</td>
-                                    {/* <td>{totalBuyPrice}</td> */}
                                     <td>{totalSellPrice}</td>
                                     <td>{totalQuantity}</td>
                                     <td>{totalSale}</td>
                                     <td>{totalProfit}</td>
                                 </tr>
-                            </tfoot>
+                        </tfoot>
             </table>
             </div>
                 <ErrorDialog dialogValue={errorDialogOpen} dialogClose={()=>this.setState({errorDialogOpen:false})}>

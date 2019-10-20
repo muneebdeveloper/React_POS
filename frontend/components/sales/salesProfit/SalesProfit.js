@@ -13,7 +13,6 @@ const SalesProfit = ()=>{
             </Intro>
             <div className={styles.boxFlex}>
                 <Block LinkTo="/profit_sales">
-                    <span>Icon</span>
                     Sales profit
                 </Block>
             </div>

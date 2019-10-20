@@ -4,23 +4,63 @@ const {forwardTo} = require('prisma-binding');
 
 
 const Mutation = {
-    createLineItem:forwardTo('db'),
-    createCategory:forwardTo('db'),
-    createProduct:forwardTo('db'),
-    updateProduct:forwardTo('db'),
-    updateStockItem:forwardTo('db'),
-    updateLineItem:forwardTo('db'),
+    createLineItem(parent,args,ctx,info){
+
+        name = args.data.name.toLowerCase();
+
+        return ctx.db.mutation.createLineItem({data:{...args.data,name}},info);
+    },
+    createCategory(parent,args,ctx,info){
+
+        name = args.data.name.toLowerCase();
+
+        return ctx.db.mutation.createCategory({data:{...args.data,name}},info);
+    },
+    createProduct(parent,args,ctx,info){
+
+        name = args.data.name.toLowerCase();
+
+        return ctx.db.mutation.createProduct({data:{...args.data,name}},info);
+    },
+    updateLineItem(parent,args,ctx,info){
+
+        if(args.data.name){
+            let name = args.data.name.toLowerCase();
+            return ctx.db.mutation.updateLineItem({data:{...args.data,name},where:{...args.where}},info)
+        }
+        return ctx.db.mutation.updateLineItem({...args},info);
+        
+    },
+    updateCategory(parent,args,ctx,info){
+
+        if(args.data.name){
+            
+            let name = args.data.name.toLowerCase();
+            return ctx.db.mutation.updateCategory({data:{...args.data,name},where:{...args.where}},info)
+        }
+        return ctx.db.mutation.updateCategory({...args},info);
+        
+    },
+    updateProduct(parent,args,ctx,info){
+
+        if(args.data.name){
+            let name = args.data.name.toLowerCase();
+            return ctx.db.mutation.updateProduct({data:{...args.data,name},where:{...args.where}},info)
+        }
+        return ctx.db.mutation.updateProduct({...args},info);
+        
+    }, 
+    createStockItem:forwardTo('db'),
     createSupplier:forwardTo('db'),
-    updateSupplier:forwardTo('db'),
-    deleteSupplier:forwardTo('db'),
     createPaidDetail:forwardTo('db'),
+    updateStockItem:forwardTo('db'),
+    updateSupplier:forwardTo('db'),
+    deleteSupplier:forwardTo('db'), 
     createExpense:forwardTo('db'),
     updateExpense:forwardTo('db'),
-    updateCategory:forwardTo('db'),
     deleteCategory:forwardTo('db'),
     deleteExpense:forwardTo('db'),
-    createBarcode:forwardTo('db'),
-    createStockItem:forwardTo('db'),
+    createBarcode:forwardTo('db'),  
     deleteStockItem:forwardTo('db'),
     deleteBarcode:forwardTo('db'),
     deleteExpiry:forwardTo('db'),
@@ -195,9 +235,8 @@ const Mutation = {
             let {id,stockID,noofpieces,badgeNumber,createdAt,buyPrice,sellPrice,wholesalePrice,expiry} = salesItem.refundCriteria[i];
 
             let stockItem = await ctx.db.query.stockItem({where:{id:stockID}},`{id noofpieces}`);
-
+    
             if(stockItem){
-
                 ctx.db.mutation.updateStockItem({
                     where:{id:stockItem.id},
                     data:{
@@ -206,7 +245,6 @@ const Mutation = {
                 },`{id}`);
 
             }else{
-
                 ctx.db.mutation.createStockItem({
                     data:{
                         id:stockID,
@@ -222,11 +260,6 @@ const Mutation = {
                                 id:salesItem.product.id
                             }
                         },
-                        supplier:{
-                            connect:{
-                                id:"ck1f7i7ex00250729mziq8m91"
-                            }
-                        }
                     }
                 },`{id}`);
 

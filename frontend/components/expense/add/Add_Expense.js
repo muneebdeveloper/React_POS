@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Mutation,ApolloConsumer} from 'react-apollo';
 import gql from 'graphql-tag';
+import Router from 'next/router';
 
 import styles from './Add_Expense.css';
 
@@ -278,7 +279,7 @@ class Add_Expense extends Component{
                     
                 </div>
             </form>
-            <table>
+            <table className="gutterbottomsmall">
                 <thead>
                     <tr style={{backgroundColor:"black",color:"white"}}>
                         <th>Sr#</th>
@@ -307,6 +308,15 @@ class Add_Expense extends Component{
                     }
                 </tbody>
             </table>
+            <DialogActions>
+                    <Button
+                        variant="contained"
+                        size="large"
+                        onClick={()=>Router.push('/')}
+                    >
+                        Submit
+                    </Button>
+            </DialogActions>
             </>
                         )
                     }

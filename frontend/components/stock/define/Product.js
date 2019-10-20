@@ -343,6 +343,7 @@ class Product extends Component{
                                                         type="submit"
                                                         variant="contained"
                                                         fullWidth={!isMain}
+                                                        disabled={lineitemID && categoryID ?false : true}
                                                     >
                                                         Create
                                                     </Button>

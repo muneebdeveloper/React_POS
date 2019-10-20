@@ -62,6 +62,7 @@ type SalesItem{
   type:String!
   priceSold:Float!
   profit:Float
+  discount:Float
   refundCriteria:[refundObject!]
   product:Product!
   salesTicket:SalesTicket!
