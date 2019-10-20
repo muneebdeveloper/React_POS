@@ -12,7 +12,6 @@ const AddSuppliers = ()=>{
             <Intro>Add</Intro>
             <div className={styles.boxFlex}>
                 <Block LinkTo="/suppliers_add">
-                    <span>Icon</span>
                     Add Suppliers
                 </Block>
             </div>

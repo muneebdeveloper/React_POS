@@ -16,7 +16,6 @@ const QuantitySettings = ()=>{
             </Intro>
             <div className={styles.boxFlex}>
                 <Block LinkTo="/quantity_settings">
-                    <span>Icon</span>
                     Quantity Settings
                 </Block>
             </div>

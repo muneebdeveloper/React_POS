@@ -11,7 +11,6 @@ const CashManage = ()=>{
             <Intro>Cash Manager</Intro>
             <div className={styles.boxFlex}>
                 <Block LinkTo="/supplier_manage_cash">
-                    <span>Icon</span>
                     Cash Management
                 </Block>
             </div>

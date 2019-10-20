@@ -3,6 +3,7 @@ import {Mutation} from 'react-apollo';
 import gql from 'graphql-tag';
 import Router from 'next/router';
 
+import ErrorDialog from './misc/ErrorDialog';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -31,7 +32,9 @@ class Login extends Component{
 
     state={
         username:'',
-        password:''
+        password:'',
+        errorDialog:false,
+        errorMessage:""
     }
 
     changeHandler = (e)=>{
@@ -42,16 +45,28 @@ class Login extends Component{
 
     signinSubmitHandler = (signin)=>async (e)=>{
         e.preventDefault();
-        await signin();
+        try{
+            await signin();
+        }catch(err){
+            this.setState({
+                errorDialog:true,
+                errorMessage:"Username or password is incorrect",
+                password:''
+            });
+        }
+        
     }
 
     render(){
         const {
             username,
-            password
+            password,
+            errorDialog,
+            errorMessage
         } = this.state;
         
         return(
+            <>
             <div className="mainpage">
 
                 <Mutation 
@@ -144,6 +159,12 @@ class Login extends Component{
                 </Mutation>
 
             </div>
+            <ErrorDialog dialogValue={errorDialog} dialogClose={()=>this.setState({errorDialog:false})}>
+                {
+                    errorMessage
+                }
+            </ErrorDialog>
+            </>
         )
     }
 }

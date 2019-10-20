@@ -12,7 +12,6 @@ const EditAndRemoveSuppliers = ()=>{
             <Intro>Edit / Remove</Intro>
             <div className={styles.boxFlex}>
                 <Block LinkTo="suppliers_ed">
-                    <span>Icon</span>
                     Edit and Remove
                 </Block>
             </div>

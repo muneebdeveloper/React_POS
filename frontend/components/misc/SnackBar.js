@@ -3,7 +3,7 @@ import React from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import IconButton from '@material-ui/core/IconButton';
-import Close from '@material-ui/icons/Close';
+import CloseIcon from '@material-ui/icons/Close';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
 
@@ -36,7 +36,7 @@ const SnackBar = (props)=>{
                 }
                 action={[
                     <IconButton key="close" className={styles.iconcolor} onClick={snackbarClose}>
-                        <Close />
+                        <CloseIcon />
                     </IconButton>
                 ]}
             />
