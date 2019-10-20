@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import gql from 'graphql-tag';
 import {ApolloConsumer} from 'react-apollo';
+import Router from 'next/router';
 
 import Settings from '../Settings';
 
@@ -40,6 +41,7 @@ class Quantity_Settings extends Component{
                 snackBar:true,
                 snackBarMessage:"Settings updated successfully"
             });
+            Router.push('/');
         }catch(err){
             this.setState({
                 loading:false,
