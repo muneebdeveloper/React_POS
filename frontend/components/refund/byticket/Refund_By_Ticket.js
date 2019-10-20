@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import gql from 'graphql-tag';
 import {ApolloConsumer,Mutation} from 'react-apollo';
+import Router from 'next/router';
 
 import ErrorDialog from '../../misc/ErrorDialog';
 import TextField from '@material-ui/core/TextField';
@@ -83,12 +84,23 @@ class Refund_By_Ticket extends Component{
                 this.setState({
                     errorDialog:true,
                     errorInfo:"The ticket number is incorrect",
-                    ticketLoading:false
+                    ticketLoading:false,
+                    refundQuantity:'',
+                    index:null,
+                    salesArray:[],
+                    refundObject:[],
+                    dialogRefundQuantity:false,
                 })
             }else{
                 this.setState({
                     ticketLoading:false,
-                    salesArray:[...res.data.salesTicket.sales]
+                    salesArray:[...res.data.salesTicket.sales],
+                    refundQuantity:'',
+                    index:null,
+                    refundObject:[],
+                    dialogRefundQuantity:false,
+                    errorDialog:false,
+                    errorInfo:'something went wrong',
                 })
             }
         }catch(err){
@@ -166,6 +178,7 @@ class Refund_By_Ticket extends Component{
                     }
                 });
             }
+            Router.push('/');
 
         }catch(err){
             console.log(err);
