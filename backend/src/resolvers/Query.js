@@ -176,6 +176,116 @@ const Query = {
 
         return [...quantitiesInfoArray];
     },
+    async productsAudit(parent,args,ctx,info){
+
+        // Creating an array for final results
+        let productsAudit = [],products;
+
+        // Fetching products according to given information
+        if(args.data.lineitemID){
+            products = await ctx.db.query.products({
+                where:{
+                    category:{
+                        lineitem:{
+                            id:args.data.lineitemID
+                        }
+                    }
+                }
+            },`{name barcode stock(orderBy:createdAt_ASC){noofpieces sellPrice wholesalePrice}}`);
+        }else if(args.data.categoryID){
+            products = await ctx.db.query.products({
+                where:{
+                    category:{
+                            id:args.data.categoryID
+                    }
+                }
+            },`{name barcode stock(orderBy:createdAt_ASC){noofpieces sellPrice wholesalePrice}}`);
+        }else{
+            products = await ctx.db.query.products(undefined,
+                `{name barcode stock(orderBy:createdAt_ASC){noofpieces sellPrice wholesalePrice}}`
+                );
+        }
+        
+
+        // Calculating no of pieces, sellPrice, wholesalePrice
+        let quantity, sellPrice, wholesalePrice;
+        for(let i in products){
+            quantity = 0;sellPrice=0,wholesalePrice=0;
+            for(let j in products[i].stock){
+                quantity += products[i].stock[j].noofpieces;
+                sellPrice = products[i].stock[products[i].stock.length-1].sellPrice;
+                wholesalePrice = products[i].stock[products[i].stock.length-1].wholesalePrice
+            }
+            productsAudit.push({
+                name:products[i].name,
+                barcode:products[i].barcode,
+                quantity,
+                sellPrice,
+                wholesalePrice
+            });
+        }
+        return [...productsAudit];
+    },
+    async productsFilterSearch(parent,{data:{name,barcode,sellPrice,wholesalePrice}},ctx,info){
+
+        let productFilterResult = [];
+
+        let products = await ctx.db.query.products({
+            where:{
+                AND:[
+                    {name_contains:name},
+                    {barcode_contains:barcode},
+                    {stock_some:{
+                        AND:[
+                            {...(sellPrice ? {sellPrice_gte:sellPrice}:{sellPrice_gte:0})},
+                            {...(wholesalePrice ? {wholesalePrice_gte:wholesalePrice}:{wholesalePrice_gte:0})}
+                        ]
+                    }}
+                ]
+            }
+        },
+        `{name barcode stock(orderBy:createdAt_ASC){sellPrice wholesalePrice}}`);
+
+        let strSellPrice = String(sellPrice),strWholesalePrice = String(wholesalePrice);
+
+        if(sellPrice==0){
+            strSellPrice = "";
+        }
+
+        if(wholesalePrice==0){
+            strWholesalePrice = "";
+        }
+
+
+        if(sellPrice || wholesalePrice){
+
+            for(let i in products){
+                let resultSellPrice = String(products[i].stock[products[i].stock.length-1].sellPrice);
+                let resultwholesalePrice = String(products[i].stock[products[i].stock.length-1].wholesalePrice);
+                if(resultSellPrice.startsWith(strSellPrice) && resultwholesalePrice.startsWith(strWholesalePrice)){
+                    productFilterResult.push({
+                        name:products[i].name,
+                        barcode:products[i].barcode,
+                        sellPrice:products[i].stock[products[i].stock.length-1].sellPrice,
+                        wholesalePrice:products[i].stock[products[i].stock.length-1].wholesalePrice
+                    });
+                }
+            }
+
+        }else{
+            productFilterResult = products.map((product)=>{
+                return{
+                    name:product.name,
+                    barcode:product.barcode,
+                    sellPrice:product.stock[product.stock.length-1].sellPrice,
+                    wholesalePrice:product.stock[product.stock.length-1].wholesalePrice
+                }
+            });
+        }
+
+        return [...productFilterResult];
+
+    },
     product:forwardTo('db'),
     products:forwardTo('db'),
     barcodes:forwardTo('db'),

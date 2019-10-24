@@ -59,11 +59,13 @@ const CREATE_SALESTICKET_MUTATION = gql`
 `;
 
 const CREATE_SALESITEM_MUTATION = gql`
-    mutation CREATE_SALESITEM_MUTATION($type:String!,$noofpieces:Int!,$priceSold:Float!,$discount:Float,,$id:ID!,$receipt:String!){
+    mutation CREATE_SALESITEM_MUTATION($type:String!,$noofpieces:Int!,$priceSold:Float!,$discountUnit:Float,$discount:Float,$id:ID!,$receipt:String!){
         createSalesItem(data:{
             type:$type,
             noofpieces:$noofpieces,
             priceSold:$priceSold,
+            originalQuantity:$noofpieces,
+            discountUnit:$discountUnit,
             discount:$discount,
             product:{
                 connect:{
@@ -156,7 +158,7 @@ class RetailSales extends Component{
         if(e){
             e.preventDefault();
         }
-        console.log(this.state.barcode);
+        
         this.setState({
             barcodeSubmitLoading:true
         });
@@ -273,6 +275,8 @@ class RetailSales extends Component{
         });
         const salesTicket = res.data.createSalesTicket.receipt;
 
+        let totalDiscountPercentage = (Number(this.state.discount)/Number(this.state.subTotal()))*100;
+        
         this.state.receipt.map((r)=>{
             const {id,price,quantity} = r;
             client.mutate({
@@ -281,10 +285,15 @@ class RetailSales extends Component{
                     ...(this.state.sale_type==='retailsale'?{type:'retail'}:{type:'wholesale'}),
                     noofpieces:Number(quantity),
                     priceSold:Number(price),
-                    discount:this.state.discount/this.state.receipt.length,
+                    originalQuantity:Number(quantity),
+                    discountUnit:(Number(price)*totalDiscountPercentage)/100,
+                    discount(){
+                        this.discount = this.discountUnit * this.originalQuantity;
+                        return this;
+                    },
                     id:id,
                     receipt:salesTicket
-                }
+                }.discount()
             });
         });
         let requiredDate = new Date();

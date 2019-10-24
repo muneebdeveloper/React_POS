@@ -495,14 +495,14 @@ class Profit_Sales extends Component{
                         </tr>
                         <tr className={styles.tableFoot}>
                             <td colSpan={6} className={styles.totalRow}>Discount</td>
-                            <td>{totalDiscount==0?totalDiscount:`-${totalDiscount}`}</td>
+                            <td>{totalDiscount==0?Math.round(totalDiscount):`-${Math.round(totalDiscount)}`}</td>
                         </tr>
                                 <tr className={styles.tableFoot}>
                                     <td colSpan={3} className={styles.totalRow}>Total</td>
                                     <td>{totalSellPrice}</td>
                                     <td>{totalQuantity}</td>
                                     <td>{totalSale}</td>
-                                    <td>{totalProfit}</td>
+                                    <td>{Math.round(totalProfit)}</td>
                                 </tr>
                         </tfoot>
             </table>
@@ -516,3 +516,4 @@ class Profit_Sales extends Component{
 }
 
 export default Profit_Sales;
+export {ALL_CATEGORIES_QUERY};

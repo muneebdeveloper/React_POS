@@ -2,7 +2,8 @@ import React,{Component} from 'react';
 
 import DefineStock from '../components/stock/define/DefineStock';
 import AddStock from '../components/stock/add/AddStock';
-import SummaryStock from '../components/stock/summary/SummaryStock'; 
+import SummaryStock from '../components/stock/summary/SummaryStock';
+import AuditBlock from '../components/stock/audit/AuditBlock';
 
 class StockPage extends Component{
 
@@ -13,6 +14,7 @@ class StockPage extends Component{
                     <DefineStock />
                     <AddStock />
                     <SummaryStock />
+                    <AuditBlock />
             </div>
         );
     }

@@ -225,7 +225,7 @@ const Mutation = {
         let originalRefundQuantity = refundnoofpieces;
 
         // Querying the salesitems from the given id
-        let salesItem =await ctx.db.query.salesItem({where:{id:salesitemID}},`{noofpieces type priceSold profit refundCriteria{id stockID createdAt badgeNumber noofpieces buyPrice sellPrice wholesalePrice expiry} product{id}}`);
+        let salesItem =await ctx.db.query.salesItem({where:{id:salesitemID}},`{noofpieces type priceSold profit discount discountUnit refundCriteria{id stockID createdAt badgeNumber noofpieces buyPrice sellPrice wholesalePrice expiry} product{id}}`);
 
         // Main logic starts here
         let length = salesItem.refundCriteria.length - 1;
@@ -275,7 +275,6 @@ const Mutation = {
                 if(refundnoofpieces-noofpieces<0){
                     salesItem.profit = salesItem.profit - (refundnoofpieces*(salesItem.priceSold-buyPrice));
                 }else{
-                    console.log("reached inside");
                     salesItem.profit = salesItem.profit - (noofpieces*(salesItem.priceSold-buyPrice));
                 }
             }
@@ -293,10 +292,19 @@ const Mutation = {
             }
 
         }
+        let refundAmount = (salesItem.priceSold*originalRefundQuantity)-(salesItem.discountUnit * originalRefundQuantity);
+        ctx.db.mutation.updateSalesItem(
+            {
+                data:{
+                    noofpieces:salesItem.noofpieces-originalRefundQuantity,
+                    profit:salesItem.profit,
+                    discount:salesItem.discount-(salesItem.discountUnit*originalRefundQuantity)
+                },
+                where:{id:salesitemID}
+            },
+            `{id}`);
         
-        ctx.db.mutation.updateSalesItem({data:{noofpieces:salesItem.noofpieces-originalRefundQuantity,profit:salesItem.profit},where:{id:salesitemID}},`{id}`);
-        
-        return {message:"done"};
+        return refundAmount;
         
 
     }

@@ -35,9 +35,7 @@ const SALESTICKET_QUERY = gql`
 
 const REFUNDITEMS_MUTATION = gql`
     mutation REFUNDITEMS_MUTATION($id:String!,$quantity:Int!){
-        refundItems(data:{salesitemID:$id,noofpieces:$quantity}){
-            message
-        }
+        refundItems(data:{salesitemID:$id,noofpieces:$quantity})
     }
 `;
 
@@ -168,17 +166,22 @@ class Refund_By_Ticket extends Component{
     refundConfirmHandler = client =>async ()=>{
 
         try{
-
+            let refundAmount = 0;
             for(let i in this.state.refundObject){
-                await client.mutate({
+                let res = await client.mutate({
                     mutation:REFUNDITEMS_MUTATION,
                     variables:{
                         id:this.state.refundObject[i].id,
                         quantity:this.state.refundObject[i].noofpieces
                     }
                 });
+                refundAmount += res.data.refundItems;
             }
-            Router.push('/');
+            // Router.push('/');
+            this.setState({
+                errorDialog:true,
+                errorInfo:`Refund Amount is ${Math.round(refundAmount)}`
+            });
 
         }catch(err){
             console.log(err);

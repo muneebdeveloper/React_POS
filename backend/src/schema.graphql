@@ -25,12 +25,15 @@ type Query{
     AllQuantitiesData:[QuantityData]!
     checkExpiry:Int!
     checkQuantity:Int!
+    productsAudit(data:ProductAuditInput):[ProductAudit]!
+    productsFilterSearch(data:ProductFilterSearchInput!):[ProductFilterResult]!
+    
 }
 
 type Mutation{
     signin(data:SignInUserInput!):User!
     signout:Message
-    refundItems(data:RefundItemsInput!):Message
+    refundItems(data:RefundItemsInput!):Float!
     createLineItem(data: LineItemCreateInput!): LineItem!
     updateLineItem(data: LineItemUpdateInput!, where: LineItemWhereUniqueInput!): LineItem
     deleteLineItem(where: LineItemWhereUniqueInput!): LineItem
@@ -77,10 +80,28 @@ type Message{
 }
 
 input PriceDetailsInput{
-    barcode:String!,
+    barcode:String!
     type:String!
 }
 
+input ProductAuditInput{
+    lineitemID:String
+    categoryID:String
+}
+
+input ProductFilterSearchInput{
+    name:String
+    barcode:String
+    sellPrice:Float
+    wholesalePrice:Float
+}
+
+type ProductFilterResult{
+    name:String!
+    barcode:String!
+    sellPrice:Float!
+    wholesalePrice:Float!
+}
 
 type PriceDetails{
     productID:String!,
@@ -113,4 +134,12 @@ type QuantityData{
     quantityID:String!
     name:String!
     description:String!
+}
+
+type ProductAudit{
+    name:String!
+    barcode:String!
+    quantity:Int!
+    sellPrice:Float!
+    wholesalePrice:Float!
 }

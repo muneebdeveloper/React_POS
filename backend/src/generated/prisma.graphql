@@ -1,5 +1,5 @@
 # source: http://192.168.99.100:4466
-# timestamp: Sun Oct 20 2019 12:42:04 GMT+0500 (Pakistan Standard Time)
+# timestamp: Wed Oct 23 2019 12:02:04 GMT+0500 (Pakistan Standard Time)
 
 type AggregateBarcode {
   count: Int!
@@ -2992,6 +2992,8 @@ type SalesItem implements Node {
   type: String!
   priceSold: Float!
   profit: Float
+  originalQuantity: Int!
+  discountUnit: Float
   discount: Float
   refundCriteria(where: refundObjectWhereInput, orderBy: refundObjectOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [refundObject!]
   product: Product!
@@ -3014,6 +3016,8 @@ input SalesItemCreateInput {
   type: String!
   priceSold: Float!
   profit: Float
+  originalQuantity: Int!
+  discountUnit: Float
   discount: Float
   refundCriteria: refundObjectCreateManyInput
   product: ProductCreateOneInput!
@@ -3031,6 +3035,8 @@ input SalesItemCreateWithoutSalesTicketInput {
   type: String!
   priceSold: Float!
   profit: Float
+  originalQuantity: Int!
+  discountUnit: Float
   discount: Float
   refundCriteria: refundObjectCreateManyInput
   product: ProductCreateOneInput!
@@ -3058,6 +3064,10 @@ enum SalesItemOrderByInput {
   priceSold_DESC
   profit_ASC
   profit_DESC
+  originalQuantity_ASC
+  originalQuantity_DESC
+  discountUnit_ASC
+  discountUnit_DESC
   discount_ASC
   discount_DESC
 }
@@ -3069,6 +3079,8 @@ type SalesItemPreviousValues {
   type: String!
   priceSold: Float!
   profit: Float
+  originalQuantity: Int!
+  discountUnit: Float
   discount: Float
 }
 
@@ -3249,6 +3261,50 @@ input SalesItemScalarWhereInput {
 
   """All values greater than or equal the given value."""
   profit_gte: Float
+  originalQuantity: Int
+
+  """All values that are not equal to given value."""
+  originalQuantity_not: Int
+
+  """All values that are contained in given list."""
+  originalQuantity_in: [Int!]
+
+  """All values that are not contained in given list."""
+  originalQuantity_not_in: [Int!]
+
+  """All values less than the given value."""
+  originalQuantity_lt: Int
+
+  """All values less than or equal the given value."""
+  originalQuantity_lte: Int
+
+  """All values greater than the given value."""
+  originalQuantity_gt: Int
+
+  """All values greater than or equal the given value."""
+  originalQuantity_gte: Int
+  discountUnit: Float
+
+  """All values that are not equal to given value."""
+  discountUnit_not: Float
+
+  """All values that are contained in given list."""
+  discountUnit_in: [Float!]
+
+  """All values that are not contained in given list."""
+  discountUnit_not_in: [Float!]
+
+  """All values less than the given value."""
+  discountUnit_lt: Float
+
+  """All values less than or equal the given value."""
+  discountUnit_lte: Float
+
+  """All values greater than the given value."""
+  discountUnit_gt: Float
+
+  """All values greater than or equal the given value."""
+  discountUnit_gte: Float
   discount: Float
 
   """All values that are not equal to given value."""
@@ -3315,6 +3371,8 @@ input SalesItemUpdateInput {
   type: String
   priceSold: Float
   profit: Float
+  originalQuantity: Int
+  discountUnit: Float
   discount: Float
   refundCriteria: refundObjectUpdateManyInput
   product: ProductUpdateOneRequiredInput
@@ -3326,6 +3384,8 @@ input SalesItemUpdateManyDataInput {
   type: String
   priceSold: Float
   profit: Float
+  originalQuantity: Int
+  discountUnit: Float
   discount: Float
 }
 
@@ -3334,6 +3394,8 @@ input SalesItemUpdateManyMutationInput {
   type: String
   priceSold: Float
   profit: Float
+  originalQuantity: Int
+  discountUnit: Float
   discount: Float
 }
 
@@ -3359,6 +3421,8 @@ input SalesItemUpdateWithoutSalesTicketDataInput {
   type: String
   priceSold: Float
   profit: Float
+  originalQuantity: Int
+  discountUnit: Float
   discount: Float
   refundCriteria: refundObjectUpdateManyInput
   product: ProductUpdateOneRequiredInput
@@ -3552,6 +3616,50 @@ input SalesItemWhereInput {
 
   """All values greater than or equal the given value."""
   profit_gte: Float
+  originalQuantity: Int
+
+  """All values that are not equal to given value."""
+  originalQuantity_not: Int
+
+  """All values that are contained in given list."""
+  originalQuantity_in: [Int!]
+
+  """All values that are not contained in given list."""
+  originalQuantity_not_in: [Int!]
+
+  """All values less than the given value."""
+  originalQuantity_lt: Int
+
+  """All values less than or equal the given value."""
+  originalQuantity_lte: Int
+
+  """All values greater than the given value."""
+  originalQuantity_gt: Int
+
+  """All values greater than or equal the given value."""
+  originalQuantity_gte: Int
+  discountUnit: Float
+
+  """All values that are not equal to given value."""
+  discountUnit_not: Float
+
+  """All values that are contained in given list."""
+  discountUnit_in: [Float!]
+
+  """All values that are not contained in given list."""
+  discountUnit_not_in: [Float!]
+
+  """All values less than the given value."""
+  discountUnit_lt: Float
+
+  """All values less than or equal the given value."""
+  discountUnit_lte: Float
+
+  """All values greater than the given value."""
+  discountUnit_gt: Float
+
+  """All values greater than or equal the given value."""
+  discountUnit_gte: Float
   discount: Float
 
   """All values that are not equal to given value."""

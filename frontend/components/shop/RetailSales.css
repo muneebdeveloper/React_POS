@@ -62,3 +62,9 @@
 .saleSelectStyles{
     min-width:500px !important;
 }
+
+.searchStyles{
+    text-align:center;
+    margin-top:20px;
+    margin-bottom:20px;
+}
