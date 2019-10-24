@@ -47,7 +47,13 @@ class StockAudit extends Component{
         errorDialog:false,
         errorMessage:'',
         results:[],
-        formLoading:false
+        originalResults:[],
+        formLoading:false,
+        searchname:'',
+        searchbarcode:'',
+        searchsellPrice:'',
+        searchquantity:'',
+        searchwholesalePrice:''
     }
 
     inputChangeHandler = (e)=>{
@@ -121,6 +127,7 @@ class StockAudit extends Component{
                     });
                     this.setState({
                         results:[...res.data.productsAudit],
+                        originalResults:[...res.data.productsAudit],
                         formLoading:false
                     });
                     break;
@@ -135,6 +142,7 @@ class StockAudit extends Component{
                     });
                     this.setState({
                         results:[...res.data.productsAudit],
+                        originalResults:[...res.data.productsAudit],
                         formLoading:false
                     });
                     break; 
@@ -149,6 +157,7 @@ class StockAudit extends Component{
                     });
                     this.setState({
                         results:[...res.data.productsAudit],
+                        originalResults:[...res.data.productsAudit],
                         formLoading:false
                     });
                     break; 
@@ -163,6 +172,26 @@ class StockAudit extends Component{
         }
 
     }
+
+    searchInputChangeHandler = async (e)=>{
+
+        await this.setState({
+            [e.target.name]:e.target.value
+        });
+
+        const {searchname,searchbarcode,searchquantity,searchsellPrice,searchwholesalePrice} = this.state;
+
+        let filteredArray = this.state.originalResults.filter((el)=>{
+            const {name,barcode,quantity,sellPrice,wholesalePrice} = el;
+            if( name.includes(searchname) && barcode.includes(searchbarcode) && String(quantity).startsWith(searchquantity) && String(sellPrice).startsWith(searchsellPrice) && String(wholesalePrice).startsWith(searchwholesalePrice)){
+                return true;
+            }
+        });
+
+        this.setState({
+            results:[...filteredArray]
+        });
+    }
             
 
 
@@ -176,7 +205,12 @@ class StockAudit extends Component{
             submenuData,
             errorDialog,
             errorMessage,
-            results
+            results,
+            searchname,
+            searchbarcode,
+            searchsellPrice,
+            searchquantity,
+            searchwholesalePrice
         } = this.state;
 
         return(
@@ -246,36 +280,51 @@ class StockAudit extends Component{
                 }
             </ApolloConsumer>
             
-            <table>
+            <table className="gutterbottom">
                 <thead>
                     <tr className={styles.rowStyle}>
                         <th colSpan={2}>
                             <TextField 
                                 label="Search By Name"
+                                name="searchname"
+                                onChange={this.searchInputChangeHandler}
+                                value={searchname}
                                 fullWidth
                             />
                         </th>
                         <th>
                             <TextField 
                                 label="Search By Barcode"
+                                name="searchbarcode"
+                                value={searchbarcode}
+                                onChange={this.searchInputChangeHandler}
                                 fullWidth
                             />
                         </th>
                         <th>
                             <TextField 
                                 label="Search By Quantity"
+                                name="searchquantity"
+                                value={searchquantity}
+                                onChange={this.searchInputChangeHandler}
                                 fullWidth
                             />
                         </th>
                         <th>
                             <TextField 
                                 label="Search By Sell Price"
+                                name="searchsellPrice"
+                                value={searchsellPrice}
+                                onChange={this.searchInputChangeHandler}
                                 fullWidth
                             />
                         </th>
                         <th>
                             <TextField 
                                 label="Search By WholeSale Price"
+                                name="searchwholesalePrice"
+                                value={searchwholesalePrice}
+                                onChange={this.searchInputChangeHandler}
                                 fullWidth
                             />
                         </th>
