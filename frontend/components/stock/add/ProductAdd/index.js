@@ -421,6 +421,14 @@ class ProductAddMain extends Component{
         }
     }
 
+    totalBuyPriceCalculator = ()=>{
+        let price = 0;
+        this.state.productDetail.map((product)=>{
+            price += (product.buyprice * product.noofpieces);
+        });
+        return price;
+    }
+
     stateInitial = ()=>{
         this.setState(
             {
@@ -836,7 +844,7 @@ class ProductAddMain extends Component{
                                                     return(
                                                             <DialogContent>
                                                                 <SubmitStock
-                                                                    totalBuyPrice={totalBuyPrice}
+                                                                    totalBuyPrice={this.totalBuyPriceCalculator()}
                                                                     supplier_name={supplier_name}
                                                                     supplier_description={supplier_description}
                                                                     supplier_amountpaid={supplier_amountpaid}

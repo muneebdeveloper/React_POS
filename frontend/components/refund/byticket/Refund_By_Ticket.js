@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Cancel from '@material-ui/icons/Cancel';
@@ -52,6 +53,8 @@ class Refund_By_Ticket extends Component{
         dialogRefundQuantity:false,
         errorDialog:false,
         errorInfo:'something went wrong',
+        refundAmountDialog:false,
+        refundAmount:0
     }
 
     inputChangeHandler = (e)=>{
@@ -125,14 +128,14 @@ class Refund_By_Ticket extends Component{
         let requiredIndex = requiredRefundArray.findIndex((e)=>{
             return id==e.id;
         });
-        console.log(requiredIndex);
+        
         if(requiredIndex==-1){
             requiredRefundArray = [...requiredRefundArray,{...requiredArray[index]}];
         }else{
             requiredRefundArray[requiredIndex].noofpieces += requiredArray[index].noofpieces;
         }
         
-        console.log(requiredRefundArray);
+
 
         requiredArray[index].noofpieces = 0;
         
@@ -177,10 +180,10 @@ class Refund_By_Ticket extends Component{
                 });
                 refundAmount += res.data.refundItems;
             }
-            // Router.push('/');
+            
             this.setState({
-                errorDialog:true,
-                errorInfo:`Refund Amount is ${Math.round(refundAmount)}`
+                refundAmountDialog:true,
+                refundAmount:Math.round(refundAmount)
             });
 
         }catch(err){
@@ -197,8 +200,10 @@ class Refund_By_Ticket extends Component{
             errorInfo,
             errorDialog,
             salesArray,
+            refundAmountDialog,
             refundQuantity,
-            dialogRefundQuantity
+            dialogRefundQuantity,
+            refundAmount
         } = this.state;
         return(
             <>
@@ -320,6 +325,21 @@ class Refund_By_Ticket extends Component{
             <ErrorDialog dialogValue={errorDialog} dialogClose={()=>this.setState({errorDialog:false})}>
                 {errorInfo}
             </ErrorDialog>
+
+            <Dialog open={refundAmountDialog} onClose={()=>Router.push('/')}>
+                <DialogTitle>Refund Amount is</DialogTitle>
+                <DialogContent>
+                    <h2 style={{textAlign:"center"}}>{refundAmount}</h2>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        variant="contained"
+                        onClick={()=>Router.push('/')}
+                    >
+                        OK
+                    </Button>
+                </DialogActions>
+            </Dialog>
        </>
         )
     }

@@ -504,7 +504,7 @@ class Profit_Sales extends Component{
                                     <td>{totalSale}</td>
                                     <td>{Math.round(totalProfit)}</td>
                                 </tr>
-                        </tfoot>
+                </tfoot>
             </table>
             </div>
                 <ErrorDialog dialogValue={errorDialogOpen} dialogClose={()=>this.setState({errorDialogOpen:false})}>

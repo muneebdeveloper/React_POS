@@ -20,7 +20,6 @@ import StockAuditTable from './StockAuditTable';
 
 import styles from './StockAudit.css';
 
-
 const PRODUCTS_AUDIT = gql`
     query PRODUCTS_AUDIT($lineitemID:String,$categoryID:String){
         productsAudit(data:{lineitemID:$lineitemID,categoryID:$categoryID}){
@@ -46,6 +45,7 @@ class StockAudit extends Component{
         submenuData:[],
         errorDialog:false,
         errorMessage:'',
+        searchLoading:false,
         results:[],
         originalResults:[],
         formLoading:false,
@@ -53,7 +53,10 @@ class StockAudit extends Component{
         searchbarcode:'',
         searchsellPrice:'',
         searchquantity:'',
-        searchwholesalePrice:''
+        searchwholesalePrice:'',
+        totalQuantity:0,
+        totalSellPrice:0,
+        totalWholeSalePrice:0
     }
 
     inputChangeHandler = (e)=>{
@@ -125,11 +128,7 @@ class StockAudit extends Component{
                         query:PRODUCTS_AUDIT,
                         fetchPolicy:'network-only'
                     });
-                    this.setState({
-                        results:[...res.data.productsAudit],
-                        originalResults:[...res.data.productsAudit],
-                        formLoading:false
-                    });
+
                     break;
                     
                 case 'lineitem':
@@ -140,11 +139,7 @@ class StockAudit extends Component{
                         },
                         fetchPolicy:'network-only'
                     });
-                    this.setState({
-                        results:[...res.data.productsAudit],
-                        originalResults:[...res.data.productsAudit],
-                        formLoading:false
-                    });
+
                     break; 
                     
                 case 'category':
@@ -155,13 +150,27 @@ class StockAudit extends Component{
                         },
                         fetchPolicy:'network-only'
                     });
-                    this.setState({
-                        results:[...res.data.productsAudit],
-                        originalResults:[...res.data.productsAudit],
-                        formLoading:false
-                    });
+
                     break; 
             }
+
+            let calcQuantity=0, calcSellPrice=0, calcWholeSalePrice=0;
+
+            res.data.productsAudit.map((el)=>{
+                const {quantity,sellPrice,wholesalePrice} = el;
+                calcQuantity += quantity;
+                calcSellPrice += sellPrice;
+                calcWholeSalePrice += wholesalePrice; 
+            });
+
+            this.setState({
+                results:[...res.data.productsAudit],
+                originalResults:[...res.data.productsAudit],
+                formLoading:false,
+                totalQuantity:calcQuantity,
+                totalSellPrice:calcSellPrice,
+                totalWholeSalePrice:calcWholeSalePrice
+            });
 
         }catch(err){
             this.setState({
@@ -176,7 +185,8 @@ class StockAudit extends Component{
     searchInputChangeHandler = async (e)=>{
 
         await this.setState({
-            [e.target.name]:e.target.value
+            [e.target.name]:e.target.value,
+            searchLoading:true
         });
 
         const {searchname,searchbarcode,searchquantity,searchsellPrice,searchwholesalePrice} = this.state;
@@ -188,8 +198,21 @@ class StockAudit extends Component{
             }
         });
 
+        let calcQuantity=0, calcSellPrice=0, calcWholeSalePrice=0;
+
+        filteredArray.map((el)=>{
+            const {quantity,sellPrice,wholesalePrice} = el;
+            calcQuantity += quantity;
+            calcSellPrice += sellPrice;
+            calcWholeSalePrice += wholesalePrice; 
+        });
+
         this.setState({
-            results:[...filteredArray]
+            results:[...filteredArray],
+            totalQuantity:calcQuantity,
+            totalSellPrice:calcSellPrice,
+            totalWholeSalePrice:calcWholeSalePrice,
+            searchLoading:false
         });
     }
             
@@ -203,6 +226,7 @@ class StockAudit extends Component{
             submenu,
             disablesubmenu,
             submenuData,
+            searchLoading,
             errorDialog,
             errorMessage,
             results,
@@ -210,7 +234,10 @@ class StockAudit extends Component{
             searchbarcode,
             searchsellPrice,
             searchquantity,
-            searchwholesalePrice
+            searchwholesalePrice,
+            totalQuantity,
+            totalSellPrice,
+            totalWholeSalePrice
         } = this.state;
 
         return(
@@ -356,7 +383,23 @@ class StockAudit extends Component{
                         })
                     }
                 </tbody>
+                <tfoot >
+                                <tr className={styles.tableFoot}>
+                                    <td colSpan={3} className={styles.totalRow}>Total</td>
+                                    <td>{totalQuantity}</td>
+                                    <td>{totalSellPrice}</td>
+                                    <td>{totalWholeSalePrice}</td>
+                                </tr>
+                </tfoot>
             </table>
+
+            {
+                searchLoading && (
+                    <div className={styles.searchStyles}>
+                        <CircularProgress size={70} />
+                    </div>    
+                )
+            }
 
             <ErrorDialog dialogValue={errorDialog} dialogClose={()=>this.setState({errorDialog:false})}>
                 {errorMessage}

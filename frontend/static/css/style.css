@@ -109,7 +109,7 @@ tbody tr:hover{
 }
 
 .MuiDrawer-paper{
-    background-color:#292828;
+    background-color:#292828 !important;
 }
 
 .MuiFormLabel-root.Mui-focused:not(.Mui-error){

@@ -132,7 +132,7 @@ class Product extends Component{
     }
 
     barcodeGeneratorHandler =(client)=>async()=>{
-        let generated_barcode = Math.floor((Math.random() * 9000000000000) + 1000000000000);
+        let generated_barcode = Math.floor((Math.random() * 900000) + 100000);
         let run = true;
         this.setState({
             loadingGenBarcode:true

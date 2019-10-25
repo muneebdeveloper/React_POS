@@ -31,8 +31,8 @@ import styles from './Header.css';
 
 import CurrentUser from '../CurrentUser';
 
-import NProgress from 'nprogress';
-import {StylesProvider} from '@material-ui/styles';
+// import NProgress from 'nprogress';
+// import {StylesProvider} from '@material-ui/styles';
 
 // Router.onRouteChangeStart = ()=>{
 //   NProgress.start();
@@ -163,11 +163,11 @@ class Header extends Component{
 
                 </div>
             </div>
-            <StylesProvider injectFirst>
+            {/* <StylesProvider injectFirst> */}
               <Drawer anchor="left"  open={this.state.left} onClose={this.toggleDrawer('left',false)} >
                   {this.sideList('left')}
               </Drawer>
-            </StylesProvider>
+            {/* </StylesProvider> */}
             </>
           
         );
