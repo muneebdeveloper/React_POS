@@ -334,7 +334,7 @@ class RetailSales extends Component{
             productQuantityDialogOpen:false,
             barcodeSubmitLoading:false,
             printReceiptLoading:false,
-            ticket:'',
+            // ticket:'',
             ticketDate:''
         });
     }
