@@ -39,6 +39,8 @@ const SubmitStock  = (props)=>{
                 name="supplier_amountpaid"
                 value={supplier_amountpaid}
                 onChange={prochangeHandler}
+                error={supplier_amountpaid<0 || supplier_amountpaid>totalBuyPrice}
+                {...((supplier_amountpaid<0 || supplier_amountpaid>totalBuyPrice) && {helperText:"Amount is invalid"})}
                 required
                 fullWidth
             />
@@ -48,6 +50,7 @@ const SubmitStock  = (props)=>{
                 variant="contained"
                 size="large"
                 fullWidth
+                disabled={supplier_amountpaid<0 || supplier_amountpaid>totalBuyPrice}
             >
                 Submit
             </Button>
