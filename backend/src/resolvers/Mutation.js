@@ -92,6 +92,7 @@ const Mutation = {
                 maxAge:1000 * 60 * 60 * 24 * 365
             }
         );
+        ctx.response.setHeader("Set-Cookie", "HttpOnly;Secure;SameSite=Strict");
 
         return user;
 
