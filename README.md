@@ -1,6 +1,10 @@
 # React_POS
  React POS(Point of sale and Inventory Management) is a web based point of sale and inventory management system.
 
+# Live Preview
+## Note 
+    The website might be slow at first visit due to free server. Visit at https://reactpos.tk
+
  ## Technologies used
  -- React(Next js)
  -- Apollo
