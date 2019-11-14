@@ -31,8 +31,8 @@ class Login extends Component{
     }
 
     state={
-        username:'',
-        password:'',
+        username:'admin',
+        password:'admin',
         errorDialog:false,
         errorMessage:""
     }

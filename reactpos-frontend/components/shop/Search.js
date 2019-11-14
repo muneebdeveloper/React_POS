@@ -63,20 +63,28 @@ class Search extends Component{
 
         const {name,barcode,sellPrice,wholesalePrice} = this.state;
 
-        let res = await client.query({
-            query:PRODUCTS_SEARCH_QUERY,
-            variables:{
-                name,
-                barcode,
-                sellPrice:Number(sellPrice),
-                wholesalePrice:Number(wholesalePrice)
-            }
-        });
-
-        this.setState({
-            searchResult:[...res.data.productsFilterSearch],
-            loading:false
-        });
+        if(name || barcode || sellPrice || wholesalePrice){
+            let res = await client.query({
+                query:PRODUCTS_SEARCH_QUERY,
+                variables:{
+                    name,
+                    barcode,
+                    sellPrice:Number(sellPrice),
+                    wholesalePrice:Number(wholesalePrice)
+                }
+            });
+    
+            this.setState({
+                searchResult:[...res.data.productsFilterSearch],
+                loading:false
+            });
+        }else{
+            this.setState({
+                searchResult:[],
+                loading:false
+            });
+        }
+        
     },300);
 
     inputChangeHandler=async(client,e)=>{
@@ -161,7 +169,10 @@ class Search extends Component{
                         searchResult.map((el,index)=>{
                             const {name,barcode,sellPrice,wholesalePrice} = el;
                             return(
-                                <tr key={index}>
+                                <tr
+                                    key={index}
+                                    onClick={()=>this.props.searchHandler(barcode)}
+                                >
                                     <td>{name}</td>
                                     <td>{barcode}</td>
                                     <td>{sellPrice}</td>

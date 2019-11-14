@@ -39,28 +39,6 @@ class Manage_Cash extends Component{
                                 <h1 style={{textAlign:"center",color:"gray"}}>Select any supplier</h1>
                         <table>
                             <thead>
-                                <tr>
-                                    <th>
-                                        <TextField 
-                                            label="Name"
-                                            fullWidth
-                                            placeholder="Search by name"
-                                            autoFocus
-                                        />
-                                    </th>
-                                    <th> <TextField 
-                                            label="Phone"
-                                            fullWidth
-                                        /></th>
-                                    <th> <TextField 
-                                            label="Email"
-                                            fullWidth
-                                        /></th>
-                                    <th> <TextField 
-                                            label="Address"
-                                            fullWidth
-                                        /></th>
-                                </tr>
                                 <tr  style={{backgroundColor:'black',color:'white'}}>
                                     <th>Name</th>
                                     <th>Phone</th>

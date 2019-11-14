@@ -340,7 +340,7 @@ class ProductAddMain extends Component{
         await updateStockItem();
     }
 
-    submitStockDialogQueryHandler = async (client)=>{
+    submitStockDialogQueryHandler =  async(client)=>{
         this.setState({
             submitStockLoading:true,
             submitStockDialogOpen:true
@@ -354,6 +354,7 @@ class ProductAddMain extends Component{
                 },
                 fetchPolicy:'network-only'
             })
+            
             this.setState({
                 submitStockLoading:false,
                 supplier_previous_amount:res.data.supplier.amounttopay
@@ -371,16 +372,16 @@ class ProductAddMain extends Component{
     submitStockHandler = (updateSupplier,createPaidDetail)=>async (e)=>{
         e.preventDefault();
         let {
-            totalBuyPrice,
             supplier_amountpaid,
             supplier_id,
             supplier_previous_amount,
         } = this.state;
-        let amountVar = totalBuyPrice - Number(supplier_amountpaid);
+        let amountVar = this.totalBuyPriceCalculator() - Number(supplier_amountpaid);
             if(!supplier_previous_amount){
                 supplier_previous_amount = 0;
             }
             amountVar = amountVar + Number(supplier_previous_amount);
+
         try{
         if(Number(supplier_amountpaid)>0){
             await createPaidDetail();
@@ -866,7 +867,7 @@ class ProductAddMain extends Component{
                         <Dialog open={dialogEditOpen} onClose={()=>this.setState({dialogEditOpen:false})}>
                             
                                 <div className="dialogTitleStyle">
-                                    <h2>Edit Suppliers</h2>
+                                    <h2>Edit Stock</h2>
                                     <IconButton onClick={()=>this.setState({dialogEditOpen:false})}>
                                             <Cancel className={styles2.delete} />
                                     </IconButton>

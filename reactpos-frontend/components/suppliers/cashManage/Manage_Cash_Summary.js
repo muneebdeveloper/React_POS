@@ -305,7 +305,7 @@ class Manage_Cash_Summary extends Component{
                                     </Button>
                                 </DialogActions>
                                 </div>
-                                <table>
+                                <table className="gutterbottom">
                                     <thead>
                                         <tr  style={{backgroundColor:'black',color:'white'}}>
                                             <th>Sr#</th>

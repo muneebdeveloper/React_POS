@@ -10,7 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DialogActions from '@material-ui/core/DialogActions';
 
-import CancelIcon from '@material-ui/icons/cancel';
+import CancelIcon from '@material-ui/icons/Cancel';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 

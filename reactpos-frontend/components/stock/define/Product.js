@@ -150,7 +150,7 @@ class Product extends Component{
             if(!res.data.product){
                 run=false;
             }else{
-            generated_barcode = Math.floor((Math.random() * 9000000000000) + 1000000000000);
+            generated_barcode = Math.floor((Math.random() * 900000) + 100000);
             }
             
         }

@@ -148,11 +148,9 @@ tbody tr:hover{
     margin-bottom:20px;
     position: relative;
 }
-
 .mainFormStyle > *:not(.MuiCircularProgress-root):not(span){
     width:50% !important;
 }
-
 .mainFormStyle>*:not(.MuiCircularProgress-root):not(:last-child){
     margin-bottom:20px !important;
 }

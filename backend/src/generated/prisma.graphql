@@ -1,5 +1,5 @@
-# source: http://192.168.99.100:4466
-# timestamp: Wed Oct 23 2019 12:02:04 GMT+0500 (Pakistan Standard Time)
+# source: https://eu1.prisma.sh/muhammad-muneeb-akhlaq/backend/dev
+# timestamp: Thu Nov 14 2019 12:03:30 GMT+0500 (Pakistan Standard Time)
 
 type AggregateBarcode {
   count: Int!
@@ -921,9 +921,6 @@ input ExpiryWhereUniqueInput {
   productID: String
 }
 
-"""Raw JSON value"""
-scalar Json
-
 type LineItem implements Node {
   id: ID!
   name: String!
@@ -1224,7 +1221,6 @@ type Mutation {
   deleteManyProducts(where: ProductWhereInput): BatchPayload!
   deleteManyRefundObjects(where: refundObjectWhereInput): BatchPayload!
   deleteManyLineItems(where: LineItemWhereInput): BatchPayload!
-  executeRaw(database: PrismaDatabase, query: String!): Json!
 }
 
 enum MutationType {
@@ -1730,10 +1726,6 @@ input PaidDetailWhereInput {
 
 input PaidDetailWhereUniqueInput {
   id: ID
-}
-
-enum PrismaDatabase {
-  default
 }
 
 type Product implements Node {

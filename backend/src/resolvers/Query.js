@@ -58,7 +58,7 @@ const Query = {
             if(product){
                 let sellPrice,wholesalePrice;
                 if(product.stock.length>0){
-                    let {requiredObject} = stock.pop();
+                    let requiredObject = product.stock.pop();
                     sellPrice=requiredObject.sellPrice;
                     wholesalePrice=requiredObject.wholesalePrice;
                 }
