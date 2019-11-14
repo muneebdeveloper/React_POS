@@ -7,6 +7,7 @@
 
  ## Technologies used
  -- React(Next js)
+ -- material-ui
  -- Apollo
  -- Node js (Graphql-yoga express based server)
  -- Prisma ORM
