@@ -23,7 +23,7 @@
     "isomorphic-fetch": "^2.2.1",
     "lodash.debounce": "^4.0.8",
     "mui-downshift": "^1.4.1",
-    "next": "9.0.2",
+    "next": "11.1.3",
     "next-with-apollo": "^4.0.0",
     "nprogress": "^0.2.0",
     "react": "16.8.6",
